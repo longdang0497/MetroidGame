@@ -23,28 +23,36 @@ void Camera::Follow(GameObject * object) {
 
 void Camera::Update(Map * map)
 {
-	D3DXVECTOR3 eye(90, 90, 1);	
+	D3DXVECTOR3 eye(320, 352, 1);	
 	D3DXVECTOR3 direction(0, 0, -1);
 	D3DXVECTOR3 up(0, -1, 0);	//r
 
 	//int cameraX = width/2, cameraY = height/2;
+
 	if (m_following != nullptr)
 	{
-		eye.x = m_following->pos_x;
-		eye.y = m_following->pos_y;
+		if (map->getCameraX() != 0 && map->getCameraY() != 0 || m_following->getPosX() >= 320) {
+			eye.x = m_following->pos_x;
+			eye.y = m_following->pos_y;
+
+
+			//int temp = m_following->getPosX() / 32 - 10;
+
+			//map->Update(map->getCameraX() + temp*32, map->getCameraY());
+		}
 	}
 
-	int cameraY = m_following->pos_y - 3 * (height / 4);
-	int cameraX = m_following->pos_x - width / 4;
+	//int cameraY = m_following->pos_y - 3 * (height / 4);
+	//int cameraX = m_following->pos_x - width / 4;
 
-	if (cameraY > 3 * (height / 4))
-	{
-		m_following->pos_y = 3 * (height / 4);
-	}
-	else if (cameraX > (width/2))
-	{
-		m_following->pos_x = width / 4;
-	}
+	//if (cameraY > 3 * (height / 4))
+	//{
+	//	m_following->pos_y = 3 * (height / 4);
+	//}
+	//else if (cameraX > (width/2))
+	//{
+	//	m_following->pos_x = width / 4;
+	//}
 
 	D3DXMatrixLookAtLH(&viewMatrix, &eye, &(eye + direction), &up);
 }

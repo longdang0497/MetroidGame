@@ -57,13 +57,13 @@ void Map::drawMap() {
 
 	char brick;
 
-	for (int i = 0, a = 0; i < Y_LIMITATION; i++, a++) {
-		int row_index = i;
-		string row_string = (this->getStringMap())[row_index];	//get map
+	//for (int i = y, a = 0; i < y + Y_LIMITATION; i++, a++) {
+	for (int i = 0, a = 0; i < (this->getStringMap()).size(); i++, a++) {
+		string row_string = (this->getStringMap())[i];	//get map
 
-		for (int j = 0, b = 0; j < X_LIMITATION; j++, b++) {
-			int brick_in_row_index = j;
-			brick = row_string[brick_in_row_index];
+		//for (int j = x, b = 0; j < x + X_LIMITATION; j++, b++) {
+		for (int j = 0, b = 0; j < (this->getStringMap())[i].length(); j++, b++) {
+			brick = row_string[j];
 
 			D3DXVECTOR3 pos = D3DXVECTOR3(b * BRICK_SIZE, a * BRICK_SIZE, 0);
 			// draw different type of bricks
@@ -353,10 +353,20 @@ void Map::drawMap() {
 
 }
 
-void Map::Update() {
+void Map::Update(int cameraX, int cameraY) {
+	this->camera_X = cameraX;
+	this->camera_Y = cameraY;
 
 }
 
 void Map::Update(int roomID) {
 
+}
+
+int Map::getCameraX() {
+	return this->camera_X;
+}
+
+int Map::getCameraY() {
+	return this->camera_Y;
 }

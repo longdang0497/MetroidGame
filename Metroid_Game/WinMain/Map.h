@@ -23,7 +23,7 @@ public:
 
 	void drawMap();
 
-	void Update();
+	void Update(int cameraX, int cameraY);
 	void Update(int _roomID);
 
 	// Đặt giới hạn load map
@@ -35,6 +35,11 @@ public:
 	LPDIRECT3DDEVICE9 getDevice();
 	LPDIRECT3DTEXTURE9 getTexture();
 	vector<string> getStringMap();
+
+	int getCameraX();
+	int getCameraY();
+
+	static const int count = 0;
 
 private:
 	std::string filePath;

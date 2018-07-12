@@ -35,6 +35,7 @@ public:
 	bool isActive;	// Cho biết GameObject có đang hoạt động hay không
 	Sprite* sprite;
 	DWORD last_time; // this is to control the animate rate of object
+
 public:
 	GameObject();
 	~GameObject();
@@ -88,5 +89,7 @@ public:
 	virtual void Destroy();
 
 	// ============================== END VIRTUAL METHOD =============================
+
+
 };
 #endif // !_GAME_OBJECT_

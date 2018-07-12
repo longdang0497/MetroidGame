@@ -50,6 +50,8 @@ protected:
 	Sprite * jumpShootR;
 
 	SAMUS_STATE state;	
+
+	int tempX;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	Samus();
@@ -72,6 +74,7 @@ public:
 	void Render();
 	void Destroy();
 	//================= END OVERRIDE VIRTUAL METHOD =============
+
 };
 #endif // !_SAMUS_H
 
