@@ -61,12 +61,21 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	this->_InitSprites(d3ddev, this->getPlayerTexture());
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), this->getBrickTexture(), "field1.txt", this->_device, 0, 0, this->_dxgraphics->getScreenWidth(), this->_dxgraphics->getScreenHeight());
-	if (map == NULL)
+	this->map = new Map(this->getSpriteHandler(), this->getBrickTexture(), "field1.txt", this->_device, 0, 0);
+	
+	if (map) 
+	{
+	}
+	else 
 		trace(L"Unable to load map");
-
-	if (camera)
+	
+	if (camera) 
+	{
 		camera->Follow(world->samus);
+		camera->SetMapBoundary(map->getBoundary());
+	}
+		
+
 
 	this->_InitPositions();
 }
@@ -74,7 +83,8 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 //Kiểm tra screen Mode (bắt đầu, room1, room2,... hay gameover)
 void Metroid::Update(float Delta)
 {
-	this->camera->Update(map);
+	this->camera->Update();
+	map->UpdateMap(this->camera->getBoundary());
 	UpdateFrame(Delta);
 }
 
