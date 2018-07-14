@@ -15,7 +15,7 @@ class Game;
 #define TIME_IN_GAME 7000
 
 #define JUMP_VELOCITY_BOOST 0.5f
-#define JUMP_VELOCITY_BOOST_FIRST 0.5f
+#define JUMP_VELOCITY_BOOST_FIRST 70.0f
 #define FALLDOWN_VELOCITY_DECREASE 0.3f
 #define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 20
@@ -145,5 +145,5 @@ enum OBJECT_TYPE
 #define GAME_INTRO_SOUND L"sound\\background\\Intro.wav"
 #define APPEARING_SOUND L"Audio\\Enter_samus.wav"
 #define POWER_UP_SOUND L"Audio\\Power_Up.wav"
-#define ROOMA_SOUND L"Audio\\Brinstar.wav"
+#define ROOM1_SOUND L"sound\\background\\Map.wav"
 //================ END GAME SOUND =========================================

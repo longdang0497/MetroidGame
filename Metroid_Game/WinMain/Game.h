@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "Camera.h"
+#include "Sound.h"
 
 class Game
 {

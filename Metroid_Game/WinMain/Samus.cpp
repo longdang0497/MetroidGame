@@ -160,7 +160,7 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	pos_x = 320;
+	pos_x = 992;
 	pos_y = 352;
 
 	vx = 0;

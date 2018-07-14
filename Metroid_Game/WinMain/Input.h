@@ -23,8 +23,8 @@ public:
 	int IsKeyDown(int KeyCode);
 
 
-	void OnKeyDown(int KeyCode);
-	void OnKeyUp(int KeyCode);
+	/*void OnKeyDown(int KeyCode);
+	void OnKeyUp(int KeyCode);*/
 	
 	//void CheckKey();	// Scan through all data, check if the key is pressed or released	
 	LPDIDEVICEOBJECTDATA getKeyEvents() { return _KeyEvents; };

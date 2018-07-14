@@ -15,6 +15,8 @@ protected:
 	LPDIRECT3DSURFACE9 startscreen;
 	LPD3DXSPRITE spriteHandler;
 	World * world;
+	CSound *audio;
+	GameSound *sound;
 private:
 	void _InitBackground();
 	void _InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);

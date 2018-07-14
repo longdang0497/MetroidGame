@@ -99,6 +99,21 @@
     <ClCompile Include="Math.cpp">
       <Filter>Source Files\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="DXUT.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTenum.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTmisc.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKsound.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKwavefile.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -151,6 +166,21 @@
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUT.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTenum.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTmisc.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKsound.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKwavefile.h">
+      <Filter>Header Files\SoundLibrary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

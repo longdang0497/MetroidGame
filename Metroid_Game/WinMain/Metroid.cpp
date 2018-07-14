@@ -25,6 +25,8 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 	isFreezing = false;
 	isOnFloor = false;
 	isInGame = false;
+
+	sound = new GameSound();
 }
 
 Metroid::~Metroid()
@@ -55,6 +57,15 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (this->getBrickTexture() == NULL)
 		trace(L"Unable to load BrickTexture");
 
+	bool check = sound->Init(_dxgraphics->getWnd());
+	if (!check)
+	{
+		MessageBox(_dxgraphics->getWnd(), L"Error initialize sound !", L"Error", MB_OK);
+	}
+	//sound->LoadSound(ROOM1_SOUND);
+	CSound * audio = sound->LoadSound(ROOM1_SOUND);
+	if (audio != NULL)
+		sound->Loopsound(audio);
 	
 	world = new World(spriteHandler, this);
 	srand((unsigned)time(NULL));
@@ -141,6 +152,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 	}
 	else
 	{
+		world->samus->setVelocityX(0);
 		if (world->samus->getVelocityXLast() > 0)
 		{
 			if (world->samus->GetState() != MORPH_LEFT && world->samus->GetState() != MORPH_RIGHT
@@ -152,7 +164,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 				world->samus->ResetAllSprites();
 			}
 		}
-		if (world->samus->getVelocityXLast() < 0)
+		else if (world->samus->getVelocityXLast() < 0)
 		{
 			if (world->samus->GetState() != MORPH_LEFT && world->samus->GetState() != MORPH_RIGHT
 				&& world->samus->GetState() != JUMP_LEFT && world->samus->GetState() != JUMP_RIGHT
@@ -163,7 +175,6 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 				world->samus->ResetAllSprites();
 			}
 		}
-		world->samus->setVelocityX(0);
 	}
 
 	if (_input->IsKeyDown(DIK_UP))
@@ -194,6 +205,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 void Metroid::OnKeyDown(int KeyCode)
 {
 	world->samus->isJumping = false;
+	//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
 	if (world->samus->isSamusJumping() == false)
 	{
 		/*switch (KeyCode)
@@ -209,12 +221,12 @@ void Metroid::OnKeyDown(int KeyCode)
 				start_jump = GetTickCount();
 				now_jump = GetTickCount();
 				world->samus->SetState(MORPH_RIGHT);
-				world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST_FIRST);
+				world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
 
 				now_jump = GetTickCount();
 				if ((now_jump - start_jump) <= 10 * tick_per_frame)
 				{
-					world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST);
+					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
 				}
 			}
 			else if (world->samus->GetState() != MORPH_LEFT && _input->IsKeyDown(DIK_LEFT))
@@ -222,12 +234,12 @@ void Metroid::OnKeyDown(int KeyCode)
 				start_jump = GetTickCount();
 				now_jump = GetTickCount();
 				world->samus->SetState(MORPH_LEFT);
-				world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST_FIRST);
+				world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
 
 				now_jump = GetTickCount();
 				if ((now_jump - start_jump) <= 10 * tick_per_frame)
 				{
-					world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST);
+					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
 				}
 			}
 			if (world->samus->getVelocityXLast() < 0)
@@ -241,12 +253,12 @@ void Metroid::OnKeyDown(int KeyCode)
 						world->samus->SetState(JUMP_SHOOT_UP_LEFT);
 					else
 						world->samus->SetState(JUMP_LEFT);
-					world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST_FIRST);
+					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
 
 					now_jump = GetTickCount();
 					if ((now_jump - start_jump) <= 10 * tick_per_frame)
 					{
-						world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST);
+						world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
 					}
 				}
 			}
@@ -261,12 +273,12 @@ void Metroid::OnKeyDown(int KeyCode)
 						world->samus->SetState(JUMP_SHOOT_UP_RIGHT);
 					else
 						world->samus->SetState(JUMP_RIGHT);
-					world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST_FIRST);
+					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
 
 					now_jump = GetTickCount();
 					if ((now_jump - start_jump) <= 10 * tick_per_frame)
 					{
-						world->samus->setVelocityY(world->samus->getVelocityY() + JUMP_VELOCITY_BOOST);
+						world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
 					}
 				}
 			}
