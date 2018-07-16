@@ -46,6 +46,12 @@
     <Filter Include="Header Files\SoundLibrary">
       <UniqueIdentifier>{0a83b4c0-153c-4ebd-809f-24bd31f30fb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Collision">
+      <UniqueIdentifier>{5b429a91-83b8-40af-8aca-3e5c324e28d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collision">
+      <UniqueIdentifier>{9ad6edea-0a17-4e57-8874-cafeb631205d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -99,6 +105,9 @@
     <ClCompile Include="Math.cpp">
       <Filter>Source Files\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -151,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

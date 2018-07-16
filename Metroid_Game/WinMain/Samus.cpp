@@ -230,6 +230,60 @@ void Samus::Update(float t)
 {
 	//vy -= gravity;
 
+
+
+	if (limitY != 0) {
+		if (isJumping || isFalling || isMorphingJump) {
+			if (isJumping && !isFalling) {
+				if (getPosY() < limitY) {
+					isFalling = true;
+					isJumping = true;
+					isMorphingJump = false;
+				}
+				else
+					vy = -JUMP_VELOCITY_BOOST;
+			}
+			if (isJumping && isFalling) {
+				if (getPosY() < limitY + JUMP_HEIGHT) {
+					vy = GRAVITY_VELOCITY;
+				}
+				else {
+					isJumping = false;
+					isMorphingJump = false;
+					isFalling = false;
+					limitY = 0;
+					if (vx > 0) SetState(STAND_RIGHT);
+					else SetState(STAND_LEFT);
+					vy = 0;
+				}
+			}
+			if (isMorphingJump && !isFalling) {
+				if (getPosY() < limitY) {
+					isFalling = true;
+					isJumping = false;
+					isMorphingJump = true;
+				}
+				else
+					vy = -JUMP_VELOCITY_BOOST;
+			}
+			if (isMorphingJump && isFalling) {
+				if (getPosY() < limitY + JUMP_HEIGHT) {
+					vy = GRAVITY_VELOCITY;
+				}
+				else {
+					isJumping = false;
+					isMorphingJump = false;
+					isFalling = false;
+					limitY = 0;
+					if (vx > 0) SetState(STAND_RIGHT);
+					else SetState(STAND_LEFT);
+					vy = 0;
+				}
+			}
+		
+		}
+	}
+
 	pos_x += vx * t;
 	pos_y += vy * t;
 
