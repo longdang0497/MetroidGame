@@ -46,6 +46,12 @@
     <Filter Include="Header Files\SoundLibrary">
       <UniqueIdentifier>{0a83b4c0-153c-4ebd-809f-24bd31f30fb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\scene">
+      <UniqueIdentifier>{8c74e5bf-f862-4d4a-9c07-46156ee439e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Item">
+      <UniqueIdentifier>{9db79bf7-c169-4cac-b68f-c68ea48ce7b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -113,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="SDKwavefile.cpp">
       <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletManager.cpp">
+      <Filter>Source Files\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +194,12 @@
     <ClInclude Include="SDKwavefile.h">
       <Filter>Header Files\SoundLibrary</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletManager.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png">
@@ -192,6 +210,15 @@
     </Image>
     <Image Include="sprites\Player_32x16.png">
       <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="scene\intro_background.png">
+      <Filter>Resource Files\scene</Filter>
+    </Image>
+    <Image Include="scene\gameover_background.png">
+      <Filter>Resource Files\scene</Filter>
+    </Image>
+    <Image Include="scene\start_background.png">
+      <Filter>Resource Files\scene</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

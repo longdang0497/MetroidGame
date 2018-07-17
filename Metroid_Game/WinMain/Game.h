@@ -10,6 +10,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "Sound.h"
+#include "utils.h"
 
 class Game
 {
@@ -29,7 +30,7 @@ class Game
 		//
 		virtual void Update(float Delta) = 0;
 		// Đã bỏ delta time cho phương thức Render
-		virtual void RenderFrame(LPDIRECT3DDEVICE9) = 0;
+		virtual void Render(LPDIRECT3DDEVICE9) = 0;
 		virtual void LoadResources(LPDIRECT3DDEVICE9) = 0;
 		virtual void ProcessInput(LPDIRECT3DDEVICE9, float Delta) = 0;
 

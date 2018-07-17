@@ -22,16 +22,26 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 {
 	tick_per_frame = 1000 / _dxgraphics->getFrameRate();
 
-	isFreezing = false;
 	isOnFloor = false;
 	isInGame = false;
+	isFreezing = false;
 
 	sound = new GameSound();
+
+	time_jump = 3 * _DeltaTime;
+	time_freezing = TIME_FREEZING;
+	time_in_game = TIME_IN_GAME;
+
+	introscreen = NULL;
+	startscreen = NULL;
+	gameoverscreen = NULL;
+
+	screenMode = GAMEMODE_GAMERUN; // GAMEMODE_INTRO;
 }
 
 Metroid::~Metroid()
 {
-	delete(map);
+	//delete(map);
 	//delete(world);
 }
 
@@ -57,15 +67,15 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (this->getBrickTexture() == NULL)
 		trace(L"Unable to load BrickTexture");
 
-	bool check = sound->Init(_dxgraphics->getWnd());
+	/*bool check = sound->Init(_dxgraphics->getWnd());
 	if (!check)
 	{
 		MessageBox(_dxgraphics->getWnd(), L"Error initialize sound !", L"Error", MB_OK);
 	}
-	//sound->LoadSound(ROOM1_SOUND);
-	CSound * audio = sound->LoadSound(ROOM1_SOUND);
-	if (audio != NULL)
-		sound->Loopsound(audio);
+
+	CSound * intro = sound->LoadSound(GAME_INTRO_SOUND);
+	if (intro != NULL)
+		sound->Loopsound(intro);*/
 	
 	world = new World(spriteHandler, this);
 	srand((unsigned)time(NULL));
@@ -94,27 +104,128 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 //Kiểm tra screen Mode (bắt đầu, room1, room2,... hay gameover)
 void Metroid::Update(float Delta)
 {
-	this->camera->Update();
-	map->UpdateMap(this->camera->getBoundary());
-	UpdateFrame(Delta);
+	switch (screenMode)
+	{
+		// intro
+	case GAMEMODE_INTRO:
+		UpdateIntro(Delta);
+		break;
+		// start screen
+	case GAMEMODE_START:
+		break;
+		// game running
+	case GAMEMODE_GAMERUN:
+		this->camera->Update();
+		map->UpdateMap(this->camera->getBoundary());
+		UpdateFrame(Delta);
+		break;
+		// game over
+	case GAMEMODE_GAMEOVER:
+	default:
+		break;
+	}
+}
+
+void Metroid::UpdateIntro(float Delta)
+{
+	//DWORD now = GetTickCount();
+	//if (now - Delta  > 1000 / 100)
+	//{
+	//	intro->Next();
+	//	Delta = now;
+	//}
 }
 
 //update các object trong game
 void Metroid::UpdateFrame(float Delta)
 {
+	if (isInGame)
+	{
+		time_in_game -= Delta;
+		if (time_in_game <= 0)
+		{
+			isInGame = false;
+		}
+	}
+
+	if (isFreezing)
+	{
+		time_freezing -= Delta;
+		if (time_freezing <= 0)
+		{
+			isFreezing = false;
+			time_freezing = TIME_FREEZING;
+		}
+		return;
+	}
+
 	world->Update(Delta);
+	if (world->samus->isSamusDeath() == true)
+	{
+		screenMode = GAMEMODE_GAMEOVER;
+		return;
+	}
 }
 
 //render từng screen mode (room1, room2,... hay gameover)
 void Metroid::Render(LPDIRECT3DDEVICE9 d3ddv)
+{	
+	switch (screenMode)
+	{
+		// intro
+	case GAMEMODE_INTRO:
+		//RenderIntro(d3ddv);
+		break;
+		// start screen
+	case GAMEMODE_START:
+		//RenderStartScreen(d3ddv);
+		break;
+		// game running
+	case GAMEMODE_GAMERUN:
+		RenderFrame(d3ddv);
+		break;
+		// game over
+	case GAMEMODE_GAMEOVER:
+		//RenderGameOver(d3ddv);
+	default:
+		break;
+	}
+}
+
+void Metroid::RenderIntro(LPDIRECT3DDEVICE9 d3ddv)
 {
-	RenderStartScreen(_device->getdevice());
+	// Background
+	d3ddv->StretchRect(
+		introscreen,		// from 
+		NULL,				// which portion?
+		_device->getBuffer(),		// to 
+		NULL,				// which portion?
+		D3DTEXF_NONE);
+	introscreen = CreateSurfaceFromFile(_device->getdevice(), INTROSCREEN_FILE);
 }
 
 //render các scene chính (room1, room2...) trong game
 void Metroid::RenderStartScreen(LPDIRECT3DDEVICE9 d3ddv)
 {
-	
+	// Start screen
+	d3ddv->StretchRect(
+		startscreen,		// from 
+		NULL,				// which portion?
+		_device->getBuffer(),		// to 
+		NULL,				// which portion?
+		D3DTEXF_NONE);
+	startscreen = CreateSurfaceFromFile(d3ddv, STARTSCREEN_FILE);
+}
+
+void Metroid::RenderGameOver(LPDIRECT3DDEVICE9 d3ddv)
+{
+	d3ddv->StretchRect(
+		gameoverscreen,		// from 
+		NULL,				// which portion?
+		_device->getBuffer(),		// to 
+		NULL,				// which portion?
+		D3DTEXF_NONE);
+	gameoverscreen = CreateSurfaceFromFile(d3ddv, GAMEOVERSCREEN_FILE);
 }
 
 //render từng object trong game
@@ -200,88 +311,66 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 		if (world->samus->GetState() == MORPH_RIGHT)
 			world->samus->SetState(STAND_RIGHT);
 	}
+
+	if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
+		if (world->samus->getVelocityXLast() < 0) {
+			if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
+				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+				world->samus->SetState(TRANSFORM_BALL_LEFT);
+				world->samus->isMorphing = true;
+			}
+		}
+		else {
+			if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
+				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+				world->samus->SetState(TRANSFORM_BALL_RIGHT);
+				world->samus->isMorphing = true;
+			}
+		}
+	}
 }
 
 void Metroid::OnKeyDown(int KeyCode)
 {
-	world->samus->isJumping = false;
-	//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-	if (world->samus->isSamusJumping() == false)
+	switch (screenMode)
 	{
-		/*switch (KeyCode)
+		// intro
+		case GAMEMODE_INTRO:
 		{
-		case DIK_X:
-			
-		}*/
-		if (_input->IsKeyDown(DIK_X))
+			if (KeyCode == DIK_RETURN)
+			{
+				screenMode = GAMEMODE_START;
+			}
+			break;
+		}
+		// start screen
+		case GAMEMODE_START://------------------------------------------------
 		{
-			world->samus->isJumping = true;
-			if (world->samus->GetState() != MORPH_RIGHT && _input->IsKeyDown(DIK_RIGHT))
+			if (KeyCode == DIK_RETURN)
 			{
-				start_jump = GetTickCount();
-				now_jump = GetTickCount();
-				world->samus->SetState(MORPH_RIGHT);
-				world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-
-				now_jump = GetTickCount();
-				if ((now_jump - start_jump) <= 10 * tick_per_frame)
-				{
-					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-				}
+				screenMode = GAMEMODE_GAMERUN;
+				//sound->Stopsound(intro);
+				/*CSound * appear = sound->LoadSound(APPEARING_SOUND);
+				if (appear != NULL)
+					sound->Loopsound(appear);*/
+				isInGame = true;
 			}
-			else if (world->samus->GetState() != MORPH_LEFT && _input->IsKeyDown(DIK_LEFT))
+			break;
+		}		
+		// game running
+		case GAMEMODE_GAMERUN:// -------------------------------------------------
+		{
+			break;
+		}
+		// game over
+		case GAMEMODE_GAMEOVER://------------------------------------------------
+		{
+			if (KeyCode == DIK_RETURN)
 			{
-				start_jump = GetTickCount();
-				now_jump = GetTickCount();
-				world->samus->SetState(MORPH_LEFT);
-				world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-
-				now_jump = GetTickCount();
-				if ((now_jump - start_jump) <= 10 * tick_per_frame)
-				{
-					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-				}
+				screenMode = GAMEMODE_INTRO;
+				//world->samus->Reset(1275, 150);
 			}
-			if (world->samus->getVelocityXLast() < 0)
-			{
-				if (world->samus->GetState() != JUMP_LEFT && world->samus->GetState() != MORPH_LEFT
-					&& world->samus->GetState() != JUMP_SHOOT_UP_LEFT)
-				{
-					start_jump = GetTickCount();
-					now_jump = GetTickCount();
-					if (world->samus->GetState() == STAND_SHOOT_UP_LEFT)
-						world->samus->SetState(JUMP_SHOOT_UP_LEFT);
-					else
-						world->samus->SetState(JUMP_LEFT);
-					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-
-					now_jump = GetTickCount();
-					if ((now_jump - start_jump) <= 10 * tick_per_frame)
-					{
-						world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-					}
-				}
-			}
-			if (world->samus->getVelocityXLast() > 0)
-			{
-				if (world->samus->GetState() != JUMP_RIGHT && world->samus->GetState() != MORPH_RIGHT
-					&& world->samus->GetState() != JUMP_SHOOT_UP_RIGHT)
-				{
-					start_jump = GetTickCount();
-					now_jump = GetTickCount();
-					if (world->samus->GetState() == STAND_SHOOT_UP_RIGHT)
-						world->samus->SetState(JUMP_SHOOT_UP_RIGHT);
-					else
-						world->samus->SetState(JUMP_RIGHT);
-					world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-
-					now_jump = GetTickCount();
-					if ((now_jump - start_jump) <= 10 * tick_per_frame)
-					{
-						world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-					}
-				}
-			}
+			break;
 		}
 	}
 }

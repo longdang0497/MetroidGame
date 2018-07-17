@@ -110,7 +110,7 @@ void Game::_RenderFrame()
 		{
 			camera->SetTransform(_device);
 		}
-		RenderFrame(_device->getdevice());
+		Render(_device->getdevice());
 		_device->getdevice()->EndScene();
 	}
 
@@ -121,7 +121,7 @@ void Game::Update(float Delta)
 {
 }
 
-void Game::RenderFrame(LPDIRECT3DDEVICE9 device)
+void Game::Render(LPDIRECT3DDEVICE9 device)
 {
 
 }

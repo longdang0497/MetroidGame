@@ -112,7 +112,7 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager)
 
 Samus::~Samus()
 {
-	/*delete(standRight);
+	delete(standRight);
 	delete(standLeft);
 	delete(runRight);
 	delete(runLeft);
@@ -129,7 +129,7 @@ Samus::~Samus()
 	delete(jumpShootR);
 	delete(jumpShootL);
 	delete(jumpRight);
-	delete(jumpLeft);*/
+	delete(jumpLeft);
 }
 
 void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
@@ -160,8 +160,8 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	pos_x = 992;
-	pos_y = 352;
+	pos_x = 992;	
+	pos_y = 352;	
 
 	vx = 0;
 	vx_last = 1.0f;
@@ -225,10 +225,16 @@ void Samus::Reset(int x, int y)
 	this->pos_y = y;
 }
 
+bool Samus::isSamusDeath()
+{
+	if (isDeath == true)
+		return true;
+}
+
 // Update samus status
 void Samus::Update(float t)
 {
-	//vy -= gravity;
+	//vy += gravity;
 
 	pos_x += vx * t;
 	pos_y += vy * t;

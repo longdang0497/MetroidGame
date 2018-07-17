@@ -19,6 +19,7 @@ class Game;
 #define FALLDOWN_VELOCITY_DECREASE 0.3f
 #define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 20
+#define LIVE_TIME 3000
 
 #define SAMUS_SPEED 100.0f
 #define FRICTION 1.0f
@@ -43,12 +44,26 @@ class Game;
 //================= OBJECT TYPE ================
 enum OBJECT_TYPE
 {
-	SAMUS = 1,
-	ENEMY = 2,
-	BRICK = 3,
+	SAMUS = 0,
+	ENEMY = 1,
+	BRICK = 2,
+	BULLET = 3
 };
 //================= END OBJECT TYPE ============
 
+//================= GAME SCENE ================
+#define STARTSCREEN_FILE L"scene\\start_background.png"
+#define INTROSCREEN_FILE L"scene\\intro_background.png"
+#define GAMEOVERSCREEN_FILE L"scene\\gameover_background.png"
+
+#define GAMEMODE_INTRO 0
+#define GAMEMODE_START 1
+#define GAMEMODE_GAMERUN 2
+#define GAMEMODE_GAMEOVER 3
+
+#define TIME_FREEZING 5000
+#define TIME_IN_GAME 7000
+//================= END GAME SCENE ============
 
 //================ SPRITE SAMUS ================
 #define WIDTH_SAMUS_STAND 42
@@ -143,7 +158,7 @@ enum OBJECT_TYPE
 
 //================ GAME SOUND =============================================
 #define GAME_INTRO_SOUND L"sound\\background\\Intro.wav"
-#define APPEARING_SOUND L"Audio\\Enter_samus.wav"
+#define APPEARING_SOUND L"sound\\background\\Appearance.wav"
 #define POWER_UP_SOUND L"Audio\\Power_Up.wav"
 #define ROOM1_SOUND L"sound\\background\\Map.wav"
 //================ END GAME SOUND =========================================
