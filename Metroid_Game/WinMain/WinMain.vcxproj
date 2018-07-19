@@ -142,8 +142,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MaruMari.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Metroid.cpp" />
     <ClCompile Include="Samus.cpp" />
@@ -171,7 +173,9 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MaruMari.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Metroid.h" />
     <ClInclude Include="Samus.h" />
@@ -195,6 +199,7 @@
     <Image Include="scene\start_background.png" />
     <Image Include="sprites\item\bullet.png" />
     <Image Include="sprites\item\bulletx2.png" />
+    <Image Include="sprites\item\items_sprite_sheet.png" />
     <Image Include="sprites\Player_32x16.png" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +218,9 @@
     <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
     <Text Include="field1.txt" />
     <Text Include="sprites\item\BULLET.txt" />
+    <Text Include="sprites\item\ITEM_ENERGY.txt" />
+    <Text Include="sprites\item\ITEM_MISSILE.txt" />
+    <Text Include="sprites\item\MARU_MARI.txt" />
     <Text Include="sprites\JUMPSHOOT_LEFT.txt" />
     <Text Include="sprites\JUMPSHOOT_RIGHT.txt" />
     <Text Include="sprites\JUMP_LEFT.txt" />

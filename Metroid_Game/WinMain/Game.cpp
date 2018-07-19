@@ -142,19 +142,3 @@ void Game::OnKeyDown(int KeyCode)
 void Game::OnKeyUp(int KeyCode)
 {
 }
-
-void Game::setPlayerTexture(LPDIRECT3DTEXTURE9 playerTexture) {
-	this->playerTexture = playerTexture;
-}
-
-LPDIRECT3DTEXTURE9 Game::getPlayerTexture() {
-	return this->playerTexture;
-}
-
-void Game::setBrickTexture(LPDIRECT3DTEXTURE9 brickTexture) {
-	this->brickTexture = brickTexture;
-}
-
-LPDIRECT3DTEXTURE9 Game::getBrickTexture() {
-	return this->brickTexture;
-}

@@ -47,7 +47,8 @@ enum OBJECT_TYPE
 	SAMUS = 0,
 	ENEMY = 1,
 	BRICK = 2,
-	BULLET = 3
+	BULLET = 3,
+	ITEM = 4
 };
 //================= END OBJECT TYPE ============
 
@@ -153,6 +154,7 @@ enum OBJECT_TYPE
 
 //================ BRICK SIZE =============================================
 #define BRICK_SIZE 32
+#define BRICK_TEXTURE L"brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
 //================ GAME SOUND =============================================
@@ -167,6 +169,38 @@ enum OBJECT_TYPE
 #define BULLET_TEXTURE L"sprites\\item\\bulletx2.png"
 #define WIDTH_BULLET 24
 #define HEIGHT_BULLET 28
+
+enum ITEM_TYPE
+{
+	MARU_MARI,
+	ENERGY_ITEM,
+	MISSILE_ITEM
+};
+
+#define ITEM_TIME_SURVIVE 5000
+#define ITEM_SPRITE_PATH L"sprites\\item\\items_sprite_sheet.png"
+
+//========= ITEM MARU MARI
+#define MARU_MARI_WIDTH 24
+#define MARU_MARI_HEIGHT 26
+#define MARU_MARI_PATH L"sprites\\item\\MARU_MARI.txt"
+#define MARU_MARI_COUNT 1
+
+//========= ITEM ENERGY
+#define ITEM_ENERGY_WIDTH 16
+#define ITEM_ENERGY_HEIGHT 16
+#define ITEM_ENERGY L"sprites\\item\\ITEM_ENERGY.txt"
+#define ITEM_ENERGY_COUNT 2
+
+#define ITEM_ENERGY_HEALTH_GAIN 5
+
+//========= ITEM MISSILE
+#define ITEM_MISSILE_WIDTH 16
+#define ITEM_MISSILE_HEIGHT 24
+#define ITEM_MISSILE L"sprites\\item\\ITEM_MISSILE.txt"
+#define ITEM_MISSILE_COUNT 1
+
+#define ITEM_MISSILE_GAIN 3
 //================ END GAME ITEM ===================================
 
 //================= ENEMY TYPE =================

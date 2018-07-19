@@ -5,7 +5,6 @@ class Item : public GameObject
 protected:
 	ITEM_TYPE item_type;
 	float time_survive;
-	Sprite * itemSprite;
 	int number_gain;
 public:
 	Item(LPD3DXSPRITE sprietHandler, World * manager);

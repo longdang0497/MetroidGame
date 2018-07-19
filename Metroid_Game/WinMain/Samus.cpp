@@ -217,6 +217,7 @@ bool Samus::GetStateActive()
 
 void Samus::Reset(int x, int y)
 {
+	manager->maruMari->Init(704, 186);
 	// Cho samus active trở lại
 	this->isActive = true;
 

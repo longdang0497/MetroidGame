@@ -7,14 +7,15 @@ void Metroid::_InitBackground()
 {
 }
 
-void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
+void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 {
-	world->InitSprites(d3ddv, texture);	
+	world->InitSprites(d3ddv);	
 }
 
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
+	world->maruMari->Init(416, 286);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -58,15 +59,9 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 		trace(L"Unable to create SpriteHandler");
 
 	manager = new Manager(this->spriteHandler);
-
-	Texture text;
-	this->setPlayerTexture(text.loadTexture(d3ddev, TEXTURE_GAME_CHARACTERS));
-	if (this->getPlayerTexture() == NULL)
-		trace(L"Unable to load PlayerTexture");
-
-	Texture text1;
-	this->setBrickTexture(text1.loadTexture(d3ddev, L"brick_32x32.png"));
-	if (this->getBrickTexture() == NULL)
+	
+	_texture = texture.loadTexture(d3ddev, BRICK_TEXTURE);
+	if (_texture == NULL)
 		trace(L"Unable to load BrickTexture");
 
 	/*bool check = sound->Init(_dxgraphics->getWnd());
@@ -81,10 +76,10 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	
 	world = new World(spriteHandler, this);
 	srand((unsigned)time(NULL));
-	this->_InitSprites(d3ddev, this->getPlayerTexture());
+	this->_InitSprites(d3ddev);
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), this->getBrickTexture(), "field1.txt", this->_device, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), _texture, "field1.txt", this->_device, 0, 0);
 		
 	if (camera) 
 	{
@@ -92,8 +87,6 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 		camera->SetMapBoundary(map->getBoundary());
 	}
 		
-
-
 	this->_InitPositions();
 }
 
@@ -137,8 +130,8 @@ void Metroid::UpdateFrame(float Delta)
 {
 	if (isInGame)
 	{
-		for (int i = 0; i < world->zoomerYellow.size(); i++)
-			world->zoomerYellow[i]->setActive(false);
+		/*for (int i = 0; i < world->zoomerYellow.size(); i++)
+			world->zoomerYellow[i]->setActive(false);*/
 		time_in_game -= Delta;
 		if (time_in_game <= 0)
 		{
@@ -160,13 +153,13 @@ void Metroid::UpdateFrame(float Delta)
 	world->Update(Delta);
 	if (manager->GetState() == true)
 		manager->Update(Delta);
-	for (int i = 0; i < world->zoomerYellow.size(); i++)
+	/*for (int i = 0; i < world->zoomerYellow.size(); i++)
 	{
 		D3DXVECTOR2 enemy(world->zoomerYellow[i]->getPosX(), world->zoomerYellow[i]->getPosY());
 		if (Math::isPointinRectangle(enemy, this->camera->getBoundary())) {
 			world->zoomerYellow[i]->setActive(true);
 		}
-	}
+	}*/
 	
 
 	if (world->samus->isSamusDeath() == true)

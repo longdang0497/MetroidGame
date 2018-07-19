@@ -4,7 +4,6 @@
 
 #include "Define.h"
 #include "Game.h"
-#include "Texture.h"
 #include "Sprite.h"
 #include "Map.h"
 #include "World.h"
@@ -17,6 +16,7 @@ protected:
 	LPDIRECT3DSURFACE9 introscreen;
 	LPDIRECT3DSURFACE9 gameoverscreen;
 	LPD3DXSPRITE spriteHandler;
+	LPDIRECT3DTEXTURE9 _texture;
 	World * world;
 	CSound * intro;
 	CSound * appear;
@@ -24,7 +24,7 @@ protected:
 	Manager * manager;
 private:
 	void _InitBackground();
-	void _InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
+	void _InitSprites(LPDIRECT3DDEVICE9 d3ddv);
 	void _InitPositions();
 
 	DWORD start_jump;
@@ -32,6 +32,7 @@ private:
 	DWORD tick_per_frame;
 
 	Map *map;
+	Texture texture;
 public:
 	Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate);
 	~Metroid();

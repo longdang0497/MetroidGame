@@ -302,7 +302,7 @@ void Zoomer::Render()
 	// Nếu không active thì không render
 	if (!isActive)
 		return;
-	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
 	switch (state)
 	{
 	case ON_ZOOMER_UP:

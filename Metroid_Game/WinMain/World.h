@@ -1,12 +1,11 @@
 ﻿#pragma once
-#ifndef _WORLD_H_
-#define _WORLD_H_
-
+#include "MaruMari.h"
 #include <d3dx9.h>
 #include "Define.h"
 #include "Samus.h"
 #include "Zoomer.h"
 #include <vector>
+#include "Texture.h"
 
 using namespace std;
 //#include "BulletManager.h"
@@ -21,12 +20,13 @@ class World
 public:
 	Metroid * metroid;
 	Samus * samus;
-	Zoomer * zoomer_yellow;
-	Zoomer * zoomer_pink;
+	MaruMari * maruMari;
+	/*Zoomer * zoomer_yellow;
+	Zoomer * zoomer_pink;*/
 	//Manager * bulletManager;
 	LPD3DXSPRITE spriteHandler;
-	vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);
-	vector<Zoomer*> zoomerPink = vector<Zoomer*>(3);
+	//vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);
+	//vector<Zoomer*> zoomerPink = vector<Zoomer*>(3);
 
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);
@@ -34,9 +34,6 @@ public:
 
 	void Update(float t);
 	void Render();
-	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
+	void InitSprites(LPDIRECT3DDEVICE9 d3ddv);
 
 };
-
-#endif // !_WORLD_H_
-

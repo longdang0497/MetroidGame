@@ -64,6 +64,9 @@
     <Filter Include="Resource Files\enemy">
       <UniqueIdentifier>{fc10af0f-6843-41ef-a031-9203a5d2d817}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Item">
+      <UniqueIdentifier>{3a286a5a-2c87-4c65-ad2e-8e733602fe84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -143,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="Zoomer.cpp">
       <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="MaruMari.cpp">
+      <Filter>Source Files\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +233,12 @@
     <ClInclude Include="Zoomer.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MaruMari.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png">
@@ -255,6 +270,9 @@
     </Image>
     <Image Include="enemy\metroid_enemies_sheet.png">
       <Filter>Resource Files\enemy</Filter>
+    </Image>
+    <Image Include="sprites\item\items_sprite_sheet.png">
+      <Filter>Resource Files\sprites\item</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +374,15 @@
     </Text>
     <Text Include="enemy\ZOOMER_YELLOW_TOP.txt">
       <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="sprites\item\ITEM_ENERGY.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="sprites\item\ITEM_MISSILE.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="sprites\item\MARU_MARI.txt">
+      <Filter>Resource Files\sprites\item</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
