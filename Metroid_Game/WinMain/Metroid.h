@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "World.h"
+#include "BulletManager.h"
 
 class Metroid : public Game
 {
@@ -20,6 +21,7 @@ protected:
 	CSound * intro;
 	CSound * appear;
 	GameSound *sound;
+	Manager * manager;
 private:
 	void _InitBackground();
 	void _InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);

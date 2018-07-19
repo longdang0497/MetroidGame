@@ -1,112 +1,74 @@
-#include "Bullet.h"
+#include "bullet.h"
 
-Bullet::Bullet()
+Bullet::Bullet(LPD3DXSPRITE spriteHandler, float X, float Y, float VX, float VY)
 {
-	vx = 0;
-	vy = 0;
-	liveTime = 0;
-}
-
-Bullet::Bullet(LPD3DXSPRITE spriteHandler, World * manager) {
+	bullet = NULL;
+	bulletTexture = NULL;
+	texture = new Texture();
+	isRender = false;
 	this->spriteHandler = spriteHandler;
-	this->manager = manager;
-	this->isActive = false;
-	this->type = BULLET;
+
+	HRESULT result = this->spriteHandler->GetDevice(&m_d3ddv);
+	if (result != D3D_OK) return;
+
+	CreateBullet();
+
+	pos_x = X;
+	pos_y = Y;
+
+	vx = VX;
+	vy = VY;
 }
 
-Bullet::~Bullet() {
-	this->isActive = false;
-	if (bulletSprite)
-	{
-		bulletSprite = nullptr;
-		delete bulletSprite;
-	}
-}
-
-void Bullet::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture) {
-	if (d3ddv == NULL) return;
-	//cai dat sprite o day
-	//bulletSprite = new Sprite(spriteHandler, texture, )
-}
-
-void Bullet::InitPostition() {
-
-}
-
-BULLET_STATE Bullet::GetState()
+Bullet::~Bullet()
 {
-	return BULLET_STATE();
+	//if (m_d3ddv) { bullet = nullptr; delete m_d3ddv; };
+	if (bullet) { bullet = nullptr;	delete bullet; };
 }
 
-void Bullet::SetState(BULLET_STATE value)
-{
-}
-
-void Bullet::ResetAllSprites()
-{
-	//not use
-}
-
-bool Bullet::GetStateActive()
-{
-	return false;
-}
-
-void Bullet::Reset(int x, int y)
-{
-	pos_x = x;
-	pos_y = x;
-	liveTime = 0;
-	vx = 0;
-	vy = 0;
-}
-
-void Bullet::Update(float t)
-{
-	if (isActive) {
-		pos_x += vx * t;
-		pos_y += vy * t;
-
-		//Kiem tra Collision o day
-
-		liveTime = liveTime + t;
-
-		if (liveTime > LIVE_TIME) {
-			Destroy();
-		}
-	}
-}
-
-void Bullet::Render()
-{
-	if (!isActive) {
-		return;
-	}
-	else {
-		D3DXVECTOR3 position;
-		position.x = pos_x;
-		position.y = pos_y;
-		position.z = 0;
-
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
-
-		//bulletSprite->drawSprite() ve o day
-
-		spriteHandler->End();
-	}
-}
-
-void Bullet::Destroy()
-{
-	isActive = false;
-}
-
-void Bullet::SetDir(BulletDirection value)
+void Bullet::SetState(BulletDirection value)
 {
 	bulletdir = value;
 }
 
-BulletDirection Bullet::GetDir()
+BulletDirection Bullet::GetState()
 {
 	return bulletdir;
+}
+
+void Bullet::CreateBullet()
+{
+	//if (m_d3ddv == NULL) return;
+	//Create sprite handler
+	
+	bulletTexture = texture->loadTexture(m_d3ddv, BULLET_TEXTURE);
+	bullet = new Sprite(this->spriteHandler, bulletTexture, BULLET_PATH, WIDTH_BULLET, HEIGHT_BULLET, 1);
+}
+
+void Bullet::Update(float Delta)
+{
+	pos_x += vx * Delta;
+	pos_y += vy * Delta;
+	bullet->updateSprite();
+}
+
+void Bullet::Render()
+{
+	D3DXVECTOR3 position;
+	position.x = pos_x;
+	position.y = pos_y;
+	position.z = 0;
+
+	this->spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+	bullet->drawSprite(bullet->getWidth(), bullet->getHeight(), position);
+	this->spriteHandler->End();
+	isRender = true;
+}
+
+bool Bullet::isRendering()
+{
+	Render();
+	if (!isRender) return false;
+	else
+		return true;
 }

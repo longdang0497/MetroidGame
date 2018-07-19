@@ -138,6 +138,7 @@
     <ClCompile Include="DXUT.cpp" />
     <ClCompile Include="DXUTenum.cpp" />
     <ClCompile Include="DXUTmisc.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="Zoomer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -165,6 +167,7 @@
     <ClInclude Include="DXUT.h" />
     <ClInclude Include="DXUTenum.h" />
     <ClInclude Include="DXUTmisc.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
@@ -180,17 +183,36 @@
     <ClInclude Include="trace.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="Zoomer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png" />
     <Image Include="brick_32x32.png" />
+    <Image Include="enemy\explosion.png" />
+    <Image Include="enemy\metroid_enemies_sheet.png" />
     <Image Include="scene\gameover_background.png" />
     <Image Include="scene\intro_background.png" />
     <Image Include="scene\start_background.png" />
+    <Image Include="sprites\item\bullet.png" />
+    <Image Include="sprites\item\bulletx2.png" />
     <Image Include="sprites\Player_32x16.png" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="enemy\BEE_FLY.txt" />
+    <Text Include="enemy\BIRD_FLY.txt" />
+    <Text Include="enemy\BLOCK_LEFT.txt" />
+    <Text Include="enemy\BLOCK_RIGHT.txt" />
+    <Text Include="enemy\ENEMY_DETROYED.txt" />
+    <Text Include="enemy\ZOOMER_PINK_BOTTOM.txt" />
+    <Text Include="enemy\ZOOMER_PINK_LEFT.txt" />
+    <Text Include="enemy\ZOOMER_PINK_RIGHT.txt" />
+    <Text Include="enemy\ZOOMER_PINK_TOP.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_BOTTOM.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_LEFT.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
     <Text Include="field1.txt" />
+    <Text Include="sprites\item\BULLET.txt" />
     <Text Include="sprites\JUMPSHOOT_LEFT.txt" />
     <Text Include="sprites\JUMPSHOOT_RIGHT.txt" />
     <Text Include="sprites\JUMP_LEFT.txt" />

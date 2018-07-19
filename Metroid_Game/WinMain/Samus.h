@@ -58,7 +58,7 @@ public:
 	bool isMorphing = false;
 
 	float health;	// Máu của Samus
-	bool isDeath;	// Trạng thái chết của Samus
+	bool isDeath = false;	// Trạng thái chết của Samus
 	Samus();
 	Samus(LPD3DXSPRITE spriteHandler, World * manager);
 	~Samus();

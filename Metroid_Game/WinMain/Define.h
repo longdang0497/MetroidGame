@@ -146,7 +146,6 @@ enum OBJECT_TYPE
 #define HEIGHT_SPRITE_BRICK 32
 //================= END SPRITE BRICK ============
 
-
 //================ ROOM LIMITATION (TILES COUNT)============================
 #define X_LIMITATION 20
 #define Y_LIMITATION 15
@@ -162,3 +161,99 @@ enum OBJECT_TYPE
 #define POWER_UP_SOUND L"Audio\\Power_Up.wav"
 #define ROOM1_SOUND L"sound\\background\\Map.wav"
 //================ END GAME SOUND =========================================
+
+//================ GAME ITEM ===========================
+#define BULLET_PATH L"sprites\\item\\BULLET.txt"
+#define BULLET_TEXTURE L"sprites\\item\\bulletx2.png"
+#define WIDTH_BULLET 24
+#define HEIGHT_BULLET 28
+//================ END GAME ITEM ===================================
+
+//================= ENEMY TYPE =================
+enum ENEMY_TYPE
+{
+	ZOOMER_YELLOW = 0,
+	ZOOMER_PINK = 1,
+	BIRD = 2,
+	BLOCK = 3,
+	BEE = 4,
+	RIDLEY = 5,
+	MOTHER_BRAIN = 6,
+};
+//================= END ENEMY TYPE =============
+
+//================== ENEMY =====================
+//================== ZOOMER =====================
+#define ENEMY_SPRITE_PATH L"enemy\\metroid_enemies_sheet.png"
+#define ZOOMER_WIDTH 36
+#define ZOOMER_HEIGHT 32
+#define ZOOMER_SPRITE_COUNT 2
+#define ZOOMER_SPEED 0.07f;
+
+///////ENERGY
+#define ENERGY_SPRITE_PATH L"sprites\\energy\\energy.png"
+#define ENERGY_WIDTH 60
+#define ENERGY_HEIGHT 50
+#define ENERGY_PATH L"sprites\\energy\\energy.txt"
+#define ENERGY_SPRITE_COUNT 1
+///////NUMBER
+#define NUMBER_SPRITE_PATH L"sprites\\font\\font.png"
+#define NUMBER_WIDTH 14
+#define NUMBER_HEIGHT 14
+#define NUMBER_PATH L"sprites\\font\\font.txt"
+//////MISSILEINFO
+#define MISSILE_INFO_SPRITE_PATH L"sprites\\missile\\missile.png"
+#define MISSILE_INFO_WIDTH 20
+#define MISSILE_INFO_HEIGHT 30
+#define MISSILE_PATH L"sprites\\missile\\missile.txt"
+#define MISSILE_SPRITE_COUNT 1
+
+//--YElLOW
+#define ZOOMER_YELLOW_TOP L"enemy\\ZOOMER_YELLOW_TOP.txt"
+#define ZOOMER_YELLOW_BOTTOM L"enemy\\ZOOMER_YELLOW_BOTTOM.txt"
+#define ZOOMER_YELLOW_LEFT L"enemy\\ZOOMER_YELLOW_LEFT.txt"
+#define ZOOMER_YELLOW_RIGHT L"enemy\\ZOOMER_YELLOW_RIGHT.txt"
+
+//PINK
+#define ZOOMER_PINK_UP L"enemy\\ZOOMER_PINK_TOP.txt"
+#define ZOOMER_PINK_BOTTOM L"enemy\\ZOOMER_PINK_BOTTOM.txt"
+#define ZOOMER_PINK_LEFT L"enemy\\ZOOMER_PINK_LEFT.txt"
+#define ZOOMER_PINK_RIGHT L"enemy\\ZOOMER_PINK_RIGHT.txt"
+//================== END ZOOMER =================
+
+//================== BIRD  =====================
+
+#define BIRD_WIDTH 36
+#define BIRD_HEIGHT 52
+
+#define BIRD_FLY_SPRITE_COUNT 3
+
+#define BIRD_FLY "sprites\\enemy\\BIRD_FLY.txt"
+
+#define BIRD_STANDARD_ANIMATE_RATE 7
+#define BIRD_BOOST_ANIMATE_RATE 30
+//================== END BIRD =================
+
+//================== BLOCK =====================
+
+#define BLOCK_WIDTH 36
+#define BLOCK_HEIGHT 20
+#define BLOCK_SPRITE_COUNT 1
+#define BLOCK_SPEED 0.1f
+
+//--YElLOW
+#define BLOCK_LEFT "sprites\\enemy\\BLOCK_LEFT.txt"
+#define BLOCK_RIGHT "sprites\\enemy\\BLOCK_RIGHT.txt"
+//================== END BLOCK =================
+
+//================== BEE  =====================
+
+#define BEE_WIDTH 52
+#define BEE_HEIGHT 42
+
+#define BEE_FLY_SPRITE_COUNT 2
+
+#define BEE_FLY "sprites\\enemy\\BEE_FLY.txt"
+//================== END BEE =================
+
+//================== END ENEMY =================

@@ -1,8 +1,8 @@
 #include "BulletManager.h"
 
-Manager::Manager(LPDIRECT3DDEVICE9 d3ddv)
+Manager::Manager(LPD3DXSPRITE spriteHandler)
 {
-	m_d3ddv = d3ddv;
+	this->spriteHandler = spriteHandler;
 }
 
 Manager::~Manager()
@@ -16,14 +16,17 @@ Manager::~Manager()
 
 void Manager::_CreateBullets(float X, float Y, float VX, float VY)
 {
-	//weapon.push_back(new Bullet(&m_d3ddv, X, Y, VX, VY));
+	if (isActive == true)
+	{
+		weapon.push_back(new Bullet(this->spriteHandler, X, Y, VX, VY));
+	}	
 }
 
-void Manager::UpdateObject(float delta)
+void Manager::Update(float delta)
 {
 	for (int i = 0; i < weapon.size(); i++)
 	{
-		//weapon[i]->UpdateObject(delta);
+		weapon[i]->Update(delta);
 	}
 }
 
@@ -31,6 +34,6 @@ void Manager::Render()
 {
 	for (int i = 0; i < weapon.size(); i++)
 	{
-		//weapon[i]->Render();
+		weapon[i]->Render();
 	}
 }

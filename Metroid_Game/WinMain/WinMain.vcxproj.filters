@@ -52,6 +52,18 @@
     <Filter Include="Header Files\Item">
       <UniqueIdentifier>{9db79bf7-c169-4cac-b68f-c68ea48ce7b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\sprites\item">
+      <UniqueIdentifier>{fb1abdc0-0e80-45e5-8574-a60b549521f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Enemy">
+      <UniqueIdentifier>{779cf9dd-5114-461b-90fb-89cd3f0aae96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enemy">
+      <UniqueIdentifier>{b30fca7c-048a-4271-9914-f45089ec159b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\enemy">
+      <UniqueIdentifier>{fc10af0f-6843-41ef-a031-9203a5d2d817}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -125,6 +137,12 @@
     </ClCompile>
     <ClCompile Include="BulletManager.cpp">
       <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Zoomer.cpp">
+      <Filter>Source Files\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +218,12 @@
     <ClInclude Include="BulletManager.h">
       <Filter>Header Files\Character</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zoomer.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png">
@@ -219,6 +243,18 @@
     </Image>
     <Image Include="scene\start_background.png">
       <Filter>Resource Files\scene</Filter>
+    </Image>
+    <Image Include="sprites\item\bullet.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="sprites\item\bulletx2.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="enemy\explosion.png">
+      <Filter>Resource Files\enemy</Filter>
+    </Image>
+    <Image Include="enemy\metroid_enemies_sheet.png">
+      <Filter>Resource Files\enemy</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +314,48 @@
     </Text>
     <Text Include="sprites\RUN_SHOOTUP_RIGHT.txt">
       <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\item\BULLET.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="enemy\BEE_FLY.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\BIRD_FLY.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\BLOCK_LEFT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\BLOCK_RIGHT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ENEMY_DETROYED.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_BOTTOM.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_LEFT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_RIGHT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_TOP.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_BOTTOM.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_LEFT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_TOP.txt">
+      <Filter>Resource Files\enemy</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

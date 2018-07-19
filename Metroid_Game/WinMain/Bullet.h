@@ -1,15 +1,7 @@
 #pragma once
-#include "Sprite.h"
 #include "GameObject.h"
-#include "trace.h"
-#include "World.h"
 #include "Define.h"
-
-enum BULLET_STATE {
-	SAMUS_BULLET,
-	KREE_BULLET,
-	BOSS_BULLET
-};
+#include "Texture.h"
 
 enum BulletDirection
 {
@@ -18,38 +10,24 @@ enum BulletDirection
 	SHOOT_RIGHT
 };
 
-class Bullet : public GameObject {
-protected:
-	Sprite * bulletSprite;
+class Bullet : public GameObject
+{
+private:
+	LPDIRECT3DDEVICE9 m_d3ddv;
+	Sprite *bullet;
+	Texture *texture;
 	BulletDirection bulletdir;
-	BULLET_STATE state = SAMUS_BULLET;
-
+	bool isRender;
+	LPDIRECT3DTEXTURE9 bulletTexture;
 public:
-	bool isActive;
-	//ket thuc thoi gian liveTime, xem nhu vien dan bay het duong bay -> huy vien dan
-	float liveTime = 0;
-
-	Bullet();
-	Bullet(LPD3DXSPRITE spriteHandler, World * manager);
+	Bullet(LPD3DXSPRITE spriteHandler, float X = 0, float Y = 0, float VX = 0, float VY = 0);
 	~Bullet();
 
-	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
-	void InitPostition();
+	void SetState(BulletDirection value);
+	BulletDirection GetState();
 
-	BULLET_STATE GetState();
-	void SetState(BULLET_STATE value);
-	void SetDir(BulletDirection value);
-	BulletDirection GetDir();
-
-	void ResetAllSprites();
-	bool GetStateActive();
-
-	//================ OVERRIDE VIRTUAL METHOD ==================
-	void Reset(int  x, int y);
-	void Update(float t);
-	void Render();
-	void Destroy();
-	//================= END OVERRIDE VIRTUAL METHOD =============
-
+	virtual void Render();
+	void CreateBullet();
+	void Update(float Delta);
+	bool isRendering();
 };
-

@@ -26,7 +26,7 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 	isInGame = false;
 	isFreezing = false;
 
-	sound = new GameSound();
+	sound = new GameSound();	
 
 	time_jump = 3 * _DeltaTime;
 	time_freezing = TIME_FREEZING;
@@ -57,6 +57,8 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (result != D3D_OK) 
 		trace(L"Unable to create SpriteHandler");
 
+	manager = new Manager(this->spriteHandler);
+
 	Texture text;
 	this->setPlayerTexture(text.loadTexture(d3ddev, TEXTURE_GAME_CHARACTERS));
 	if (this->getPlayerTexture() == NULL)
@@ -83,13 +85,7 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 
 	// Khoi tao map
 	this->map = new Map(this->getSpriteHandler(), this->getBrickTexture(), "field1.txt", this->_device, 0, 0);
-	
-	if (map) 
-	{
-	}
-	else 
-		trace(L"Unable to load map");
-	
+		
 	if (camera) 
 	{
 		camera->Follow(world->samus);
@@ -141,6 +137,8 @@ void Metroid::UpdateFrame(float Delta)
 {
 	if (isInGame)
 	{
+		for (int i = 0; i < world->zoomerYellow.size(); i++)
+			world->zoomerYellow[i]->setActive(false);
 		time_in_game -= Delta;
 		if (time_in_game <= 0)
 		{
@@ -160,6 +158,17 @@ void Metroid::UpdateFrame(float Delta)
 	}
 
 	world->Update(Delta);
+	if (manager->GetState() == true)
+		manager->Update(Delta);
+	for (int i = 0; i < world->zoomerYellow.size(); i++)
+	{
+		D3DXVECTOR2 enemy(world->zoomerYellow[i]->getPosX(), world->zoomerYellow[i]->getPosY());
+		if (Math::isPointinRectangle(enemy, this->camera->getBoundary())) {
+			world->zoomerYellow[i]->setActive(true);
+		}
+	}
+	
+
 	if (world->samus->isSamusDeath() == true)
 	{
 		screenMode = GAMEMODE_GAMEOVER;
@@ -233,6 +242,8 @@ void Metroid::RenderFrame(LPDIRECT3DDEVICE9 d3ddv)
 {
 	map->drawMap();
 	world->Render();
+	if (manager->GetState() == true)
+		manager->Render();
 }
 
 void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
@@ -360,6 +371,24 @@ void Metroid::OnKeyDown(int KeyCode)
 		// game running
 		case GAMEMODE_GAMERUN:// -------------------------------------------------
 		{
+			switch (KeyCode)
+			{
+			case DIK_SPACE:
+				if (_input->IsKeyDown(DIK_SPACE))
+				{
+					bool activeBullet = true;
+					manager->SetState(activeBullet);
+					float x = world->samus->getPosX() + 5;
+					float y = world->samus->getPosY() + 6;
+					if (world->samus->GetState() == STAND_RIGHT) 
+						manager->_CreateBullets(x, y, 0.2, 0);
+					else if (world->samus->GetState() == STAND_LEFT)
+						manager->_CreateBullets(x, y, -0.2, 0);
+					/*if (samus->GetState() == AIMING_UP_LEFT || samus->GetState() == AIMING_UP_RIGHT || samus->GetState() == IDLING_AIM_UP_LEFT ||
+					samus->GetState() == IDLING_AIM_UP_RIGHT) manager->_CreateBullets(x, y, 0, 0.2);*/
+					break;
+				}
+			}
 			break;
 		}
 		// game over
