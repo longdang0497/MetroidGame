@@ -2,7 +2,6 @@
 #ifndef _GAME_OBJECT_H_
 #define _GAME_OBJECT_H_
 
-
 #include <d3dx9.h>
 #include "Sprite.h"
 #include "Define.h"
@@ -10,7 +9,9 @@
 class GameObject
 {
 public:
+	friend class Grid;
 	World * manager;	// con trỏ đến world để thao tác với các object ở world khi cần thiết
+	Grid * grid;
 
 	float pos_x;		// x postition of object
 	float pos_y;		// y position of object
@@ -18,8 +19,8 @@ public:
 	float lastPosY;
 	float friction = FRICTION;	//ma sát
 
-								/*float width;
-								float height;*/
+	GameObject * previousUnit;
+	GameObject * nextUnit;
 
 	float vx;		// x velocity
 	float vy;		// y velocity

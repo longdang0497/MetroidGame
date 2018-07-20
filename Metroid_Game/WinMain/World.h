@@ -6,6 +6,7 @@
 #include "Zoomer.h"
 #include <vector>
 #include "Texture.h"
+#include "Grid.h"
 
 using namespace std;
 //#include "BulletManager.h"
@@ -18,6 +19,7 @@ Các class khác chứa con trỏ đến class này để thao tác với các �
 class World
 {
 public:
+	Grid * grid;
 	Metroid * metroid;
 	Samus * samus;
 	MaruMari * maruMari;
