@@ -239,12 +239,10 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	
 	//vy += gravity;
 
 	pos_x += vx * t;
 	pos_y += vy * t;
-	grid->Update(this, pos_x, pos_y);
 
 	// Animate samus if he is running
 	DWORD now = GetTickCount();

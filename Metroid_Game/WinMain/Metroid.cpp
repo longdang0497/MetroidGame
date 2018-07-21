@@ -15,7 +15,8 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
-	//world->maruMari->Init(416, 286);
+	//world->maruMari->Init(420, 290);
+	world->maruMari->Init(420, 352);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -315,23 +316,6 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 		if (world->samus->GetState() == MORPH_RIGHT)
 			world->samus->SetState(STAND_RIGHT);
 	}
-
-	if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
-		if (world->samus->getVelocityXLast() < 0) {
-			if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
-				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
-				world->samus->SetState(TRANSFORM_BALL_LEFT);
-				world->samus->isMorphing = true;
-			}
-		}
-		else {
-			if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
-				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
-				world->samus->SetState(TRANSFORM_BALL_RIGHT);
-				world->samus->isMorphing = true;
-			}
-		}
-	}
 }
 
 void Metroid::OnKeyDown(int KeyCode)
@@ -381,9 +365,26 @@ void Metroid::OnKeyDown(int KeyCode)
 					samus->GetState() == IDLING_AIM_UP_RIGHT) manager->_CreateBullets(x, y, 0, 0.2);*/
 					break;
 				}
+			case DIK_DOWN:
+				if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
+					if (world->samus->getVelocityXLast() < 0) {
+						if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
+							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+							world->samus->SetState(TRANSFORM_BALL_LEFT);
+							world->samus->isMorphing = true;
+						}
+					}
+					else if (world->samus->getVelocityXLast() > 0) {
+						if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
+							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+							world->samus->SetState(TRANSFORM_BALL_RIGHT);
+							world->samus->isMorphing = true;
+						}
+					}
+				}				
 			}
-			break;
 		}
+		break;
 		// game over
 		case GAMEMODE_GAMEOVER://------------------------------------------------
 		{
@@ -399,6 +400,21 @@ void Metroid::OnKeyDown(int KeyCode)
 
 void Metroid::OnKeyUp(int KeyCode)
 {
+	switch (KeyCode)
+	{
+	case DIK_DOWN:
+		if (world->samus->getVelocityXLast() < 0)
+		{
+			world->samus->SetState(STAND_LEFT);
+			world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
+		}
+		else if (world->samus->getVelocityXLast() > 0)
+		{
+			world->samus->SetState(STAND_RIGHT);
+			world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
+		}
+		break;
+	}
 }
 
 DWORD Metroid::GetTickPerFrame()
