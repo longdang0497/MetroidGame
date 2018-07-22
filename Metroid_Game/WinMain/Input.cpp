@@ -135,11 +135,11 @@ int Input::IsKeyDown(int KeyCode)
 	return (_KeyStates[KeyCode] & 0x80) > 0;
 }
 
-void Input::OnKeyDown(int KeyCode)
-{
-	//Game::OnKeyDown(KeyCode);
-}
-
-void Input::OnKeyUp(int KeyCode)
-{
-}
+//void Input::OnKeyDown(int KeyCode)
+//{
+//	//Game::OnKeyDown(KeyCode);
+//}
+//
+//void Input::OnKeyUp(int KeyCode)
+//{
+//}

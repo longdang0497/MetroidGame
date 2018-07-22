@@ -56,13 +56,11 @@ public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
 	bool isMorphing = false;
-	bool isFalling = false;
-	bool isMorphingJump = false;
-	
-	float limitY = 0;
 
+	float health;	// Máu của Samus
+	bool isDeath = false;	// Trạng thái chết của Samus
 	Samus();
-	Samus(LPD3DXSPRITE spriteHandler, World * manager);
+	Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid);
 	~Samus();
 
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
@@ -71,6 +69,8 @@ public:
 	SAMUS_STATE GetState();
 	void SetState(SAMUS_STATE value);
 	bool isSamusJumping();
+	//bool isSamusCrouch();
+	bool isSamusDeath();
 
 	void ResetAllSprites();
 	bool GetStateActive();

@@ -29,19 +29,19 @@ float Collision::sweptAABB(GameObject* object, float &normalX, float &normalY) {
 	// tim khoang cach giua 2 vat the 
 	if (this->vX > 0.0f) {
 		xInvEntry = object->getPosX() - (this->x + this->width);
-		xInvExit = (object->getWidth() + object->getPosX()) - this->x;
+		//xInvExit = (object->getWidth() + object->getPosX()) - this->x;
 	}
 	else {
-		xInvEntry = (object->getPosX() + object->getWidth()) - this->x;
+		//xInvEntry = (object->getPosX() + object->getWidth()) - this->x;
 		xInvExit = object->getPosX() - (this->x + this->width);
 	}
 
 	if (this->vY > 0.0f) {
 		yInvEntry = object->getPosY() - (this->y + this->height);
-		yInvExit = (object->getPosY() + object->getHeight()) - this->y;
+		//yInvExit = (object->getPosY() + object->getHeight()) - this->y;
 	}
 	else {
-		yInvEntry = (object->getPosY() + object->getHeight()) - this->y;
+		//yInvEntry = (object->getPosY() + object->getHeight()) - this->y;
 		yInvExit = object->getPosY() - (this->y + this->height);
 	}
 
@@ -70,7 +70,7 @@ float Collision::sweptAABB(GameObject* object, float &normalX, float &normalY) {
 	float entryTime = max(xEntry, yEntry);      // Cho biet thoi gian bat dau va cham
 	float exitTime = min(xExit, yExit);			// Cho biet thoi gian ket thuc va cham
 
-	// neu khong co va cham
+												// neu khong co va cham
 	if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
 		normalX = 0.0f;
 		normalY = 0.0f;

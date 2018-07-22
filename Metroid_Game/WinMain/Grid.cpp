@@ -1,0 +1,126 @@
+#include "Grid.h"
+
+Grid::Grid()
+{
+	//clear the grid
+	for (int i = 0; i < NUM_CELLS; i++)
+	{
+		for (int j = 0; j < NUM_CELLS; j++)
+			cells[i][j] = NULL;
+	}
+}
+
+Grid::~Grid()
+{
+}
+
+void Grid::add(GameObject * object)
+{
+	//store the init position of object
+	objPosX = object->pos_x;
+	objPosY = object->pos_y;
+
+	//determine which grid cells it is in.
+	int cellX = (int)(object->pos_x / CELL_SIZE);
+	int cellY = (int)(object->pos_y / CELL_SIZE);
+
+	//Add to the front of list for the cell it's in.
+	object->previousUnit = NULL;
+	object->nextUnit = cells[cellX][cellY];
+	cells[cellX][cellY] = object;
+
+	if (object->nextUnit != NULL)
+		object->nextUnit->previousUnit = object;
+}
+
+void Grid::handleCell(GameObject * object)
+{
+	while (object != NULL)
+	{
+		GameObject * other = object->nextUnit;
+		while (other != NULL)
+		{
+			if (object->pos_x == other->pos_x && object->pos_y == other->pos_y)
+				//handleAttack(object, other);
+			other = other->nextUnit;
+		}
+		object = object->nextUnit;
+	}
+}
+
+void Grid::handleCell(int x, int y)
+{
+	GameObject * object = cells[x][y];
+	while (object != NULL)
+	{
+		handleObject(object, object->nextUnit);
+
+		//try the neighboring cells
+		//if any object in the neighboring cells is close enough to the edge
+		//within the object to attack radius and we'll find the hit
+
+		//the inner loop starts after the current object 
+		//avoid comparing each pair of object compairing twice
+		if (x > 0 && y > 0)
+			handleObject(object, cells[x - 1][y - 1]);
+		if (x > 0)
+			handleObject(object, cells[x - 1][y]);
+		if (y > 0)
+			handleObject(object, cells[x][y - 1]);
+		if (x > 0 && y < NUM_CELLS - 1)
+			object = object->nextUnit;
+	}
+
+}
+
+//Once all of the objects are nestled in their cells, we can let them start hacking at each other.
+void Grid::handleCollision()
+{
+	for (int i = 0; i < NUM_CELLS; i++)
+	{
+		for (int j = 0; j < NUM_CELLS; j++)
+			handleCell(cells[i][j]);
+	}
+}
+
+void Grid::handleObject(GameObject * object, GameObject * other)
+{
+	while (other != NULL)
+	{
+		D3DXVECTOR2 objectPos(object->pos_x, object->pos_y);
+		D3DXVECTOR2 otherPos(other->pos_x, other->pos_y);
+		//if (Math::distance(objectPos, otherPos) < ATTACK_DISTANCE)
+			//handleAttack(unit, other);
+		other = other->nextUnit;
+	}
+}
+
+void Grid::Update(GameObject * object, float posx, float posy)
+{
+	//which cell the object was previously in
+	int oldCellX = (int)(objPosX / CELL_SIZE);
+	int oldCellY = (int)(objPosY / CELL_SIZE);
+
+	//which cell the object is moving to
+	int cellX = (int)(posx / CELL_SIZE);
+	int cellY = (int)(posy / CELL_SIZE);
+
+	object->pos_x = posx;
+	object->pos_y = posy;
+
+	//if object didn't change the cells at all, then finished.
+	if (oldCellX == cellX && oldCellY == cellY) return;
+
+	// Unlink it from the list of its old cell.
+	if (object->previousUnit != NULL)
+		object->previousUnit->nextUnit = object->nextUnit;
+	if (object->nextUnit != NULL)
+		object->nextUnit->previousUnit = object->previousUnit;
+
+	// If it's the head of a list, remove it.
+	if (cells[oldCellX][oldCellY] == object)
+		cells[oldCellX][oldCellY] = object->nextUnit;
+
+	// Add it back to the grid at its new cell.
+	add(object);
+}

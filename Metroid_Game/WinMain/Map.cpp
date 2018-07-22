@@ -67,19 +67,6 @@ bool Map::loadMap(string filePath) {
 }
 
 void Map::drawMap() {
-	/*char brick;
-	drawBrick();*/
-	//for (int i = y, a = 0; i < y + Y_LIMITATION; i++, a++) {
-	//for (int i = 0, a = 0; i < (this->getStringMap()).size(); i++, a++) {
-	//	string row_string = (this->getStringMap())[i];	//get map
-
-	//	//for (int j = x, b = 0; j < x + X_LIMITATION; j++, b++) {
-	//	for (int j = 0, b = 0; j < row_string.length(); j++, b++) {
-	//		brick = row_string[j];
-
-	//		
-	//	}
-	//}
 	for (int i = 0; i < drawBrickArray.size(); i++)
 	{
 		drawBrick(drawBrickArray[i]);

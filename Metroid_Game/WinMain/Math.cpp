@@ -6,3 +6,10 @@ bool Math::isPointinRectangle(D3DXVECTOR2 point, RECT rect)
 		return true;
 	return false;
 }
+
+float Math::distance(D3DXVECTOR2 point1, D3DXVECTOR2 point2)
+{
+	float result;
+	result = (float)sqrt((point1.x * point2.x) - (point1.y * point2.y));
+	return result;
+}

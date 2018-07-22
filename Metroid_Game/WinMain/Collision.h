@@ -7,7 +7,7 @@ using namespace std;
 
 // Bản chất của thuật toán là tính toán thời gian va chạm của object mình đang xét với một object khác
 // Ví dụ như khi ta đặt quản lý va chạm cho người chơi, nếu người chơi va chạm với gạch thì sẽ update trạng thái nhân vật là bị trượt xuống
-// Nếu người chơi va chạm với quá thì sẽ bị đẩy lùi
+// Nếu người chơi va chạm với quái thì sẽ bị đẩy lùi
 // Còn khi xét quái va chạm với 
 class Collision {
 private:
