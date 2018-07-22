@@ -33,4 +33,5 @@ private:
 	RECT m_map_bound = RECT();
 	GameObject* m_following = nullptr;
 	RECT Camera_bound;
+
 };

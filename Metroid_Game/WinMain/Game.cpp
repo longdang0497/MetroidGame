@@ -69,9 +69,8 @@ void Game::GameRun()
 			_RenderFrame();
 
 		}
-		else
-		{
-			Sleep(1);
+		else {
+			Sleep(tick_per_frame);
 		}
 
 		_input->_ProcessKeyBoard();

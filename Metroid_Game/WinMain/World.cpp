@@ -17,7 +17,10 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	grid = new Grid();
 	samus = new Samus(spriteHandler, this, grid);
 	this->samusBullet = new Bullet(spriteHandler);
-	//maruMari = new MaruMari(spriteHandler, this, grid);
+
+	grid->addFollowing(samus);
+	maruMari = new MaruMari(spriteHandler, this, grid);
+	//grid->add(maruMari);
 
 	//// zoomer yellow
 	//for (int i = 0; i < zoomerYellow.size(); i++)
@@ -41,9 +44,9 @@ World::~World()
 
 void World::Update(float t)
 {
-	samus->Update(t);
+	grid->Update(t);
+	maruMari->Update(t);
 	this->samusBullet->Update(t, this->samus->getPosX(), this->samus->getPosY());
-	//maruMari->Update(t);
 	//bulletManager->Update(t);
 	// zoomer yellow
 	//for (int i = 0; i < zoomerYellow.size(); i++)
@@ -60,9 +63,9 @@ void World::Update(float t)
 
 void World::Render()
 {
-	samus->Render();
+	grid->Render();
+	maruMari->Render();
 	this->samusBullet->Render();
-	//maruMari->Render();
 	//bulletManager->Render();
 	// zoomer yellow
 	//for (int i = 0; i < zoomerYellow.size(); i++)
@@ -89,13 +92,14 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 maru_texture = texture1->loadTexture(d3ddv, ITEM_SPRITE_PATH);
 	if (maru_texture == NULL)
 		trace(L"Unable to load PlayerTexture");
+	maruMari->InitSprites(d3ddv, maru_texture);
 
+	// Bullet Texture
 	Texture texture2;
 	LPDIRECT3DTEXTURE9 bulletTexture = texture2.loadTexture(d3ddv, SAMUS_BULLET_PATH);
 	if (bulletTexture == NULL)
 		trace(L"Unable to load BulletTexture");
 	this->samusBullet->InitSprites(d3ddv, bulletTexture);
-	//maruMari->InitSprites(d3ddv, maru_texture);
 
 	//Texture * texture2 = new Texture();
 	//LPDIRECT3DTEXTURE9 zoomer_texture = texture2->loadTexture(d3ddv, ENEMY_SPRITE_PATH);

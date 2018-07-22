@@ -26,7 +26,7 @@ private:
 	int currentIndexOfSprite = 0;	  // Vi tri hien tai cua sprite can ve trong texture (dung cho viec chuyen dong sprite)
 	int startIndexOfSprite;			  // Vi tri bat dau ve sprite			
 	int count;						  // So luong sprite trong texture
-	int _Index;			
+	int _Index;		
 	RECT srect;
 public:
 	Sprite(LPD3DXSPRITE, LPDIRECT3DTEXTURE9, LPWSTR, int, int, int);

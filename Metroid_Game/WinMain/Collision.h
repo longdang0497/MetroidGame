@@ -24,6 +24,7 @@ public:
 	float sweptAABB(GameObject* object, float &normalX, float &normalY);
 	virtual void update(GameObject *object);
 
+	bool isInside(RECT object, RECT other);
 
 	float getX();
 	void setX(float x);

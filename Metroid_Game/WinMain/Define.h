@@ -168,6 +168,7 @@ enum OBJECT_TYPE
 //================ END GAME SOUND =========================================
 
 //================ GAME ITEM ===========================
+
 enum ITEM_TYPE
 {
 	MARU_MARI,
@@ -290,6 +291,7 @@ enum ENEMY_TYPE
 
 //================== END ENEMY =================
 
+
 //================== Bullet ====================
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
 #define X_VELOCITY_BULLET 12
@@ -306,3 +308,5 @@ enum Bullet_SAMUS_Direction
 	SHOOT_RIGHT,
 	OFF
 };
+
+//================== END Bullet ====================

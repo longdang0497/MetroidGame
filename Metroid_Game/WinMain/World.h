@@ -24,14 +24,14 @@ public:
 	Metroid * metroid;
 	Samus * samus;
 	MaruMari * maruMari;
+	Bullet *samusBullet;
 	/*Zoomer * zoomer_yellow;
 	Zoomer * zoomer_pink;*/
 	//Manager * bulletManager;
 	LPD3DXSPRITE spriteHandler;
 	//vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);
 	//vector<Zoomer*> zoomerPink = vector<Zoomer*>(3);
-	Bullet *samusBullet;
-	
+
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);
 	~World();
