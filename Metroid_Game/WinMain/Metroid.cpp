@@ -247,6 +247,8 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 		{
 			world->samus->SetState(RUNNING_RIGHT);	
 			this->world->samusBullet->setDirection(SHOOT_RIGHT);
+			if (world->samus->getVelocityX() > 0 && this->world->samusBullet->isActive == true)
+				world->samus->SetState(RUN_SHOOTING_RIGHT);
 		}
 	}
 	else if (_input->IsKeyDown(DIK_LEFT)) {
@@ -259,6 +261,8 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 		{
 			world->samus->SetState(RUNNING_LEFT);
 			this->world->samusBullet->setDirection(SHOOT_LEFT);
+			if (world->samus->getVelocityX() < 0 && this->world->samusBullet->isActive == true)
+				world->samus->SetState(RUN_SHOOTING_LEFT);
 		}
 	}
 	else
@@ -292,12 +296,12 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 
 	if (_input->IsKeyDown(DIK_UP))
 	{
-		if (world->samus->GetState() == RUNNING_LEFT)
+		if (world->samus->getVelocityX() < 0)
 		{
 			world->samus->SetState(RUN_SHOOT_UP_LEFT);
 			this->world->samusBullet->setDirection(SHOOT_UP_LEFT);
 		}
-		if (world->samus->GetState() == RUNNING_RIGHT) {
+		if (world->samus->getVelocityX() > 0) {
 			world->samus->SetState(RUN_SHOOT_UP_RIGHT);
 			this->world->samusBullet->setDirection(SHOOT_UP_RIGHT);
 		}
@@ -330,25 +334,6 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 			this->world->samusBullet->setDirection(SHOOT_RIGHT);
 		}
 	
-	}
-
-	if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
-		if (world->samus->getVelocityXLast() < 0) {
-			if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
-				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
-				world->samus->SetState(TRANSFORM_BALL_LEFT);
-				this->world->samusBullet->setDirection(OFF);
-				world->samus->isMorphing = true;
-			}
-		}
-		else {
-			if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
-				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
-				world->samus->SetState(TRANSFORM_BALL_RIGHT);
-				this->world->samusBullet->setDirection(OFF);
-				world->samus->isMorphing = true;
-			}
-		}
 	}
 }
 
@@ -395,12 +380,30 @@ void Metroid::OnKeyDown(int KeyCode)
 					break;
 				}
 
-			case DIK_Z: {
+			case DIK_Z: 
 				if (_input->IsKeyDown(DIK_Z)) {
-					this->world->samusBullet->setActive(true);
+					this->world->samusBullet->setActive(true);					
 				}
 				break;
-			}
+			case DIK_DOWN:
+				if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
+					if (world->samus->getVelocityXLast() < 0) {
+						if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
+							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+							world->samus->SetState(TRANSFORM_BALL_LEFT);
+							this->world->samusBullet->setDirection(OFF);
+							world->samus->isMorphing = true;
+						}
+					}
+					else {
+						if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
+							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+							world->samus->SetState(TRANSFORM_BALL_RIGHT);
+							this->world->samusBullet->setDirection(OFF);
+							world->samus->isMorphing = true;
+						}
+					}
+				}
 			}
 			break;
 		}

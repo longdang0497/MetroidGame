@@ -168,11 +168,6 @@ enum OBJECT_TYPE
 //================ END GAME SOUND =========================================
 
 //================ GAME ITEM ===========================
-//#define BULLET_PATH L"sprites\\item\\BULLET.txt"
-//#define BULLET_TEXTURE L"sprites\\item\\bulletx2.png"
-//#define WIDTH_BULLET 24
-//#define HEIGHT_BULLET 28
-
 enum ITEM_TYPE
 {
 	MARU_MARI,
