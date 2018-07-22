@@ -10,6 +10,13 @@ Grid::Grid()
 		for (int j = 0; j < NUM_CELLS; j++)
 			cells[i][j] = NULL;
 	}
+
+	// Allocate all the cells
+	//const int BALLS_TO_RESERVE = 20;
+	//m_cells.resize(NUM_CELLS);
+	//for (int i = 0; i < m_cells.size(); i++) {
+	//	m_cells[i].objectList.reserve(BALLS_TO_RESERVE);
+	//}
 }
 
 Grid::~Grid()
@@ -19,6 +26,7 @@ Grid::~Grid()
 void Grid::addFollowing(GameObject * object)
 {
 	objectFollowing = object;
+
 }
 
 void Grid::add(GameObject * object)
@@ -40,24 +48,40 @@ void Grid::add(GameObject * object)
 		object->nextUnit->previousUnit = object;
 }
 
-void Grid::handleCell(GameObject * object)
-{
-	GameObject * other;
-	while (object != NULL)
-	{
-		other = object->nextUnit;
-		while (other != NULL)
-		{
-			//if (object->pos_x == other->pos_x && object->pos_y == other->pos_y)
-				//handleAttack(object, other);
-			other = other->nextUnit;
-		}
-		object = object->nextUnit;
-	}
+//Cell* Grid::getCell(int x, int y) {
+//	if (x < 0) x = 0;
+//	if (x >= NUM_CELLS) x = NUM_CELLS - 1;
+//	if (y < 0) y = 0;
+//	if (y >= NUM_CELLS) y = NUM_CELLS - 1;
+//
+//	return &m_cells[y * NUM_CELLS + x];
+//}
 
-	other = nullptr;
-	delete other;
-}
+//Cell* Grid::getCell(D3DXVECTOR2 pos) {
+//	int cellX = (int)(pos.x / CELL_SIZE);
+//	int cellY = (int)(pos.y / CELL_SIZE);
+//
+//	return getCell(cellX, cellY);
+//}
+
+//void Grid::handleCell(GameObject * object)
+//{
+//	GameObject * other;
+//	while (object != NULL)
+//	{
+//		other = object->nextUnit;
+//		while (other != NULL)
+//		{
+//			//if (object->pos_x == other->pos_x && object->pos_y == other->pos_y)
+//				//handleAttack(object, other);
+//			other = other->nextUnit;
+//		}
+//		object = object->nextUnit;
+//	}
+//
+//	other = nullptr;
+//	delete other;
+//}
 
 void Grid::handleCell(int x, int y)
 {
@@ -101,13 +125,13 @@ void Grid::handleCollision(GameObject * object_a, GameObject * object_b)
 
 void Grid::handleObject(GameObject * object, GameObject * other)
 {
+	int attackDistance = 15;
 	while (other != NULL)
 	{
 		D3DXVECTOR2 objectPos(object->pos_x, object->pos_y);
 		D3DXVECTOR2 otherPos(other->pos_x, other->pos_y);
-		//if (Math::distance(objectPos, otherPos) < ATTACK_DISTANCE)
-			//handleAttack(unit, other);
-		handleCollision(object, other);
+		if (Math::distance(objectPos, otherPos) < attackDistance)
+			handleCollision(object, other);
 		other = other->nextUnit;
 	}
 }
@@ -216,7 +240,7 @@ void Grid::Update(float delta)
 	followCellY = (int)(objectFollowing->pos_y / CELL_SIZE);
 	
 	UpdateGrid(delta);
-	CheckNewPos(lastFollowCellX, lastFollowCellY, followCellX, followCellY);
+	//CheckNewPos(lastFollowCellX, lastFollowCellY, followCellX, followCellY);
 	handleGrid();
 }
 

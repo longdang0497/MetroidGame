@@ -153,9 +153,11 @@
     <ClCompile Include="Samus.cpp" />
     <ClCompile Include="SDKsound.cpp" />
     <ClCompile Include="SDKwavefile.cpp" />
+    <ClCompile Include="Skree.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TileObject.cpp" />
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="World.cpp" />
@@ -185,9 +187,11 @@
     <ClInclude Include="Samus.h" />
     <ClInclude Include="SDKsound.h" />
     <ClInclude Include="SDKwavefile.h" />
+    <ClInclude Include="Skree.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TileObject.h" />
     <ClInclude Include="trace.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="World.h" />
@@ -212,6 +216,7 @@
     <Text Include="enemy\BLOCK_LEFT.txt" />
     <Text Include="enemy\BLOCK_RIGHT.txt" />
     <Text Include="enemy\ENEMY_DETROYED.txt" />
+    <Text Include="enemy\SKREE.txt" />
     <Text Include="enemy\ZOOMER_PINK_BOTTOM.txt" />
     <Text Include="enemy\ZOOMER_PINK_LEFT.txt" />
     <Text Include="enemy\ZOOMER_PINK_RIGHT.txt" />

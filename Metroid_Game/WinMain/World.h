@@ -3,6 +3,7 @@
 #include <d3dx9.h>
 #include "Define.h"
 #include "Samus.h"
+#include "Skree.h"
 #include "Zoomer.h"
 #include <vector>
 #include "Texture.h"
@@ -23,12 +24,13 @@ public:
 	Metroid * metroid;
 	Samus * samus;
 	MaruMari * maruMari;
-	/*Zoomer * zoomer_yellow;
-	Zoomer * zoomer_pink;*/
+	Skree * skree;
+	Zoomer * zoomer_yellow;
+	Zoomer * zoomer_pink;
 	//Manager * bulletManager;
 	LPD3DXSPRITE spriteHandler;
-	//vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);
-	//vector<Zoomer*> zoomerPink = vector<Zoomer*>(3);
+	vector<Zoomer*> zoomerYellow = vector<Zoomer*>(5);
+	vector<Zoomer*> zoomerPink = vector<Zoomer*>(5);
 
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);

@@ -17,6 +17,7 @@ void Metroid::_InitPositions()
 	world->samus->InitPostition();
 	//world->maruMari->Init(420, 290);
 	world->maruMari->Init(420, 352);
+	//world->skree->InitPostition(420, 352);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -29,6 +30,7 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 	isFreezing = false;
 
 	sound = new GameSound();	
+	collision = new Collision();
 
 	time_jump = 3 * _DeltaTime;
 	time_freezing = TIME_FREEZING;
@@ -60,10 +62,6 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 		trace(L"Unable to create SpriteHandler");
 
 	manager = new Manager(this->spriteHandler);
-	
-	_texture = texture.loadTexture(d3ddev, BRICK_TEXTURE);
-	if (_texture == NULL)
-		trace(L"Unable to load BrickTexture");
 
 	/*bool check = sound->Init(_dxgraphics->getWnd());
 	if (!check)
@@ -80,7 +78,7 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	this->_InitSprites(d3ddev);
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), _texture, "field1.txt", this->_device, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), "field1.txt", d3ddev, 0, 0);
 		
 	if (camera) 
 	{
@@ -159,6 +157,7 @@ void Metroid::UpdateFrame(float Delta)
 		D3DXVECTOR2 enemy(world->zoomerYellow[i]->getPosX(), world->zoomerYellow[i]->getPosY());
 		if (Math::isPointinRectangle(enemy, this->camera->getBoundary())) {
 			world->zoomerYellow[i]->setActive(true);
+			world->zoomerYellow[i]->Update(Delta);
 		}
 	}*/
 	
@@ -369,14 +368,14 @@ void Metroid::OnKeyDown(int KeyCode)
 				if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
 					if (world->samus->getVelocityXLast() < 0) {
 						if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
-							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f); 
 							world->samus->SetState(TRANSFORM_BALL_LEFT);
 							world->samus->isMorphing = true;
 						}
 					}
 					else if (world->samus->getVelocityXLast() > 0) {
 						if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
-							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f);
+							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f); 
 							world->samus->SetState(TRANSFORM_BALL_RIGHT);
 							world->samus->isMorphing = true;
 						}

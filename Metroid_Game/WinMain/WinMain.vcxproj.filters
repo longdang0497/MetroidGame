@@ -159,6 +159,12 @@
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="Skree.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="TileObject.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -250,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Skree.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="TileObject.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +407,9 @@
     </Text>
     <Text Include="sprites\item\MARU_MARI.txt">
       <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="enemy\SKREE.txt">
+      <Filter>Resource Files\enemy</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

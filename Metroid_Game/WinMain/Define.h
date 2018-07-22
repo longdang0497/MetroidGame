@@ -211,7 +211,7 @@ enum ENEMY_TYPE
 {
 	ZOOMER_YELLOW = 0,
 	ZOOMER_PINK = 1,
-	BIRD = 2,
+	SKREE = 2,
 	BLOCK = 3,
 	BEE = 4,
 	RIDLEY = 5,
@@ -258,18 +258,18 @@ enum ENEMY_TYPE
 #define ZOOMER_PINK_RIGHT L"enemy\\ZOOMER_PINK_RIGHT.txt"
 //================== END ZOOMER =================
 
-//================== BIRD  =====================
+//================== SKREE  =====================
 
-#define BIRD_WIDTH 36
-#define BIRD_HEIGHT 52
+#define SKREE_WIDTH 36
+#define SKREE_HEIGHT 52
 
-#define BIRD_FLY_SPRITE_COUNT 3
+#define SKREE_COUNT 3
 
-#define BIRD_FLY "sprites\\enemy\\BIRD_FLY.txt"
+#define SKREE_PATH L"enemy\\SKREE.txt"
 
-#define BIRD_STANDARD_ANIMATE_RATE 7
-#define BIRD_BOOST_ANIMATE_RATE 30
-//================== END BIRD =================
+#define SKREE_STANDARD_ANIMATE_RATE 7
+#define SKREE_BOOST_ANIMATE_RATE 30
+//================== END SKREE =================
 
 //================== BLOCK =====================
 
@@ -279,8 +279,8 @@ enum ENEMY_TYPE
 #define BLOCK_SPEED 0.1f
 
 //--YElLOW
-#define BLOCK_LEFT "sprites\\enemy\\BLOCK_LEFT.txt"
-#define BLOCK_RIGHT "sprites\\enemy\\BLOCK_RIGHT.txt"
+#define BLOCK_LEFT L"sprites\\enemy\\BLOCK_LEFT.txt"
+#define BLOCK_RIGHT L"sprites\\enemy\\BLOCK_RIGHT.txt"
 //================== END BLOCK =================
 
 //================== BEE  =====================
@@ -290,7 +290,7 @@ enum ENEMY_TYPE
 
 #define BEE_FLY_SPRITE_COUNT 2
 
-#define BEE_FLY "sprites\\enemy\\BEE_FLY.txt"
+#define BEE_FLY L"sprites\\enemy\\BEE_FLY.txt"
 //================== END BEE =================
 
 //================== END ENEMY =================

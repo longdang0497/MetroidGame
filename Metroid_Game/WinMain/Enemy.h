@@ -22,7 +22,7 @@ public:
 
 	virtual void InitPostition();
 	virtual void InitPostition(int x, int y);
-	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv);
+	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
 
 	ENEMY_TYPE GetEnemyType();
 	void SetEnemyType(ENEMY_TYPE enemy_type);

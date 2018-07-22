@@ -19,26 +19,28 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 
 	grid->addFollowing(samus);
 	maruMari = new MaruMari(spriteHandler, this, grid);
-	//grid->add(maruMari);
+	//skree = new Skree(spriteHandler, this, SKREE);
 
-	//// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i] = new Zoomer(spriteHandler, this, ZOOMER_YELLOW);
-	//	zoomerYellow[i]->setActive(false);
-	//}
+	// zoomer yellow
+	for (int i = 0; i < zoomerYellow.size(); i++)
+	{
+		//zoomerYellow[i] = new Zoomer(spriteHandler, this, ZOOMER_YELLOW);
+		//zoomerYellow[i]->setActive(false);
+	}
 
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i] = new Zoomer(spriteHandler, this, ZOOMER_PINK);
-	//	zoomerPink[i]->setActive(false);
-	//}
+	// zoomer pink
+	for (int i = 0; i < zoomerPink.size(); i++)
+	{
+		//zoomerPink[i] = new Zoomer(spriteHandler, this, ZOOMER_PINK);
+		//zoomerPink[i]->setActive(false);
+	}
 }
 
 World::~World()
 {
-	//delete(samus);
+	delete(samus);
+	delete(maruMari);
+	//delete(skree);
 }
 
 void World::Update(float t)
@@ -46,17 +48,17 @@ void World::Update(float t)
 	grid->Update(t);
 	maruMari->Update(t);
 	//bulletManager->Update(t);
-	// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i]->Update(t);
-	//}
+	//zoomer yellow
+	for (int i = 0; i < zoomerYellow.size(); i++)
+	{
+		//zoomerYellow[i]->Update(t);
+	}
 
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i]->Update(t);
-	//}
+	// zoomer pink
+	for (int i = 0; i < zoomerPink.size(); i++)
+	{
+		//zoomerPink[i]->Update(t);
+	}
 }
 
 void World::Render()
@@ -64,17 +66,18 @@ void World::Render()
 	grid->Render();
 	maruMari->Render();
 	//bulletManager->Render();
-	// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i]->Render();
-	//}
+	
+	//zoomer yellow
+	for (int i = 0; i < zoomerYellow.size(); i++)
+	{
+		//zoomerYellow[i]->Render();
+	}
 
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i]->Render();
-	//}
+	//zoomer pink
+	for (int i = 0; i < zoomerPink.size(); i++)
+	{
+		//zoomerPink[i]->Render();
+	}
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -91,19 +94,19 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 		trace(L"Unable to load PlayerTexture");
 	maruMari->InitSprites(d3ddv, maru_texture);
 
-	//Texture * texture2 = new Texture();
-	//LPDIRECT3DTEXTURE9 zoomer_texture = texture2->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
-	//if (zoomer_texture == NULL)
-	//	trace(L"Unable to load PlayerTexture");
-	//// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i]->InitSprites(zoomer_texture);
-	//}
+	Texture * texture2 = new Texture();
+	LPDIRECT3DTEXTURE9 zoomer_texture = texture2->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
+	if (zoomer_texture == NULL)
+		trace(L"Unable to load PlayerTexture");
+	// zoomer yellow
+	for (int i = 0; i < zoomerYellow.size(); i++)
+	{
+		//zoomerYellow[i]->InitSprites(d3ddv, zoomer_texture);
+	}
 
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i]->InitSprites(zoomer_texture);
-	//}
+	// zoomer pink
+	for (int i = 0; i < zoomerPink.size(); i++)
+	{
+		//zoomerPink[i]->InitSprites(d3ddv, zoomer_texture);
+	}
 }

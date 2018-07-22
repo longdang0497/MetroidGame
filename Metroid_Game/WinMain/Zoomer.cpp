@@ -26,8 +26,13 @@ Zoomer::~Zoomer()
 }
 
 
-void Zoomer::InitSprites(LPDIRECT3DTEXTURE9 texture)
+void Zoomer::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 {
+	if (d3ddv == NULL) return;
+	//Create sprite handler
+	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
+	if (result != D3D_OK) return;
+
 	LPWSTR top_path = NULL, bottom_path = NULL, left_path = NULL, right_path = NULL;
 
 	switch (enemy_type)
@@ -264,6 +269,7 @@ void Zoomer::InitSprites(LPDIRECT3DTEXTURE9 texture)
 
 void Zoomer::Update(float t)
 {
+	grid->add(this);
 	if (!isActive) return;
 
 	pos_x += vx * t;
