@@ -198,3 +198,13 @@ int Sprite::getHeight()
 {
 	return height;
 }
+
+int Sprite::GetIndex()
+{
+	return this->_Index;
+}
+
+int Sprite::GetCount()
+{
+	return count;
+}

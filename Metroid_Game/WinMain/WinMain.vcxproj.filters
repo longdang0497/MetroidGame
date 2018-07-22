@@ -67,6 +67,9 @@
     <Filter Include="Source Files\Item">
       <UniqueIdentifier>{3a286a5a-2c87-4c65-ad2e-8e733602fe84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\sprites\gate">
+      <UniqueIdentifier>{2a2427c7-2897-45da-a5d6-30c524fc25a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -163,6 +166,9 @@
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="TileObject.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Gate.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,6 +269,9 @@
     <ClInclude Include="TileObject.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="Gate.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png">
@@ -297,6 +306,9 @@
     </Image>
     <Image Include="sprites\item\items_sprite_sheet.png">
       <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="sprites\gate\GATE_32.png">
+      <Filter>Resource Files\sprites\gate</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +422,18 @@
     </Text>
     <Text Include="enemy\SKREE.txt">
       <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

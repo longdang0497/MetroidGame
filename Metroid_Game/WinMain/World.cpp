@@ -15,6 +15,7 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	//bulletManager = new Manager(spriteHandler);
 	//Khởi tạo các đối tượng trong World
 	grid = new Grid();
+	//gate = new Gate(spriteHandler, this, LEFT);
 	samus = new Samus(spriteHandler, this, grid);
 
 	grid->addFollowing(samus);
@@ -47,6 +48,7 @@ void World::Update(float t)
 {
 	grid->Update(t);
 	maruMari->Update(t);
+	//gate->Update(t);
 	//bulletManager->Update(t);
 	//zoomer yellow
 	for (int i = 0; i < zoomerYellow.size(); i++)
@@ -65,6 +67,7 @@ void World::Render()
 {
 	grid->Render();
 	maruMari->Render();
+	//gate->Render();
 	//bulletManager->Render();
 	
 	//zoomer yellow
@@ -95,7 +98,13 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	maruMari->InitSprites(d3ddv, maru_texture);
 
 	Texture * texture2 = new Texture();
-	LPDIRECT3DTEXTURE9 zoomer_texture = texture2->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
+	LPDIRECT3DTEXTURE9 gate_texture = texture2->loadTexture(d3ddv, GATE_SPRITES_PATH);
+	if (gate_texture == NULL)
+		trace(L"Unable to load PlayerTexture");
+	//gate->InitSprites(d3ddv, gate_texture);
+
+	Texture * texture3 = new Texture();
+	LPDIRECT3DTEXTURE9 zoomer_texture = texture3->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
 	if (zoomer_texture == NULL)
 		trace(L"Unable to load PlayerTexture");
 	// zoomer yellow

@@ -45,4 +45,7 @@ public:
 
 	void setHeight(int value);
 	int getHeight();
+
+	int GetIndex();
+	int GetCount();
 };

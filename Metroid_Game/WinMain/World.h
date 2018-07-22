@@ -8,6 +8,7 @@
 #include <vector>
 #include "Texture.h"
 #include "Grid.h"
+#include "Gate.h"
 
 using namespace std;
 //#include "BulletManager.h"
@@ -22,6 +23,7 @@ class World
 public:
 	Grid * grid;
 	Metroid * metroid;
+	Gate * gate;
 	Samus * samus;
 	MaruMari * maruMari;
 	Skree * skree;

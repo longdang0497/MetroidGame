@@ -51,7 +51,8 @@ enum OBJECT_TYPE
 	ENEMY = 1,
 	BRICK = 2,
 	BULLET = 3,
-	ITEM = 4
+	ITEM = 4,
+	GATE = 5
 };
 //================= END OBJECT TYPE ============
 
@@ -294,3 +295,26 @@ enum ENEMY_TYPE
 //================== END BEE =================
 
 //================== END ENEMY =================
+
+//================ GATE ===============
+#define GATE_SPRITES_PATH L"sprites\\gate\\GATE_32.png"
+#define GATE_LEFT_EXISTS L"sprites\\gate\\GATE_LEFT_EXISTS.txt"
+#define GATE_RIGHT_EXISTS L"sprites\\gate\\GATE_RIGHT_EXISTS.txt"
+#define GATE_EXISTS_COUNT 1
+
+#define GATE_LEFT_DESTROYING L"sprites\\gate\\GATE_LEFT_DESTROYING.txt"
+#define GATE_RIGHT_DESTROYING L"sprites\\gate\\GATE_RIGHT_DESTROYING.txt"
+#define GATE_DESTROYING_COUNT 3
+
+#define GATE_WIDTH 16
+#define GATE_HEIGHT 96
+
+#define GATE_TIME_SURVIVE 3
+
+
+enum GATE_TYPE
+{
+	LEFT = 1,
+	RIGHT = 2
+};
+//================= END GATE ===========
