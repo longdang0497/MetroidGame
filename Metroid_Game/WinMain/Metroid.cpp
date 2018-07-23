@@ -15,7 +15,6 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
-	//world->maruMari->Init(420, 290);
 	world->maruMari->Init(420, 352);
 	//world->skree->InitPostition(420, 352);
 

@@ -40,14 +40,13 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 World::~World()
 {
 	delete(samus);
-	delete(maruMari);
 	//delete(skree);
 }
 
 void World::Update(float t)
 {
 	grid->Update(t);
-	maruMari->Update(t);
+	//maruMari->Update(t);
 	//gate->Update(t);
 	//bulletManager->Update(t);
 	//zoomer yellow
@@ -66,10 +65,9 @@ void World::Update(float t)
 void World::Render()
 {
 	grid->Render();
-	maruMari->Render();
 	//gate->Render();
 	//bulletManager->Render();
-	
+	//maruMari->Render();
 	//zoomer yellow
 	for (int i = 0; i < zoomerYellow.size(); i++)
 	{

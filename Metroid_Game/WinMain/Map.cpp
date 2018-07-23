@@ -6,6 +6,7 @@ Map::Map(LPD3DXSPRITE spriteHandler, string filePath, LPDIRECT3DDEVICE9 d3ddev, 
 	this->d3ddev = d3ddev;
 
 	grid = new Grid();
+	//marumari = new  MaruMari();
 	
 	//---------Khởi tạo spriteHandler---------------
 	if (this->d3ddev == NULL) return;
@@ -147,7 +148,6 @@ void Map::drawBrick(TileObject * value) {
 	case 'd':
 	{
 		tileMap->Render('d', 12, pos);
-
 		break;
 	}
 	case 'e':
@@ -391,7 +391,7 @@ void Map::UpdateMap(RECT cameraBound) {
 				new_brick->y_pixel = y_pixel;
 				new_brick->pos_x = new_brick->x_pixel;
 				new_brick->pos_y = new_brick->y_pixel;
-				grid->add(new_brick);
+				//grid->add(new_brick);
 				drawBrickArray.push_back(new_brick);
 			}
 		}

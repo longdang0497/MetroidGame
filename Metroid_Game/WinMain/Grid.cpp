@@ -85,7 +85,10 @@ void Grid::add(GameObject * object)
 
 void Grid::handleCell(int x, int y)
 {
+	
 	GameObject * object = cells[x][y];
+	if (object != NULL)
+		handleObject(objectFollowing, object);
 	while (object != NULL)
 	{
 		handleObject(object, object->nextUnit);

@@ -21,6 +21,7 @@ public:
 	float lastPosY;
 	float friction = FRICTION;	//ma sát
 
+	Sprite * currentSprite;
 	GameObject * previousUnit;
 	GameObject * nextUnit;
 
@@ -80,7 +81,6 @@ public:
 	float getgravity();
 	void setgravity(float value);
 
-	void SetBound(int objWidth, int objHeight);
 	RECT GetBound();
 	//===============================END GET - SET METHOD============================
 

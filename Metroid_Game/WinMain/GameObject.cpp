@@ -163,18 +163,12 @@ void GameObject::setgravity(float value)
 	gravity = value;
 }
 
-void GameObject::SetBound(int objWidth, int objHeight)
-{
-	rigidBody.x = objWidth;
-	rigidBody.y = objHeight;
-}
-
 RECT GameObject::GetBound()
 {
 	objBound.left = pos_x;
-	objBound.right = pos_x + rigidBody.x;
+	objBound.right = pos_x + currentSprite->getWidth();
 	objBound.top = pos_y;
-	objBound.bottom = pos_y - rigidBody.y;
+	objBound.bottom = pos_y - currentSprite->getHeight();
 
 	return objBound;
 }

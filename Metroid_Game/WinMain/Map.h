@@ -3,9 +3,9 @@
 #include "Texture.h"
 #include "Define.h"
 #include "trace.h"
-#include<vector>
-#include<iostream>
-#include<fstream>
+#include <vector>
+#include <iostream>
+#include <fstream>
 #include <string>
 #include <string.h>
 #include <stdio.h>
@@ -14,6 +14,7 @@
 #include <d3dx9.h>
 #include "TileObject.h"
 #include "Grid.h"
+#include "MaruMari.h"
 
 class Camera;
 
@@ -43,6 +44,7 @@ public:
 	static const int count = 0;
 	TileObject * tileMap;
 private:
+	//MaruMari * marumari;
 	Grid * grid;
 	std::string filePath;
 	vector<string> stringMap;
