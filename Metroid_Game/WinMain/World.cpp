@@ -16,7 +16,13 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	//Khởi tạo các đối tượng trong World
 	grid = new Grid();
 	samus = new Samus(spriteHandler, this, grid);
-	this->samusBullet = new Bullet(spriteHandler);
+	
+	Bullet *bullet1 = new Bullet(spriteHandler);
+	Bullet *bullet2 = new Bullet(spriteHandler);
+	Bullet *bullet3 = new Bullet(spriteHandler);
+	this->samusBullet.push_back(bullet1);
+	this->samusBullet.push_back(bullet2);
+	this->samusBullet.push_back(bullet3);
 
 	grid->addFollowing(samus);
 	maruMari = new MaruMari(spriteHandler, this, grid);
@@ -46,8 +52,10 @@ void World::Update(float t)
 {
 	grid->Update(t);
 	maruMari->Update(t);
-	this->samusBullet->Update(t, this->samus->getPosX(), this->samus->getPosY());
-	//bulletManager->Update(t);
+	for (int i = 0; i < this->samusBullet.size(); i++) {
+		this->samusBullet[i]->Update(t, this->samus->getPosX(), this->samus->getPosY());
+	}
+	
 	// zoomer yellow
 	//for (int i = 0; i < zoomerYellow.size(); i++)
 	//{
@@ -65,7 +73,10 @@ void World::Render()
 {
 	grid->Render();
 	maruMari->Render();
-	this->samusBullet->Render();
+	for (int i = 0; i < this->samusBullet.size(); i++) {
+		this->samusBullet[i]->Render();
+	}
+
 	//bulletManager->Render();
 	// zoomer yellow
 	//for (int i = 0; i < zoomerYellow.size(); i++)
@@ -99,7 +110,10 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 bulletTexture = texture2.loadTexture(d3ddv, SAMUS_BULLET_PATH);
 	if (bulletTexture == NULL)
 		trace(L"Unable to load BulletTexture");
-	this->samusBullet->InitSprites(d3ddv, bulletTexture);
+	for (int i = 0; i < this->samusBullet.size(); i++) {
+		this->samusBullet[i]->InitSprites(d3ddv, bulletTexture);
+	}
+	
 
 	//Texture * texture2 = new Texture();
 	//LPDIRECT3DTEXTURE9 zoomer_texture = texture2->loadTexture(d3ddv, ENEMY_SPRITE_PATH);

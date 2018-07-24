@@ -13,6 +13,10 @@ void Samus::Render()
 		D3DXVECTOR3 position;
 		position.x = pos_x;
 		position.y = pos_y;
+		if (this->state == STAND_SHOOT_UP_LEFT || this->state == STAND_SHOOT_UP_RIGHT || this->state == RUN_SHOOT_UP_LEFT || this->state == RUN_SHOOT_UP_RIGHT) {
+			position.y -= 10;
+		}
+
 		position.z = 0;
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND| D3DXSPRITE_OBJECTSPACE);
@@ -81,9 +85,8 @@ void Samus::Render()
 
 Samus::Samus()
 {
-	/*width = 40;
-	height = 64;*/
 	this->isActive = true;
+	this->isBall = false;
 }
 
 void Samus::Destroy()
@@ -112,6 +115,7 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 	height = 50;*/
 
 	gravity = FALLDOWN_VELOCITY_DECREASE;
+	this->isBall = false;
 }
 
 Samus::~Samus()
@@ -164,8 +168,10 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	pos_x = 992;	
-	pos_y = 352;	
+	/*pos_x = 992;	
+	pos_y = 320;*/	
+	this->pos_x = 1140;
+	this->pos_y = 352;
 	grid->add(this);
 	vx = 0;
 	vx_last = 1.0f;
@@ -212,6 +218,7 @@ void Samus::ResetAllSprites()
 	ballRight->Reset();
 	jumpShootL->Reset();
 	jumpShootR->Reset();
+
 }
 
 bool Samus::GetStateActive()
@@ -219,7 +226,7 @@ bool Samus::GetStateActive()
 	return isActive;
 }
 
-void Samus::Reset(int x, int y)
+void Samus::Reset(float x, float y)
 {
 	//manager->maruMari->Init(704, 186);
 	// Cho samus active trở lại
@@ -311,3 +318,10 @@ void Samus::Update(float t)
 }
 //----------------------------------------------------------
 
+void Samus::setIsBall(bool isBall) {
+	this->isBall = isBall;
+}
+
+bool Samus::getIsBall() {
+	return this->isBall;
+}

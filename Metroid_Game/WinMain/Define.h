@@ -18,10 +18,10 @@ class GameObject;
 #define TIME_IN_GAME 7000
 
 #define JUMP_VELOCITY_BOOST 0.5f
-#define JUMP_VELOCITY_BOOST_FIRST 70.0f
+#define JUMP_VELOCITY_BOOST_FIRST 64.0f
 #define FALLDOWN_VELOCITY_DECREASE 0.3f
 #define GRAVITY_VELOCITY 0.5f
-#define ANIMATE_RATE 20
+#define ANIMATE_RATE 30
 #define LIVE_TIME 3000
 
 #define SAMUS_SPEED 100.0f
@@ -43,6 +43,29 @@ class GameObject;
 #define CAMERA_FOLLOW_POINT_TOP_RATIO    3.0/4
 //================ END RESOLUTION ====================
 
+//================ SAMUS ====================
+enum SAMUS_STATE {
+	STAND_LEFT,
+	STAND_RIGHT,
+	RUNNING_LEFT,
+	RUNNING_RIGHT,
+	STAND_SHOOT_UP_LEFT,
+	STAND_SHOOT_UP_RIGHT,
+	MORPH_LEFT,
+	MORPH_RIGHT,
+	RUN_SHOOTING_LEFT,
+	RUN_SHOOTING_RIGHT,
+	RUN_SHOOT_UP_LEFT,
+	RUN_SHOOT_UP_RIGHT,
+	JUMP_LEFT,
+	JUMP_RIGHT,
+	TRANSFORM_BALL_LEFT,
+	TRANSFORM_BALL_RIGHT,
+	JUMP_SHOOT_UP_LEFT,
+	JUMP_SHOOT_UP_RIGHT,
+};
+
+//================END SAMUS ====================
 
 //================= OBJECT TYPE ================
 enum OBJECT_TYPE
@@ -296,7 +319,7 @@ enum ENEMY_TYPE
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
 #define X_VELOCITY_BULLET 12
 #define Y_VELOCITY_BULLET 12
-#define BULLET_COUNT 7
+#define BULLET_COUNT 8
 #define WIDTH_BULLET 12
 #define HEIGHT_BULLET 14
 

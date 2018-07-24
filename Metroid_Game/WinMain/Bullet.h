@@ -9,6 +9,7 @@ class Bullet : public GameObject
 private:
 	Sprite *bulletSprite;
 	Bullet_SAMUS_Direction direction;
+	Bullet_SAMUS_Direction tempDirection;
 	bool isRendered;
 	int count;
 public:

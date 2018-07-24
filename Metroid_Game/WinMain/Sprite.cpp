@@ -54,9 +54,9 @@ Sprite::~Sprite() {
 
 // Cap nhat vi tri cua sprite tiep theo
 void Sprite::updateSprite() {
-	this->currentIndexOfSprite += 1;
+	/*this->currentIndexOfSprite += 1;
 	if (this->currentIndexOfSprite >= (this->startIndexOfSprite + this->count))
-		this->currentIndexOfSprite = startIndexOfSprite;
+		this->currentIndexOfSprite = startIndexOfSprite;*/
 	this->_Index = (this->_Index + 1) % count;
 }
 

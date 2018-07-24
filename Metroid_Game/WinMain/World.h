@@ -24,7 +24,9 @@ public:
 	Metroid * metroid;
 	Samus * samus;
 	MaruMari * maruMari;
-	Bullet *samusBullet;
+	//Bullet *samusBullet;
+	vector<Bullet*> samusBullet;
+
 	/*Zoomer * zoomer_yellow;
 	Zoomer * zoomer_pink;*/
 	//Manager * bulletManager;
