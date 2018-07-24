@@ -391,7 +391,6 @@ void Map::UpdateMap(RECT cameraBound) {
 				new_brick->y_pixel = y_pixel;
 				new_brick->pos_x = new_brick->x_pixel;
 				new_brick->pos_y = new_brick->y_pixel;
-				//grid->add(new_brick);
 				drawBrickArray.push_back(new_brick);
 			}
 		}

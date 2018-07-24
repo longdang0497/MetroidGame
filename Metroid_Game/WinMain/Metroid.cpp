@@ -15,10 +15,14 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
-	world->maruMari->Init(420, 352);
-	//world->skree->InitPostition(420, 352);
+	world->maruMari->Init(420, 360);
+	world->gateLeft->Init(2224, 160);
+	world->gateLeft->grid->add(world->gateLeft);
+	world->gateRight->Init(2304, 160);
+	world->gateRight->grid->add(world->gateRight);
 
-	//world->gate->Init(1280, 352);
+	world->gateBlock->Init(2240, 160);
+	world->gateBlock->grid->add(world->gateBlock);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -406,12 +410,21 @@ void Metroid::OnKeyUp(int KeyCode)
 		if (world->samus->getVelocityXLast() < 0)
 		{
 			world->samus->SetState(STAND_LEFT);
-			world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
+			if (world->samus->isMorphing == true)
+			{
+				world->samus->isMorphing = false;
+				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
+			}				
 		}
 		else if (world->samus->getVelocityXLast() > 0)
 		{
+			world->samus->isMorphing = false;
 			world->samus->SetState(STAND_RIGHT);
-			world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
+			if (world->samus->isMorphing == true)
+			{
+				world->samus->isMorphing = false;
+				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
+			}
 		}
 		break;
 	}

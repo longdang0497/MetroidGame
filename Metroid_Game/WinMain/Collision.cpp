@@ -132,23 +132,20 @@ void Collision::update(GameObject* object) {
 
 bool Collision::isInside(RECT object, RECT other)
 {
-	RECT rec_a = object;
-	RECT rec_b = other;
-
-	bool top = rec_a.top <= rec_b.top && rec_a.top >= rec_b.bottom;
-	bool bot = rec_a.bottom <= rec_b.top && rec_a.bottom >= rec_b.bottom;
-	bool right = rec_a.right <= rec_b.right && rec_a.right >= rec_b.left;
-	bool left = rec_a.left <= rec_b.right && rec_a.left >= rec_b.left;
+	bool top = object.top >= other.top && object.top <= other.bottom;
+	bool bot = object.bottom >= other.top && object.bottom <= other.bottom;
+	bool right = object.right <= other.right && object.right >= other.left;
+	bool left = object.left <= other.right && object.left >= other.left;
 
 	bool first_case = (left && bot) || (left && top);
 	bool second_case = (right && bot) || (right && top);
 
-	bool third_caseA = left && (rec_a.bottom <= rec_b.bottom) && (rec_a.top >= rec_b.top);
-	bool third_caseB = right && (rec_a.bottom <= rec_b.bottom) && (rec_a.top >= rec_b.top);
+	bool third_caseA = left && (object.bottom >= other.bottom) && (object.top <= other.top);
+	bool third_caseB = right && (object.bottom >= other.bottom) && (object.top <= other.top);
 	bool third_case = third_caseA || third_caseB;
 
-	bool fourth_caseA = top && (rec_a.left >= rec_b.left) && (rec_a.right <= rec_b.right);
-	bool fourth_caseB = bot && (rec_a.left >= rec_b.left) && (rec_a.right <= rec_b.right);
+	bool fourth_caseA = top && (object.left >= other.left) && (object.right <= other.right);
+	bool fourth_caseB = bot && (object.left >= other.left) && (object.right <= other.right);
 	bool fourth_case = fourth_caseA || fourth_caseB;
 
 	if (first_case || second_case || third_case || fourth_case)

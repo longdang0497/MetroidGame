@@ -193,6 +193,11 @@ bool Samus::isSamusJumping()
 	return false;
 }
 
+void Samus::updateState()
+{
+	canMorph = true;
+}
+
 void Samus::ResetAllSprites()
 {
 	standRight->Reset();

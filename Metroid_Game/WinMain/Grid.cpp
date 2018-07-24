@@ -48,41 +48,6 @@ void Grid::add(GameObject * object)
 		object->nextUnit->previousUnit = object;
 }
 
-//Cell* Grid::getCell(int x, int y) {
-//	if (x < 0) x = 0;
-//	if (x >= NUM_CELLS) x = NUM_CELLS - 1;
-//	if (y < 0) y = 0;
-//	if (y >= NUM_CELLS) y = NUM_CELLS - 1;
-//
-//	return &m_cells[y * NUM_CELLS + x];
-//}
-
-//Cell* Grid::getCell(D3DXVECTOR2 pos) {
-//	int cellX = (int)(pos.x / CELL_SIZE);
-//	int cellY = (int)(pos.y / CELL_SIZE);
-//
-//	return getCell(cellX, cellY);
-//}
-
-//void Grid::handleCell(GameObject * object)
-//{
-//	GameObject * other;
-//	while (object != NULL)
-//	{
-//		other = object->nextUnit;
-//		while (other != NULL)
-//		{
-//			//if (object->pos_x == other->pos_x && object->pos_y == other->pos_y)
-//				//handleAttack(object, other);
-//			other = other->nextUnit;
-//		}
-//		object = object->nextUnit;
-//	}
-//
-//	other = nullptr;
-//	delete other;
-//}
-
 void Grid::handleCell(int x, int y)
 {
 	

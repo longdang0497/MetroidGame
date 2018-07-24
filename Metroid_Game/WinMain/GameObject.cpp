@@ -28,6 +28,10 @@ void GameObject::Render()
 {
 }
 
+void GameObject::updateState()
+{
+}
+
 void GameObject::Init(float posX, float posY)
 {
 	this->pos_x = posX;
@@ -168,7 +172,7 @@ RECT GameObject::GetBound()
 	objBound.left = pos_x;
 	objBound.right = pos_x + currentSprite->getWidth();
 	objBound.top = pos_y;
-	objBound.bottom = pos_y - currentSprite->getHeight();
+	objBound.bottom = pos_y + currentSprite->getHeight();
 
 	return objBound;
 }

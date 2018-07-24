@@ -54,7 +54,7 @@ protected:
 	int tempX;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
-	bool canMorph = true;
+	bool canMorph = false;
 	bool isMorphing = false;
 
 	float health;	// Máu của Samus
@@ -72,6 +72,7 @@ public:
 	//bool isSamusCrouch();
 	bool isSamusDeath();
 
+	void updateState();
 	void ResetAllSprites();
 	bool GetStateActive();
 

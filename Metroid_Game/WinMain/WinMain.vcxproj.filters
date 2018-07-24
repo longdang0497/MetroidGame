@@ -70,6 +70,9 @@
     <Filter Include="Resource Files\sprites\gate">
       <UniqueIdentifier>{2a2427c7-2897-45da-a5d6-30c524fc25a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\sprites\explode_effect">
+      <UniqueIdentifier>{de3b0694-0d99-41a6-a93b-709d649f72c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -169,6 +172,9 @@
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="Gate.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GateBlock.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,6 +278,9 @@
     <ClInclude Include="Gate.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="GateBlock.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png">
@@ -309,6 +318,9 @@
     </Image>
     <Image Include="sprites\gate\GATE_32.png">
       <Filter>Resource Files\sprites\gate</Filter>
+    </Image>
+    <Image Include="sprites\explode_effect\explosion.png">
+      <Filter>Resource Files\sprites\explode_effect</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +445,12 @@
       <Filter>Resource Files\sprites\gate</Filter>
     </Text>
     <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt">
+      <Filter>Resource Files\sprites\explode_effect</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_BLOCK.txt">
       <Filter>Resource Files\sprites\gate</Filter>
     </Text>
   </ItemGroup>

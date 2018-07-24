@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Grid.h"
 #include "Gate.h"
+#include "GateBlock.h"
 
 using namespace std;
 //#include "BulletManager.h"
@@ -23,16 +24,16 @@ class World
 public:
 	Grid * grid;
 	Metroid * metroid;
-	Gate * gate;
+	Gate * gateRight;
+	Gate * gateLeft;
+	GateBlock * gateBlock;
 	Samus * samus;
 	MaruMari * maruMari;
 	Skree * skree;
-	Zoomer * zoomer_yellow;
-	Zoomer * zoomer_pink;
 	//Manager * bulletManager;
 	LPD3DXSPRITE spriteHandler;
-	vector<Zoomer*> zoomerYellow = vector<Zoomer*>(5);
-	vector<Zoomer*> zoomerPink = vector<Zoomer*>(5);
+	vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);
+	vector<Zoomer*> zoomerPink = vector<Zoomer*>(3);
 
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);

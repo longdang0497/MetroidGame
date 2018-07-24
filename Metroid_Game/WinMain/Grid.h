@@ -4,17 +4,11 @@
 #include "Define.h"
 #include "Collision.h"
 
-#define ATTACK_DISTANCE 150.0f;
-
-//struct Cell {
-//	std::vector<GameObject *> objectList;
-//};
-
 class Grid
 {
 private:
 	Collision * collide;
-	static const int NUM_CELLS = 20;
+	static const int NUM_CELLS = 30;
 	static const int CELL_SIZE = 128;
 	GameObject * objectFollowing = nullptr;
 	GameObject * cells[NUM_CELLS][NUM_CELLS];

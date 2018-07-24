@@ -88,6 +88,7 @@ public:
 	virtual void InitSprites();
 	virtual void Update(float t);
 	virtual void Render();
+	virtual void updateState(); //thực hiện khi xét va chạm
 
 	//Phương thức để active lại GameObject
 	virtual void Init(float posX, float posY);

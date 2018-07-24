@@ -1,15 +1,21 @@
 ﻿#include "Gate.h"
 
-Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager, GATE_TYPE type)
+Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 {
 	this->spriteHandler = spriteHandler;
 	this->manager = manager;
 	this->type = GATE;
 	this->width = GATE_WIDTH;
 	this->height = GATE_HEIGHT;
+	this->grid = grid;
+
+	exists_right = nullptr;
+	exists_left = nullptr;
+	destroying_right = nullptr;
+	destroying_left = nullptr;
 
 	//Set state
-	state = GATE_STATE::CLOSE;
+	setGateState(CLOSE);
 
 	//Set time survive
 	time_survive = GATE_TIME_SURVIVE;
@@ -17,8 +23,11 @@ Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager, GATE_TYPE type)
 
 Gate::~Gate()
 {
-	delete(exists);
-	delete(destroying);
+	currentSprite = nullptr; delete (currentSprite);
+	delete(exists_right);
+	delete(exists_left);
+	delete(destroying_right);
+	delete(destroying_left);
 }
 
 GATE_TYPE Gate::GetGateType()
@@ -26,52 +35,91 @@ GATE_TYPE Gate::GetGateType()
 	return gate_type;
 }
 
-void Gate::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
+void Gate::setGateType(GATE_TYPE value)
 {
+	gate_type = value;
+}
+
+void Gate::setGateState(GATE_STATE value)
+{
+	state = value;
+}
+
+GATE_STATE Gate::getGateState()
+{
+	return state;
+}
+
+void Gate::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture, GATE_TYPE gateType)
+{
+	this->gate_type = gateType;
 	if (d3ddv == NULL) return;
 	//Create sprite handler
 	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
 	if (result != D3D_OK) return;
 
-	LPWSTR exists_path = NULL;
-	LPWSTR destroy_path = NULL;
+	exists_left = new Sprite(spriteHandler, texture, GATE_LEFT_EXISTS, GATE_WIDTH, GATE_HEIGHT, GATE_EXISTS_COUNT);
+	destroying_left = new Sprite(spriteHandler, texture, GATE_LEFT_DESTROYING, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
+	exists_right = new Sprite(spriteHandler, texture, GATE_RIGHT_EXISTS, GATE_WIDTH, GATE_HEIGHT, GATE_EXISTS_COUNT);
+	destroying_right = new Sprite(spriteHandler, texture, GATE_RIGHT_DESTROYING, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
+}
 
-	switch (gate_type)
+void Gate::Init(int x, int y)
+{
+	this->pos_x = x;
+	this->pos_y = y;
+
+	switch (state)
 	{
-	case LEFT:
-		exists_path = GATE_LEFT_EXISTS;
-		destroy_path = GATE_LEFT_DESTROYING;
+	case CLOSE:
+		switch (gate_type)
+		{
+		case LEFT:
+			currentSprite = exists_left;
+			break;
+		case RIGHT:
+			currentSprite = exists_right;
+			break;
+		}
 		break;
-	case RIGHT:
-		exists_path = GATE_RIGHT_EXISTS;
-		destroy_path = GATE_RIGHT_DESTROYING;
+	case DESTROYING:
+		switch (gate_type)
+		{
+		case LEFT:
+			currentSprite = destroying_left;
+			break;
+		case RIGHT:
+			currentSprite = destroying_right;
+			break;
+		}
 		break;
 	}
-
-	exists = new Sprite(spriteHandler, texture, exists_path, GATE_WIDTH, GATE_HEIGHT, GATE_EXISTS_COUNT);
-	destroying = new Sprite(spriteHandler, texture, destroy_path, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
 }
 
 void Gate::Update(float t)
 {
-
 	if (!isActive)
 		return;
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
-	{
-		switch (state)
+	{			
+		switch(state)
 		{
+		case CLOSE:
+			break;
 		case DESTROYING:
-			destroying->updateSprite();
-			if (destroying->GetIndex() == destroying->GetCount() - 1)
+			currentSprite->updateIndex();
+			if (currentSprite == destroying_left || currentSprite == destroying_right)
 			{
-				state = OPEN;
-				isActive = false;
+				if (currentSprite->GetIndex() == currentSprite->GetCount() - 1)
+				{
+					state = OPEN;
+					isActive = false;
+				}
 			}
 			break;
-		}
+		}		
 		last_time = now;
 	}
 }
@@ -86,17 +134,8 @@ void Gate::Render()
 	if (!isActive)
 		return;
 
-	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
-	switch (state)
-	{
-	case CLOSE:
-		exists->drawSprite(exists->getWidth(), exists->getHeight(), position);
-		break;
-	case DESTROYING:
-		destroying->drawSprite(destroying->getWidth(), destroying->getHeight(), position);
-		break;
-	}
-	spriteHandler->End();
+	currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
+	
 }
 
 void Gate::DestroyGate()

@@ -143,6 +143,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gate.cpp" />
+    <ClCompile Include="GateBlock.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gate.h" />
+    <ClInclude Include="GateBlock.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
@@ -207,6 +209,7 @@
     <Image Include="scene\gameover_background.png" />
     <Image Include="scene\intro_background.png" />
     <Image Include="scene\start_background.png" />
+    <Image Include="sprites\explode_effect\explosion.png" />
     <Image Include="sprites\gate\GATE_32.png" />
     <Image Include="sprites\item\bullet.png" />
     <Image Include="sprites\item\bulletx2.png" />
@@ -229,6 +232,8 @@
     <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt" />
     <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
     <Text Include="field1.txt" />
+    <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt" />
+    <Text Include="sprites\gate\GATE_BLOCK.txt" />
     <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt" />
     <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt" />
     <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt" />

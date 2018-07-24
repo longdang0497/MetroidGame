@@ -24,7 +24,7 @@ class GameObject;
 #define ANIMATE_RATE 20
 #define LIVE_TIME 3000
 
-#define SAMUS_SPEED 100.0f
+#define SAMUS_SPEED 200.0f
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
 
@@ -309,12 +309,9 @@ enum ENEMY_TYPE
 #define GATE_WIDTH 16
 #define GATE_HEIGHT 96
 
+#define GATE_BLOCK_PATH L"sprites\\gate\\GATE_BLOCK.txt"
+#define GATE_BLOCK_WIDTH 64
+#define GATE_BLOCK_HEIGHT 96
+
 #define GATE_TIME_SURVIVE 3
-
-
-enum GATE_TYPE
-{
-	LEFT = 1,
-	RIGHT = 2
-};
 //================= END GATE ===========
