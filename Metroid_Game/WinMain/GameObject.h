@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef _GAME_OBJECT_H_
-#define _GAME_OBJECT_H_
 
 #include <d3dx9.h>
 #include "Sprite.h"
@@ -21,6 +19,7 @@ public:
 	float lastPosY;
 	float friction = FRICTION;	//ma sát
 
+	Sprite * currentSprite;
 	GameObject * previousUnit;
 	GameObject * nextUnit;
 
@@ -43,6 +42,7 @@ public:
 public:
 	GameObject();
 	~GameObject();
+	float sweptAABB(GameObject* object, float &normalX, float &normalY);
 
 	//======================== GET - SET METHOD ================================
 	OBJECT_TYPE getType();
@@ -99,4 +99,3 @@ public:
 
 
 };
-#endif // !_GAME_OBJECT_

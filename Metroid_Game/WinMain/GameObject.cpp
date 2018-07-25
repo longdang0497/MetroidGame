@@ -1,4 +1,4 @@
-#include "GameObject.h"
+﻿#include "GameObject.h"
 
 GameObject::GameObject()
 {
@@ -37,6 +37,88 @@ void GameObject::Init(float posX, float posY)
 
 void GameObject::Destroy()
 {
+}
+
+float GameObject::sweptAABB(GameObject* object, float &normalX, float &normalY) {
+	float xInvEntry, yInvEntry;
+	float xInvExit, yInvExit;
+
+	// tim khoang cach giua 2 vat the 
+	if (this->vx > 0.0f) {
+		xInvEntry = object->getPosX() - (this->pos_x + this->width);
+		xInvExit = (object->getWidth() + object->getPosX()) - this->pos_x;
+	}
+	else {
+		xInvEntry = (object->getPosX() + object->getWidth()) - this->pos_x;
+		xInvExit = object->getPosX() - (this->pos_x + this->width);
+	}
+
+	if (this->vy > 0.0f) {
+		yInvEntry = object->getPosY() - (this->pos_y + this->height);
+		yInvExit = (object->getPosY() + object->getHeight()) - this->pos_y;
+	}
+	else {
+		yInvEntry = (object->getPosY() + object->getHeight()) - this->pos_y;
+		yInvExit = object->getPosY() - (this->pos_y + this->height);
+	}
+
+	// Tinh khoang thoi gian va cham va thoi gian het va cham
+	float xEntry, yEntry;
+	float xExit, yExit;
+	if (this->vx == 0.0f) {
+		xEntry = std::numeric_limits<float>::infinity();
+		xExit = std::numeric_limits<float>::infinity();
+	}
+	else {
+		xEntry = xInvEntry / this->vx;
+		xExit = xInvExit / this->vy;
+	}
+
+	if (this->vy == 0.0f) {
+		yEntry = std::numeric_limits<float>::infinity();
+		yExit = std::numeric_limits<float>::infinity();
+	}
+	else {
+		yEntry = yInvEntry / this->vy;
+		yExit = yInvExit / this->vy;
+	}
+
+	// Xac dinh truc nao bi va cham dau tien
+	float entryTime = max(xEntry, yEntry);      // Cho biet thoi gian bat dau va cham
+	float exitTime = min(xExit, yExit);			// Cho biet thoi gian ket thuc va cham
+
+												// neu khong co va cham
+	if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
+		normalX = 0.0f;
+		normalY = 0.0f;
+		return 1.0f;
+	}
+	else {
+		if (xEntry > yEntry) { // này là đã va chạm ở trục Y rồi
+			if (xInvEntry < 0.0f) {  // Trường hợp nhân vật bị dính với object đang xét
+				normalX = 1.0f;
+				normalY = 0.0f;
+			}
+			else {					// Nếu chưa dính
+				normalX = -1.0f;
+				normalY = 0.0f;
+			}
+		}
+		else {			// Này là va chạm với trục X rồi nè
+			if (yInvEntry < 0.0f) {
+				normalX = 0.0f;
+				normalY = 1.0f;
+			}
+			else {
+				normalX = 0.0f;
+				normalY = -1.0f;
+			}
+		}
+	}
+
+	// Trả về thời gian va chạm
+	return entryTime;
+
 }
 
 void GameObject::Update(float t)

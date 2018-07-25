@@ -40,28 +40,12 @@ void Grid::add(GameObject * object)
 		object->nextUnit->previousUnit = object;
 }
 
-void Grid::handleCell(GameObject * object)
-{
-	GameObject * other;
-	while (object != NULL)
-	{
-		other = object->nextUnit;
-		while (other != NULL)
-		{
-			//if (object->pos_x == other->pos_x && object->pos_y == other->pos_y)
-				//handleAttack(object, other);
-			other = other->nextUnit;
-		}
-		object = object->nextUnit;
-	}
-
-	other = nullptr;
-	delete other;
-}
-
 void Grid::handleCell(int x, int y)
 {
+
 	GameObject * object = cells[x][y];
+	if (object != NULL)
+		handleObject(objectFollowing, object);
 	while (object != NULL)
 	{
 		handleObject(object, object->nextUnit);
@@ -101,13 +85,13 @@ void Grid::handleCollision(GameObject * object_a, GameObject * object_b)
 
 void Grid::handleObject(GameObject * object, GameObject * other)
 {
+	int attackDistance = 15;
 	while (other != NULL)
 	{
 		D3DXVECTOR2 objectPos(object->pos_x, object->pos_y);
 		D3DXVECTOR2 otherPos(other->pos_x, other->pos_y);
-		//if (Math::distance(objectPos, otherPos) < ATTACK_DISTANCE)
-			//handleAttack(unit, other);
-		handleCollision(object, other);
+		if (Math::distance(objectPos, otherPos) < attackDistance)
+			handleCollision(object, other);
 		other = other->nextUnit;
 	}
 }
@@ -122,7 +106,7 @@ void Grid::UpdateCells(int x, int y, float delta)
 		object = object->nextUnit;
 	}
 	object = nullptr;
-	delete object;	
+	delete object;
 }
 
 void Grid::UpdateGrid(float delta)
@@ -133,7 +117,7 @@ void Grid::UpdateGrid(float delta)
 		{
 			if (Math::abs(x, followCellX) <= 5)
 				if (Math::abs(y, followCellY) <= 5)
-					UpdateCells(x,y,delta);
+					UpdateCells(x, y, delta);
 		}
 	}
 }
@@ -154,7 +138,7 @@ void Grid::RenderGrid()
 void Grid::RenderCells(int x, int y)
 {
 	GameObject * object = cells[x][y];
-	while (object != nullptr) 
+	while (object != nullptr)
 	{
 		object->Render();
 		object = object->nextUnit;
@@ -210,13 +194,13 @@ void Grid::Update(float delta)
 	int lastFollowCellX = (int)(objectFollowing->lastPosX / CELL_SIZE);
 	int lastFollowCellY = (int)(objectFollowing->lastPosY / CELL_SIZE);
 
-	objectFollowing->Update(delta);	
+	objectFollowing->Update(delta);
 
 	followCellX = (int)(objectFollowing->pos_x / CELL_SIZE);
 	followCellY = (int)(objectFollowing->pos_y / CELL_SIZE);
-	
+
 	UpdateGrid(delta);
-	CheckNewPos(lastFollowCellX, lastFollowCellY, followCellX, followCellY);
+	//CheckNewPos(lastFollowCellX, lastFollowCellY, followCellX, followCellY);
 	handleGrid();
 }
 
