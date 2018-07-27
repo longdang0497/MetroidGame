@@ -77,6 +77,7 @@ void Map::drawBrick(brick value) {
 	float x_pixel = value.x_pixel;
 	float y_pixel = value.y_pixel;
 	D3DXVECTOR3 pos = D3DXVECTOR3(x_pixel, y_pixel, 0);
+
 	// draw different type of bricks
 	switch (value.type)
 	{
@@ -389,4 +390,12 @@ void Map::UpdateMap(RECT cameraBound) {
 			}
 		}
 	}
+}
+
+int Map::getRow() {
+	return this->m_max_Row;
+}
+
+int Map::getColumn() {
+	return this->m_max_Column;
 }

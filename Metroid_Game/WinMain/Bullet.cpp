@@ -4,6 +4,7 @@ Bullet::Bullet() {
 	this->isActive = false;
 	this->isRendered = false;
 	this->count = 0;
+	this->setType(BULLET);
 }
 
 // isActive và isRendered khi nhận sự kiện bắn đạn sẽ = true, sự khác nhau là:
@@ -18,6 +19,7 @@ Bullet::Bullet(LPD3DXSPRITE spriteHandler) {
 	this->direction = OFF;
 	pos_x =	-100.0f;
 	pos_y = -100.0f;
+	this->setType(BULLET);
 }
 
 Bullet::~Bullet() {

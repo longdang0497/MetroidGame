@@ -87,6 +87,8 @@ Samus::Samus()
 {
 	this->isActive = true;
 	this->isBall = false;
+
+	this->setType(SAMUS);
 }
 
 void Samus::Destroy()
@@ -97,14 +99,13 @@ void Samus::Destroy()
 	//--TO DO: Đưa Samus ra khỏi viewport
 }
 
-Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
+Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager)
 {
+	this->setType(SAMUS);
 	this->spriteHandler = spriteHandler;
 	this->manager = manager;
 	this->isActive = true;
 
-
-	this->grid = grid;
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
 
@@ -116,6 +117,9 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
+
+	this->height = 64;
+	this->width = 32;
 }
 
 Samus::~Samus()
@@ -172,7 +176,6 @@ void Samus::InitPostition()
 	pos_y = 320;*/	
 	this->pos_x = 1140;
 	this->pos_y = 352;
-	grid->add(this);
 	vx = 0;
 	vx_last = 1.0f;
 	vy = 0;
@@ -193,9 +196,7 @@ void Samus::SetState(SAMUS_STATE value)
 
 bool Samus::isSamusJumping()
 {
-	if (isJumping == true)
-		return true;
-	return false;
+	return isJumping;
 }
 
 void Samus::ResetAllSprites()

@@ -19,16 +19,15 @@ Các class khác chứa con trỏ đến class này để thao tác với các �
 class World
 {
 public:
-	Grid * grid;
 	Metroid * metroid;
+	Grid *grid;
 	Samus * samus;
 	MaruMari * maruMari;
 	vector<Bullet*> samusBullet;
-
 	LPD3DXSPRITE spriteHandler;
 
 	World();
-	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);
+	World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int height);
 	~World();
 
 	void Update(float t);

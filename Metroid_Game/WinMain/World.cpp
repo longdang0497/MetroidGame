@@ -7,16 +7,15 @@ World::World()
 {
 }
 
-World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
+World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int height)
 {
-	//Gán
 	this->spriteHandler = spriteHandler;
 	this->metroid = metroid;
-	//bulletManager = new Manager(spriteHandler);
+
 	//Khởi tạo các đối tượng trong World
-	grid = new Grid();
-	samus = new Samus(spriteHandler, this, grid);
+	samus = new Samus(spriteHandler, this);
 	
+	// Khởi tạo đạn (3 viên)
 	Bullet *bullet1 = new Bullet(spriteHandler);
 	Bullet *bullet2 = new Bullet(spriteHandler);
 	Bullet *bullet3 = new Bullet(spriteHandler);
@@ -24,71 +23,37 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	this->samusBullet.push_back(bullet2);
 	this->samusBullet.push_back(bullet3);
 
-	grid->addFollowing(samus);
-	maruMari = new MaruMari(spriteHandler, this, grid);
-	//grid->add(maruMari);
-
-	//// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i] = new Zoomer(spriteHandler, this, ZOOMER_YELLOW);
-	//	zoomerYellow[i]->setActive(false);
-	//}
-
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i] = new Zoomer(spriteHandler, this, ZOOMER_PINK);
-	//	zoomerPink[i]->setActive(false);
-	//}
+	maruMari = new MaruMari(spriteHandler, this);
+	grid = new Grid(height, width);
 }
 
 World::~World()
 {
-	//delete(samus);
 }
 
 void World::Update(float t)
 {
-	grid->Update(t);
+	this->samus->Update(t);
+	int row = (int)floor(this->samus->getlastPosY() / CELL_SIZE);
+	int column = (int)floor(this->samus->getlastPosX() / CELL_SIZE);
+	vector<GameObject*> listObject;
+	listObject.push_back(this->samus);
+	this->grid->updateGrid(listObject);
+
 	maruMari->Update(t);
+
 	for (int i = 0; i < this->samusBullet.size(); i++) {
 		this->samusBullet[i]->Update(t, this->samus->getPosX(), this->samus->getPosY());
 	}
-	
-	// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i]->Update(t);
-	//}
-
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i]->Update(t);
-	//}
 }
 
 void World::Render()
 {
-	grid->Render();
+	this->samus->Render();
 	maruMari->Render();
 	for (int i = 0; i < this->samusBullet.size(); i++) {
 		this->samusBullet[i]->Render();
 	}
-
-	//bulletManager->Render();
-	// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i]->Render();
-	//}
-
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i]->Render();
-	//}
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -113,21 +78,4 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	for (int i = 0; i < this->samusBullet.size(); i++) {
 		this->samusBullet[i]->InitSprites(d3ddv, bulletTexture);
 	}
-	
-
-	//Texture * texture2 = new Texture();
-	//LPDIRECT3DTEXTURE9 zoomer_texture = texture2->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
-	//if (zoomer_texture == NULL)
-	//	trace(L"Unable to load PlayerTexture");
-	//// zoomer yellow
-	//for (int i = 0; i < zoomerYellow.size(); i++)
-	//{
-	//	zoomerYellow[i]->InitSprites(zoomer_texture);
-	//}
-
-	//// zoomer pink
-	//for (int i = 0; i < zoomerPink.size(); i++)
-	//{
-	//	zoomerPink[i]->InitSprites(zoomer_texture);
-	//}
 }

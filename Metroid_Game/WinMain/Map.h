@@ -47,6 +47,8 @@ public:
 
 	static const int count = 0;
 
+	int getRow();
+	int getColumn();
 private:
 	std::string filePath;
 	vector<string> stringMap;

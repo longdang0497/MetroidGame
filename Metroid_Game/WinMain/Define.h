@@ -24,7 +24,7 @@ class GameObject;
 #define ANIMATE_RATE 30
 #define LIVE_TIME 3000
 
-#define SAMUS_SPEED 100.0f
+#define SAMUS_SPEED 200.0f
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
 
@@ -333,3 +333,10 @@ enum Bullet_SAMUS_Direction
 };
 
 //================== END Bullet ====================
+
+//================== Grid ====================
+#define CELL_SIZE 128
+#define DEFINE_ROW 50
+#define DEFINE_COLUMN 100
+#define COLLISION_DISTANCE 15
+//================== END Grid ====================

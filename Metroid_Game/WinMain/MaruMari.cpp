@@ -1,15 +1,17 @@
 ﻿#include "MaruMari.h"
 #include "World.h"
 
-MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid) :Item(spriteHandler, manager, grid)
+MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager) :Item(spriteHandler, manager)
 {
+	this->setType(ITEM);
 	item_type = MARU_MARI;
 	maruMari = NULL;
 	isActive = true;
 
-	this->grid = grid;
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
+	this->width = 32;
+	this->height = 32;
 }
 
 MaruMari::~MaruMari()
@@ -32,7 +34,6 @@ void MaruMari::Init(float posX, float posY)
 	this->pos_y = posY;
 	this->isActive = true;
 	time_survive = ITEM_TIME_SURVIVE;
-	grid->add(this);
 }
 
 void MaruMari::Update(float t)

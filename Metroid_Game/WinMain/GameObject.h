@@ -9,7 +9,6 @@ class GameObject
 public:
 	friend class Grid;
 	World * manager;	// con trỏ đến world để thao tác với các object ở world khi cần thiết
-	Grid * grid;
 
 	int width;
 	int height;
@@ -43,7 +42,7 @@ public:
 	GameObject();
 	~GameObject();
 	float sweptAABB(GameObject* object, float &normalX, float &normalY);
-
+	bool isCollided(GameObject* object2);
 	//======================== GET - SET METHOD ================================
 	OBJECT_TYPE getType();
 	void setType(OBJECT_TYPE type);
