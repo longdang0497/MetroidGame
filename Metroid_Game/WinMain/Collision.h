@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Define.h"
+#include "Math.h"
 #include <algorithm>
 #include <string>
 #include "GameObject.h"
@@ -10,18 +11,23 @@ using namespace std;
 // Nếu người chơi va chạm với quái thì sẽ bị đẩy lùi
 // Còn khi xét quái va chạm với 
 class Collision {
+	struct AABB {
+		D3DXVECTOR2 center;
+		D3DXVECTOR2 halfSize;
+	};
 private:
+	AABB collision;
 	float x, y;
 	float width, height;
 	float vX, vY;
-	float normalX, normalY;
+	float normalX, normalY;	//vector pháp tuyến để xét va chạm
 	float remainingTime;
 public:
 	Collision();
 	Collision(float x, float y, float width, float height, float vX, float vY);
 	~Collision();
 
-	float sweptAABB(GameObject* object, float &normalX, float &normalY);
+	float sweptAABB(GameObject* object, float normalX, float normalY);
 	virtual void update(GameObject *object);
 
 	bool isInside(RECT object, RECT other);
@@ -47,4 +53,6 @@ public:
 	float getNormalX();
 	float getNormalY();
 	float getRemainingTime();
+
+	bool Overlaps(AABB other);
 };

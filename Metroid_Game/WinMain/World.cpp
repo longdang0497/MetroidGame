@@ -15,13 +15,14 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	//bulletManager = new Manager(spriteHandler);
 	//Khởi tạo các đối tượng trong World
 	grid = new Grid();
-	gateRight = new Gate(spriteHandler, this, grid);
-	gateLeft = new Gate(spriteHandler, this, grid);
-	gateBlock = new GateBlock(spriteHandler, this, grid);
+	//gateRight = new Gate(spriteHandler, this, grid);
+	//gateLeft = new Gate(spriteHandler, this, grid);
+	//gateBlock = new GateBlock(spriteHandler, this, grid);
 	samus = new Samus(spriteHandler, this, grid);
 	grid->addFollowing(samus);
 	maruMari = new MaruMari(spriteHandler, this, grid);
-	skree = new Skree(spriteHandler, this, SKREE);
+	//skree = new Skree(spriteHandler, this, SKREE);
+	//explode = new ExplodeEffect(spriteHandler, this, grid);
 
 	// zoomer yellow
 	for (int i = 0; i < zoomerYellow.size(); i++)
@@ -42,12 +43,13 @@ World::~World()
 {
 	delete(samus);
 	delete(maruMari);
-	delete(gateRight);
-	delete(gateLeft);
-	delete(gateBlock);
+	//delete(gateRight);
+	//delete(gateLeft);
+	//delete(gateBlock);
 	delete(grid);
 	delete(metroid);
-	delete(skree);
+	//delete(skree);
+	//delete(explode);
 }
 
 void World::Update(float t)
@@ -104,9 +106,15 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
 	if (gate_texture == NULL)
 		trace(L"Unable to load PlayerTexture");
-	gateRight->InitSprites(d3ddv, gate_texture, RIGHT);
-	gateLeft->InitSprites(d3ddv, gate_texture, LEFT);
-	gateBlock->InitSprites(d3ddv, gate_texture);
+	//gateRight->InitSprites(d3ddv, gate_texture, RIGHT);
+	//gateLeft->InitSprites(d3ddv, gate_texture, LEFT);
+	//gateBlock->InitSprites(d3ddv, gate_texture);
+
+	Texture * textureExplode = new Texture();
+	LPDIRECT3DTEXTURE9 explode_texture = textureExplode->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
+	if (explode_texture == NULL)
+		trace(L"Unable to load PlayerTexture");
+	//explode->InitSprites(d3ddv, explode_texture);	
 
 	Texture * textureZoomer = new Texture();
 	LPDIRECT3DTEXTURE9 zoomer_texture = textureZoomer->loadTexture(d3ddv, ENEMY_SPRITE_PATH);

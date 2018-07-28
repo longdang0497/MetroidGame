@@ -50,8 +50,6 @@ protected:
 	Sprite * jumpShootR;
 
 	SAMUS_STATE state;	
-
-	int tempX;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = false;
@@ -68,6 +66,7 @@ public:
 
 	SAMUS_STATE GetState();
 	void SetState(SAMUS_STATE value);
+
 	bool isSamusJumping();
 	//bool isSamusCrouch();
 	bool isSamusDeath();

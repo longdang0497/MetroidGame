@@ -12,6 +12,7 @@ private:
 	static const int CELL_SIZE = 128;
 	GameObject * objectFollowing = nullptr;
 	GameObject * cells[NUM_CELLS][NUM_CELLS];
+	float currentTime = 0;
 	//GameObject * temp;
 	//std::vector<Cell> m_cells;
 

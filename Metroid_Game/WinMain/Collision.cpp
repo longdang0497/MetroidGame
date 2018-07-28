@@ -1,7 +1,8 @@
 ﻿#include "Collision.h"
 
 Collision::Collision() {
-
+	//this->center = center;
+	//this->halfSize = halfsize;
 }
 
 Collision::~Collision() {
@@ -22,7 +23,7 @@ Collision::Collision(float x, float y, float width, float height, float vX, floa
 // Sau đó mình dùng thuật toán này để xác định trọng số của t lại, ví dụ thay vì chạy 1s là đc quãng đường x là thực tế, nhưng khi xét có va chạm thì 0.3s là có va chạm rồi, 
 // Lúc này mình sẽ cho object di chuyển với thời gian là 0.5s thôi (hoặc là chạy với quãng đường bằng 0.3 / 1 so với quãng đường bình thường).
 // Còn khoảng còn lại (ở đây là 1 - 0.3 = 0.7) dùng để xác định loại va chạm và đoạn đường đi tới đâu so với trường hợp va chạm mà mình xét).
-float Collision::sweptAABB(GameObject* object, float &normalX, float &normalY) {
+float Collision::sweptAABB(GameObject* object, float normalX, float normalY) {
 	float xInvEntry, yInvEntry;
 	float xInvExit, yInvExit;
 
@@ -67,6 +68,7 @@ float Collision::sweptAABB(GameObject* object, float &normalX, float &normalY) {
 	}
 
 	// Xac dinh truc nao bi va cham dau tien
+	// --- thời gian va chạm theo 2 chiều
 	float entryTime = max(xEntry, yEntry);      // Cho biet thoi gian bat dau va cham
 	float exitTime = min(xExit, yExit);			// Cho biet thoi gian ket thuc va cham
 
@@ -137,21 +139,45 @@ bool Collision::isInside(RECT object, RECT other)
 	bool right = object.right <= other.right && object.right >= other.left;
 	bool left = object.left <= other.right && object.left >= other.left;
 
+	//va chạm góc trái trên - dưới object
 	bool first_case = (left && bot) || (left && top);
+
+	//va chạm góc phải trên - dưới object
 	bool second_case = (right && bot) || (right && top);
 
+	//va chạm object bao luôn other trái hoặc phải
 	bool third_caseA = left && (object.bottom >= other.bottom) && (object.top <= other.top);
 	bool third_caseB = right && (object.bottom >= other.bottom) && (object.top <= other.top);
-	bool third_case = third_caseA || third_caseB;
+	bool third_caseC = top && bot && right && (object.left <= other.left) && (object.left < other.right);
+	bool third_caseD = top && bot && left && (object.right >= other.right && (object.right > other.right));
+	bool third_case = third_caseA || third_caseB || third_caseC || third_caseD;
 
+	//va chạm object bao luôn other trên hoặc dưới
 	bool fourth_caseA = top && (object.left >= other.left) && (object.right <= other.right);
 	bool fourth_caseB = bot && (object.left >= other.left) && (object.right <= other.right);
-	bool fourth_case = fourth_caseA || fourth_caseB;
+	bool fourth_caseC = top && (object.bottom >= other.bottom) && (object.left <= other.left) && (object.right >= other.right);
+	bool fourth_caseD = bot && (object.top <= other.top) && (object.left <= other.left) && (object.right >= other.right);
+	bool fourth_case = fourth_caseA || fourth_caseB || fourth_caseC || fourth_caseD;
 
-	if (first_case || second_case || third_case || fourth_case)
+	//other nằm bên trong object
+	bool fifth_case_top = (object.top <= other.top) && (object.top < other.bottom);
+	bool fifth_case_bot = (object.bottom > other.top) && (object.bottom >= other.bottom);
+	bool fifth_case_left = (object.left <= other.left) && (object.left < other.right);
+	bool fifth_case_right = (object.right > other.left) && (object.right >= other.right);
+	bool fifth_case = fifth_case_top && fifth_case_bot &&fifth_case_right && fifth_case_left;
+
+
+	if (first_case || second_case || third_case || fourth_case || fifth_case)
 		return true;
 
 	return false;
+}
+
+bool Collision::Overlaps(AABB other)
+{
+	if (Math::abs(collision.center.x, other.center.x) > collision.halfSize.x + other.halfSize.x) return false;
+	if (Math::abs(collision.center.y, other.center.y) > collision.halfSize.y + other.halfSize.y) return false;
+	return true;
 }
 
 float Collision::getX() {

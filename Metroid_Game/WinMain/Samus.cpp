@@ -15,11 +15,7 @@ void Samus::Render()
 		position.y = pos_y;
 		position.z = 0;
 
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND| D3DXSPRITE_OBJECTSPACE);
-
 		currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
-
-		spriteHandler->End();
 	}	
 }
 
@@ -108,7 +104,7 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	pos_x = 992;	
+	pos_x = 1376;	
 	pos_y = 352;	
 
 	vx = 0;
@@ -117,6 +113,7 @@ void Samus::InitPostition()
 
 	//Init state of samus
 	SetState(STAND_RIGHT);
+	//currentSprite = standRight;
 }
 
 SAMUS_STATE Samus::GetState()
@@ -143,9 +140,11 @@ void Samus::SetState(SAMUS_STATE value)
 		break;
 	case STAND_SHOOT_UP_LEFT:
 		currentSprite = standShootL;
+		pos_y += Math::abs(standShootL->getHeight(), standLeft->getHeight());
 		break;
 	case STAND_SHOOT_UP_RIGHT:
 		currentSprite = standShootR;
+		pos_y += Math::abs(standShootR->getHeight(), standRight->getHeight());
 		break;
 	case MORPH_LEFT:
 		currentSprite = morphLeft;
@@ -245,7 +244,10 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	//vy += gravity;
+	if (isOnGround == false)
+		vy += gravity;
+	else if (isOnGround == true)
+		vy = 0;
 
 	pos_x += vx * t;
 	pos_y += vy * t;

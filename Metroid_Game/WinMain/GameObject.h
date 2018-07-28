@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef _GAME_OBJECT_H_
-#define _GAME_OBJECT_H_
 
 #include <d3dx9.h>
 #include "Sprite.h"
@@ -21,7 +19,7 @@ public:
 	float lastPosY;
 	float friction = FRICTION;	//ma sát
 
-	Sprite * currentSprite;
+	Sprite * currentSprite = nullptr;
 	GameObject * previousUnit;
 	GameObject * nextUnit;
 
@@ -32,6 +30,7 @@ public:
 	float vy_last;
 
 	float gravity;
+	bool isOnGround = false;
 
 	LPD3DXSPRITE spriteHandler;
 
@@ -40,7 +39,22 @@ public:
 	//Sprite* sprite;
 	DWORD last_time; // this is to control the animate rate of object
 	RECT objBound;
-	D3DXVECTOR2 rigidBody;
+
+	float collisionTimeScale; // thời gian va chạm
+
+	float normalx;	// "vector pháp tuyến" để xét va chạm
+	float normaly;
+
+	bool pushedRightWall;
+	bool pushesRightWall;
+
+	bool pushedLeftWall;
+	bool pushesLeftWall;
+
+	bool wasOnGround;
+
+	bool wasAtCeiling;
+	bool isAtCeiling;
 public:
 	GameObject();
 	~GameObject();
@@ -48,6 +62,8 @@ public:
 	//======================== GET - SET METHOD ================================
 	OBJECT_TYPE getType();
 	void setType(OBJECT_TYPE type);
+
+	void SetOnGround(bool value) { isOnGround = value; };
 
 	bool isActivated();
 	void setActive(bool value);
@@ -81,6 +97,13 @@ public:
 	float getgravity();
 	void setgravity(float value);
 
+	/*void setNormalx(float value);
+	float getNormalx();
+	void setNormaly(float value);
+	float getNormaly();*/
+
+	void Translate(D3DXVECTOR2 vector);
+
 	RECT GetBound();
 	//===============================END GET - SET METHOD============================
 
@@ -98,6 +121,14 @@ public:
 
 	// ============================== END VIRTUAL METHOD =============================
 
+	// ============================== COLLISTION METHOD ==============================
+	bool isCollide(RECT other);
 
+	float sweptAABB(GameObject *target, const float &DeltaTime);
+
+	// xử lý khi có va chạm
+	virtual void Response(GameObject *target, const float &DeltaTime);
+	void Deflect(GameObject *target, const float &DeltaTime, const float &CollisionTimeScale);
+	virtual void SlideFromGround(GameObject *target, const float &DeltaTime, const float &CollisionTimeScale);
+	// ============================== END COLLISTION METHOD ==========================
 };
-#endif // !_GAME_OBJECT_

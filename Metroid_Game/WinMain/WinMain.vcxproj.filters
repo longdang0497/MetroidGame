@@ -177,6 +177,12 @@
     <ClCompile Include="GateBlock.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplodeEffect.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -279,6 +285,12 @@
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="GateBlock.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplodeEffect.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>

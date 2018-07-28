@@ -63,6 +63,7 @@ public:
 	float time_jump;
 	float time_freezing;
 	float time_in_game;
+	float currentTime = 0;
 
 	LPD3DXSPRITE getSpriteHandler();
 	Map *getMap();

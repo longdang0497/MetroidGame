@@ -33,7 +33,6 @@ void MaruMari::Init(float posX, float posY)
 	this->pos_y = posY;
 	this->isActive = true;
 	time_survive = ITEM_TIME_SURVIVE;
-	grid->add(this);
 	currentSprite = maruMari;
 }
 

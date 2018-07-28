@@ -1,4 +1,4 @@
-#include "Grid.h"
+﻿#include "Grid.h"
 #include "Math.h"
 
 Grid::Grid()
@@ -10,13 +10,6 @@ Grid::Grid()
 		for (int j = 0; j < NUM_CELLS; j++)
 			cells[i][j] = NULL;
 	}
-
-	// Allocate all the cells
-	//const int BALLS_TO_RESERVE = 20;
-	//m_cells.resize(NUM_CELLS);
-	//for (int i = 0; i < m_cells.size(); i++) {
-	//	m_cells[i].objectList.reserve(BALLS_TO_RESERVE);
-	//}
 }
 
 Grid::~Grid()
@@ -50,7 +43,6 @@ void Grid::add(GameObject * object)
 
 void Grid::handleCell(int x, int y)
 {
-	
 	GameObject * object = cells[x][y];
 	if (object != NULL)
 		handleObject(objectFollowing, object);
@@ -84,16 +76,52 @@ void Grid::handleCell(int x, int y)
 void Grid::handleCollision(GameObject * object_a, GameObject * object_b)
 {
 	bool isCollide = false;
-	isCollide = collide->isInside(object_a->GetBound(), object_b->GetBound());
-	if (isCollide == true)
+	int deltaY = 0, deltaX = 0;
+	if (object_a->type == SAMUS)
 	{
-		MessageBox(NULL, L"Collided !!", L"Information", MB_OK);
+		object_a->SetOnGround(true);
+		isCollide = collide->isInside(object_a->GetBound(), object_b->GetBound());
+		if (isCollide == true)
+		{			
+			if (object_a->objBound.bottom >= object_b->objBound.top
+				&& object_a->objBound.left == object_b->objBound.left)
+			{
+				object_a->SetOnGround(true);
+				deltaY = object_a->objBound.bottom - object_b->objBound.top;
+				D3DXVECTOR2 vectorDelta;
+				vectorDelta.x = 0;
+				vectorDelta.y = deltaY;
+				object_a->Translate(vectorDelta);
+			}
+			else if (object_a->objBound.left <= object_b->objBound.right
+				&& object_a->objBound.bottom == object_b->objBound.bottom)
+			{
+				if (object_a->isOnGround == true)
+				{
+					deltaX = Math::abs(object_a->objBound.left, object_b->objBound.right);
+					if (deltaY > 3)
+					{
+						object_a->vx = 0;
+						D3DXVECTOR2 vectorDelta;
+						vectorDelta.x = deltaX;
+						vectorDelta.y = 0;
+						object_a->Translate(vectorDelta);
+					}
+				}
+			}
+
+			//MessageBox(NULL, L"Collided !!", L"INFO", NULL);
+		}
+		else if (isCollide == false)
+		{
+			object_a->SetOnGround(false);
+		}
 	}
 }
 
 void Grid::handleObject(GameObject * object, GameObject * other)
 {
-	int attackDistance = 15;
+	int attackDistance = 50;
 	while (other != NULL)
 	{
 		D3DXVECTOR2 objectPos(object->pos_x, object->pos_y);

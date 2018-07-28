@@ -26,6 +26,10 @@ Sprite::Sprite(LPD3DXSPRITE sprite, LPDIRECT3DTEXTURE9 texture, int width, int h
 		return;
 }
 
+Sprite::Sprite()
+{
+}
+
 Sprite::Sprite(LPD3DXSPRITE SpriteHandler, LPDIRECT3DTEXTURE9 texture, LPWSTR _coord, int width, int height, int count)
 {
 	this->count = count;

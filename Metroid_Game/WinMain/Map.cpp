@@ -1,29 +1,19 @@
 ﻿#include "Map.h"
 
 
-Map::Map(LPD3DXSPRITE spriteHandler, string filePath, LPDIRECT3DDEVICE9 d3ddev, int left, int top) {
+Map::Map(LPD3DXSPRITE spriteHandler, string filePath, DeviceManager *deviceManager, int left, int top, Grid * grid) {
 	this->filePath = filePath;
-	this->d3ddev = d3ddev;
+	this->deviceManager = deviceManager;
 
-	grid = new Grid();
-	//marumari = new  MaruMari();
-	
-	//---------Khởi tạo spriteHandler---------------
-	if (this->d3ddev == NULL) return;
-
-	HRESULT result = D3DXCreateSprite(this->d3ddev, &spriteHandler);
-	if (result != D3D_OK)
-		trace(L"Unable to create SpriteHandler");
-
-	Texture * texture = new Texture();
-	_texture = texture->loadTexture(this->d3ddev, BRICK_TEXTURE);
-	if (_texture == NULL)
+	this->grid = grid;
+	Texture * text1 = new Texture();
+	this->texture = text1->loadTexture(this->deviceManager->getdevice(), L"brick_32x32.png");
+	if (texture == NULL)
 		trace(L"Unable to load BrickTexture");
-
-	tileMap = new TileObject();
-	tileMap->InitSprites(this->d3ddev, _texture);
-	tileMap->Init(left, top);
-
+	
+	this->sprite = new Sprite(spriteHandler, this->texture, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, 1, 1);
+	if (this->sprite == NULL)
+		trace(L"Unable to load map sprite");
 	if (!this->loadMap(this->filePath)) {
 		trace(L"Unable to load map");
 	}
@@ -31,7 +21,7 @@ Map::Map(LPD3DXSPRITE spriteHandler, string filePath, LPDIRECT3DDEVICE9 d3ddev, 
 }
 
 Map::~Map() {
-	
+	delete sprite;
 }
 
 void Map::setLimitation(int x, int y, int width, int height) {
@@ -48,6 +38,14 @@ RECT Map::getBoundary()
 	return m_boundary;
 }
 
+LPDIRECT3DDEVICE9 Map::getDevice() {
+	return this->deviceManager->getdevice();
+}
+
+LPDIRECT3DTEXTURE9 Map::getTexture() {
+	return this->texture;
+}
+
 vector<string> Map::getStringMap() {
 	return this->stringMap;
 }
@@ -61,6 +59,21 @@ bool Map::loadMap(string filePath) {
 		if (str.length() > column)
 			column = str.length();
 		stringMap.push_back(str);
+
+		int index = 0;
+		while (index < str.length())
+		{
+			if (str[index] != '0')
+			{
+				float y = (row - 1)*BRICK_SIZE;
+				float x = (index)*BRICK_SIZE;
+				TileObject * tile = new TileObject(x,y);
+				grid->add(tile);
+				tile = nullptr;
+				delete tile;
+			}
+			index++;
+		}
 	}
 
 	m_max_Row = row;
@@ -71,289 +84,291 @@ bool Map::loadMap(string filePath) {
 	return false;
 }
 
-void Map::drawMap() {
+void Map::drawMap() 
+{
 	for (int i = 0; i < drawBrickArray.size(); i++)
 	{
 		drawBrick(drawBrickArray[i]);
 	}
 }
 
-void Map::drawBrick(TileObject * value) {
-	float x_pixel = value->x_pixel;
-	float y_pixel = value->y_pixel;
+void Map::drawBrick(brick value) {
+	float x_pixel = value.x_pixel;
+	float y_pixel = value.y_pixel;
 	D3DXVECTOR3 pos = D3DXVECTOR3(x_pixel, y_pixel, 0);
 	// draw different type of bricks
-	switch (value->type)
+	switch (value.type)
 	{
 	case '1':
 	{
-		tileMap->Render('1', 0, pos);
+		sprite->drawSprite(0, 0, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '2':
 	{
-		tileMap->Render('2', 1, pos);
+		sprite->drawSprite(0, 1 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '3':
 	{
-		tileMap->Render('3', 2, pos);
+		sprite->drawSprite(0, 2 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '4':
 	{
-		tileMap->Render('4', 3, pos);
+		sprite->drawSprite(0, 3 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '5':
 	{
-		tileMap->Render('5', 4, pos);
+		sprite->drawSprite(0, 4 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '6':
 	{
-		tileMap->Render('6', 5, pos);
+		sprite->drawSprite(0, 5 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '7':
 	{
-		tileMap->Render('7', 6, pos);
+		sprite->drawSprite(0, 6 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '8':
 	{
-		tileMap->Render('8', 7, pos);
+		sprite->drawSprite(0, 7 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '9':
 	{
-		tileMap->Render('9', 8, pos);
+		sprite->drawSprite(0, 8 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'a':
 	{
-		tileMap->Render('a', 9, pos);
+		sprite->drawSprite(0, 9 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'b':
 	{
-		tileMap->Render('b', 10, pos);
+		sprite->drawSprite(0, 10 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'c':
 	{
-		tileMap->Render('c', 11, pos);
+		sprite->drawSprite(0, 11 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'd':
 	{
-		tileMap->Render('d', 12, pos);
+		sprite->drawSprite(0, 12 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
+
 		break;
 	}
 	case 'e':
 	{
-		tileMap->Render('e', 13, pos);
+		sprite->drawSprite(0, 13 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'f':
 	{
-		tileMap->Render('f', 14, pos);
+		sprite->drawSprite(0, 14 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 
 		break;
 	}
 	case 'g':
 	{
-		tileMap->Render('g', 15, pos);
+		sprite->drawSprite(0, 15 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'h':
 	{
-		tileMap->Render('h', 16, pos);
+		sprite->drawSprite(0, 16 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'i':
 	{
-		tileMap->Render('i', 17, pos);
+		sprite->drawSprite(0, 17 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'k':
 	{
-		tileMap->Render('k', 18, pos);
+		sprite->drawSprite(0, 18 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'l':
 	{
-		tileMap->Render('l', 19, pos);
+		sprite->drawSprite(0, 19 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'm':
 	{
-		tileMap->Render('m', 20, pos);
+		sprite->drawSprite(0, 20 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'n':
 	{
-		tileMap->Render('n', 21, pos);
+		sprite->drawSprite(0, 21 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'o':
 	{
-		tileMap->Render('o', 22, pos);
+		sprite->drawSprite(0, 22 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'p':
 	{
-		tileMap->Render('p', 23, pos);
+		sprite->drawSprite(0, 23 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'q':
 	{
-		tileMap->Render('q', 24, pos);
+		sprite->drawSprite(0, 24 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'r':
 	{
-		tileMap->Render('r', 25, pos);
+		sprite->drawSprite(0, 25 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 's':
 	{
-		tileMap->Render('s', 26, pos);
+		sprite->drawSprite(0, 26 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 't':
 	{
-		tileMap->Render('t', 27, pos);
+		sprite->drawSprite(0, 27 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'u':
 	{
-		tileMap->Render('u', 28, pos);
+		sprite->drawSprite(0, 28 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'v':
 	{
-		tileMap->Render('v', 29, pos);
+		sprite->drawSprite(0, 29 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'w':
 	{
-		tileMap->Render('w', 30, pos);
+		sprite->drawSprite(0, 30 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'x':
 	{
-		tileMap->Render('x', 31, pos);
+		sprite->drawSprite(0, 31 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'y':
 	{
-		tileMap->Render('y', 32, pos);
+		sprite->drawSprite(0, 32 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'z':
 	{
-		tileMap->Render('z', 33, pos);
+		sprite->drawSprite(0, 33 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'A':
 	{
-		tileMap->Render('A', 34, pos);
+		sprite->drawSprite(0, 34 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'B':
 	{
-		tileMap->Render('B', 35, pos);
+		sprite->drawSprite(0, 35 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'C':
 	{
-		tileMap->Render('C', 36, pos);
+		sprite->drawSprite(0, 36 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'D':
 	{
-		tileMap->Render('D', 37, pos);
+		sprite->drawSprite(0, 37 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'E':
 	{
-		tileMap->Render('E', 38, pos);
+		sprite->drawSprite(0, 38 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'F':
 	{
-		tileMap->Render('F', 39, pos);
+		sprite->drawSprite(0, 39 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'G':
 	{
-		tileMap->Render('G', 40, pos);
+		sprite->drawSprite(0, 40 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'H':
 	{
-		tileMap->Render('H', 41, pos);
+		sprite->drawSprite(0, 41 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'I':
 	{
-		tileMap->Render('I', 42, pos);
+		sprite->drawSprite(0, 42 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'K':
 	{
-		tileMap->Render('K', 43, pos);
+		sprite->drawSprite(0, 43 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'L':
 	{
-		tileMap->Render('L', 44, pos);
+		sprite->drawSprite(0, 44 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'M':
 	{
-		tileMap->Render('M', 45, pos);
+		sprite->drawSprite(0, 45 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'N':
 	{
-		tileMap->Render('N', 46, pos);
+		sprite->drawSprite(0, 46 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'O':
 	{
-		tileMap->Render('O', 47, pos);
+		sprite->drawSprite(0, 47 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'P':
 	{
-		tileMap->Render('P', 48, pos);
+		sprite->drawSprite(0, 48 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'Q':
 	{
-		tileMap->Render('Q', 49, pos);
+		sprite->drawSprite(0, 49 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'R':
 	{
-		tileMap->Render('R', 50, pos);
+		sprite->drawSprite(0, 50 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'S':
 	{
-		tileMap->Render('S', 51, pos);
+		sprite->drawSprite(0, 51 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case 'T':
 	{
-		tileMap->Render('T', 52, pos);
+		sprite->drawSprite(0, 52 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case'U':
 	{
-		tileMap->Render('U', 53, pos);
+		sprite->drawSprite(0, 53 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '0':
@@ -372,11 +387,11 @@ void Map::Update(int roomID) {
 void Map::UpdateMap(RECT cameraBound) {
 	drawBrickArray.clear();
 	RECT bound = cameraBound;
-	bound.left -=  2 * BRICK_SIZE;
+	bound.left -= 2 * BRICK_SIZE;
 	bound.top -= 2 * BRICK_SIZE;
 	vector<string> strBrick = this->getStringMap();
 
-	//kiem tra neu brick nam ben trong cai bound
+	//may phai kiem tra neu cai brick do nam ben trong cai bound
 	for (int i = 0; i < strBrick.size(); i++)
 	{
 		for (int j = 0; j < strBrick[i].length(); j++)
@@ -384,13 +399,11 @@ void Map::UpdateMap(RECT cameraBound) {
 			float x_pixel = m_boundary.left + j * BRICK_SIZE;
 			float y_pixel = m_boundary.top + i * BRICK_SIZE;
 			D3DXVECTOR2 point(x_pixel, y_pixel);
-			if ( Math::isPointinRectangle(point, bound) ) {
-				TileObject * new_brick = new TileObject();
-				new_brick->type = strBrick[i][j];
-				new_brick->x_pixel = x_pixel;
-				new_brick->y_pixel = y_pixel;
-				new_brick->pos_x = new_brick->x_pixel;
-				new_brick->pos_y = new_brick->y_pixel;
+			if (Math::isPointinRectangle(point, bound)) {
+				brick new_brick = brick();
+				new_brick.type = strBrick[i][j];
+				new_brick.x_pixel = x_pixel;
+				new_brick.y_pixel = y_pixel;
 				drawBrickArray.push_back(new_brick);
 			}
 		}

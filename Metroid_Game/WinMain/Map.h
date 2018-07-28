@@ -3,31 +3,35 @@
 #include "Texture.h"
 #include "Define.h"
 #include "trace.h"
-#include <vector>
-#include <iostream>
-#include <fstream>
+#include<vector>
+#include<iostream>
+#include<fstream>
 #include <string>
 #include <string.h>
 #include <stdio.h>
 #include <vector>
 #include "Math.h"
 #include <d3dx9.h>
-#include "TileObject.h"
 #include "Grid.h"
-#include "MaruMari.h"
+#include "TileObject.h"
 
 class Camera;
 
 using namespace std;
 
 class Map {
+	struct brick {
+		char type;
+		int x_pixel;
+		int y_pixel;
+	};
 public:
-	Map(LPD3DXSPRITE spriteHandler, string filePath, LPDIRECT3DDEVICE9 d3ddev, int left, int top);
+	Map(LPD3DXSPRITE spriteHandler, string filePath, DeviceManager *deviceManager, int left, int top, Grid * grid);
 
 	~Map();
 
 	void drawMap();
-	void drawBrick(TileObject * value);
+	void drawBrick(brick value);
 
 	void Update(int _roomID);
 	void UpdateMap(RECT);
@@ -39,19 +43,21 @@ public:
 	// Load map lên
 	bool loadMap(string filePath);
 
+	LPDIRECT3DDEVICE9 getDevice();
+	LPDIRECT3DTEXTURE9 getTexture();
 	vector<string> getStringMap();
 
 	static const int count = 0;
-	TileObject * tileMap;
+
 private:
-	//MaruMari * marumari;
-	Grid * grid;
 	std::string filePath;
 	vector<string> stringMap;
-	vector<TileObject *> drawBrickArray = vector<TileObject *> ();
+	vector<brick> drawBrickArray = vector<brick>();
 	int roomID;
-	LPDIRECT3DTEXTURE9 _texture;
-	LPDIRECT3DDEVICE9 d3ddev;
+	Sprite *sprite;
+	Grid * grid;
+
+	DeviceManager *deviceManager;
 
 	//Start coordinate of the camera
 	RECT m_boundary = RECT();
@@ -62,4 +68,6 @@ private:
 
 	int m_max_Row;
 	int m_max_Column;
+
+	LPDIRECT3DTEXTURE9 texture;
 };

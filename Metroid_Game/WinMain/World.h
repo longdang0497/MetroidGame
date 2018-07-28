@@ -10,6 +10,7 @@
 #include "Grid.h"
 #include "Gate.h"
 #include "GateBlock.h"
+#include "ExplodeEffect.h"
 
 using namespace std;
 //#include "BulletManager.h"
@@ -30,6 +31,7 @@ public:
 	Samus * samus;
 	MaruMari * maruMari;
 	Skree * skree;
+	ExplodeEffect * explode;
 	//Manager * bulletManager;
 	LPD3DXSPRITE spriteHandler;
 	vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);

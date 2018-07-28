@@ -17,10 +17,9 @@ class GameObject;
 #define TIME_FREEZING 5000
 #define TIME_IN_GAME 7000
 
-#define JUMP_VELOCITY_BOOST 0.5f
+#define JUMP_VELOCITY_BOOST 10.0f
 #define JUMP_VELOCITY_BOOST_FIRST 70.0f
-#define FALLDOWN_VELOCITY_DECREASE 0.3f
-#define GRAVITY_VELOCITY 0.5f
+#define FALLDOWN_VELOCITY_DECREASE 50.0f
 #define ANIMATE_RATE 20
 #define LIVE_TIME 3000
 
@@ -52,7 +51,8 @@ enum OBJECT_TYPE
 	BRICK = 2,
 	BULLET = 3,
 	ITEM = 4,
-	GATE = 5
+	GATE = 5,
+	EFFECT = 6
 };
 //================= END OBJECT TYPE ============
 
@@ -315,3 +315,20 @@ enum ENEMY_TYPE
 
 #define GATE_TIME_SURVIVE 3
 //================= END GATE ===========
+
+//================ EFFECT ===================
+enum EFFECT_TYPE
+{
+	EXPLOSION
+};
+
+#define EFFECT_TIME_SURVIVE 300
+#define EFFECT_SPRITE_PATH L"sprites\\effect\\explosion.png"
+
+//========== EFFECT EXPLOSION
+#define EFFECT_EXPLOSION L"sprites\\effect\\EFFECT_EXPLOSION.txt"
+#define EFFECT_EXPLOSION_WIDTH 64
+#define EFFECT_EXPLOSION_HEIGHT 64
+#define EFFECT_EXPLOSION_COUNT 3
+
+//================ END EFFECT ===============
