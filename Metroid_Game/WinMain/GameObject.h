@@ -41,7 +41,7 @@ public:
 public:
 	GameObject();
 	~GameObject();
-	float sweptAABB(GameObject* object, float &normalX, float &normalY);
+	float sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDirection, float deltaTime);
 	bool isCollided(GameObject* object2);
 	//======================== GET - SET METHOD ================================
 	OBJECT_TYPE getType();
@@ -95,6 +95,6 @@ public:
 	virtual void Destroy();
 
 	// ============================== END VIRTUAL METHOD =============================
-
+	
 
 };

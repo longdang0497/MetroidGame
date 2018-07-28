@@ -39,12 +39,15 @@ void GameObject::Destroy()
 {
 }
 
-float GameObject::sweptAABB(GameObject* object, float &normalX, float &normalY) {
+float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDirection, float deltaTime) {
 	float xInvEntry, yInvEntry;
 	float xInvExit, yInvExit;
 
+	float vX = this->vx * deltaTime;
+	float vY = this->vy * deltaTime;
+
 	// tim khoang cach giua 2 vat the 
-	if (this->vx > 0.0f) {
+	if (vX > 0.0f) {
 		xInvEntry = object->getPosX() - (this->pos_x + this->width);
 		xInvExit = (object->getWidth() + object->getPosX()) - this->pos_x;
 	}
@@ -53,7 +56,7 @@ float GameObject::sweptAABB(GameObject* object, float &normalX, float &normalY) 
 		xInvExit = object->getPosX() - (this->pos_x + this->width);
 	}
 
-	if (this->vy > 0.0f) {
+	if (vY > 0.0f) {
 		yInvEntry = object->getPosY() - (this->getPosY() + this->getHeight());
 		yInvExit = object->getPosY() + object->getHeight() - this->getPosY();
 	}
@@ -65,22 +68,22 @@ float GameObject::sweptAABB(GameObject* object, float &normalX, float &normalY) 
 	// Tinh khoang thoi gian va cham va thoi gian het va cham
 	float xEntry, yEntry;
 	float xExit, yExit;
-	if (this->vx == 0.0f) {
+	if (vX == 0.0f) {
 		xEntry = -std::numeric_limits<float>::infinity();
 		xExit = std::numeric_limits<float>::infinity();
 	}
 	else {
-		xEntry = xInvEntry / this->vx;
-		xExit = xInvExit / this->vx;
+		xEntry = xInvEntry / vX;
+		xExit = xInvExit /  vX;
 	}
 
-	if (this->vy == 0.0f) {
+	if (vY == 0.0f) {
 		yEntry = -std::numeric_limits<float>::infinity();
 		yExit = std::numeric_limits<float>::infinity();
 	}
 	else {
-		yEntry = yInvEntry / this->vy;
-		yExit = yInvExit / this->vy;
+		yEntry = yInvEntry / vY;
+		yExit = yInvExit / vY;
 	}
 
 	// Xac dinh truc nao bi va cham dau tien
@@ -89,29 +92,24 @@ float GameObject::sweptAABB(GameObject* object, float &normalX, float &normalY) 
 
 												// neu khong co va cham
 	if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
-		normalX = 0.0f;
-		normalY = 0.0f;
+		collisionDirection = NONE;
 		return 1.0f;
 	}
 	else {
 		if (xEntry > yEntry) { // này là đã va chạm ở trục Y rồi
-			if (xInvEntry < 0.0f) {  // Trường hợp nhân vật bị dính với object đang xét
-				normalX = 1.0f;
-				normalY = 0.0f;
+			if (xInvEntry > 0.0f) {
+				collisionDirection = RIGHT;
 			}
-			else {					// Nếu chưa dính
-				normalX = -1.0f;
-				normalY = 0.0f;
+			else {
+				collisionDirection = LEFT;
 			}
 		}
 		else {			// Này là va chạm với trục X rồi nè
-			if (yInvEntry < 0.0f) {
-				normalX = 0.0f;
-				normalY = 1.0f;
+			if (yInvEntry > 0.0f) {
+				collisionDirection = BOTTOM;
 			}
 			else {
-				normalX = 0.0f;
-				normalY = -1.0f;
+				collisionDirection = TOP;
 			}
 		}
 	}

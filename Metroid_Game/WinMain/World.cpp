@@ -33,6 +33,7 @@ World::~World()
 
 void World::Update(float t)
 {
+	this->grid->setDeltaTime(t);
 	this->samus->Update(t);
 	int row = (int)floor(this->samus->getlastPosY() / CELL_SIZE);
 	int column = (int)floor(this->samus->getlastPosX() / CELL_SIZE);

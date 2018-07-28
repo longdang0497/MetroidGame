@@ -12,6 +12,7 @@ Grid::Grid() {
 		for (int j = 0; j < numOfColumn; j++)
 			cells[i][j] = NULL;
 	}
+	this->deltaTime = 0.0f;
 }
 
 Grid::Grid(int height, int width) {
@@ -23,6 +24,7 @@ Grid::Grid(int height, int width) {
 		for (int j = 0; j < numOfColumn; j++)
 			cells[i][j] = NULL;
 	}
+	this->deltaTime = 0.0f;
 }
 
 Grid::~Grid() {
@@ -51,6 +53,18 @@ void Grid::add(GameObject* object) {
 	if (object->nextUnit != NULL) {
 		object->nextUnit->previousUnit = object;
 	}
+}
+
+void Grid::resetGrid(int width, int height) {
+	this->numOfRow = (int)ceil(height * BRICK_SIZE / CELL_SIZE);
+	this->numOfColumn = (int)ceil(width * BRICK_SIZE / CELL_SIZE);
+
+	for (int i = 0; i < numOfRow; i++)
+	{
+		for (int j = 0; j < numOfColumn; j++)
+			cells[i][j] = NULL;
+	}
+	this->deltaTime = 0.0f;
 }
 
 // Dùng để xét cái ô cell hiện tại, như là va chạm của object mình đang xét với các object còn lại
@@ -105,12 +119,13 @@ void Grid::handleObject(GameObject *object, GameObject* otherObject) {
 
 // Xét va chạm và cập nhật tình trạng của 2 object
 void Grid::handleCollision(GameObject *object, GameObject *otherObject) {
-	float normalX = 0.0f;
-	float normalY = 0.0f;
-	float collisionTime = object->sweptAABB(otherObject, normalX, normalY);
+	COLLISION_DIRECTION collisionDirection = NONE;
+	float collisionTime = object->sweptAABB(otherObject, collisionDirection, this->getDeltaTime());
 	float remainingTime = 1.0f - collisionTime;
 	if (remainingTime != 0.0f && remainingTime < 1.0f) {
-		MessageBox(NULL, L"Va cham", L"Va cham", MB_OK);
+		if (object->getType() == SAMUS) {
+			object->setActive(false);
+		}
 	}
 }
 
@@ -154,4 +169,12 @@ void Grid::updateGrid(vector<GameObject*> listObject) {
 
 		this->handleCell(object, newRow, newColumn);
 	}
+}
+
+void Grid::setDeltaTime(float deltaTime) {
+	this->deltaTime = deltaTime;
+}
+
+float Grid::getDeltaTime() {
+	return this->deltaTime;
 }
