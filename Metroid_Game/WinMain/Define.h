@@ -9,6 +9,16 @@ class Game;
 class Bullet;
 class Grid;
 class GameObject;
+class Bomb;
+class ItemBomb;
+class Item;
+class Enemy;
+class Zoomer;
+class Gate;
+class GateBlock;
+class Skree;
+class Effect;
+class ExplodeEffect;
 
 #define KEYBOARD_BUFFER_SIZE	1024
 #define KEY_DOWN(code) ( IsKeyDown(code) )
@@ -26,6 +36,11 @@ class GameObject;
 #define SAMUS_SPEED 200.0f
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
+
+#define MAP_ROOM1 "map\\fieldRoom1.txt"
+#define MAP_ROOM2 "map\\fieldBossRidley.txt"
+#define MAP_ROOM3 "map\\fieldBossMB.txt"
+#define MAP_STAIR "map\\fieldStair.txt"
 
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
@@ -46,13 +61,24 @@ class GameObject;
 //================= OBJECT TYPE ================
 enum OBJECT_TYPE
 {
-	SAMUS = 0,
-	ENEMY = 1,
-	BRICK = 2,
-	BULLET = 3,
-	ITEM = 4,
-	GATE = 5,
-	EFFECT = 6
+	SAMUS,
+	BRICK,
+	BULLET,
+	ITEM,
+	GATE,
+	EFFECT,
+	ZOOMER_YELLOW,
+	ZOOMER_PINK,
+	SKREE,
+	GATE_BLOCK,
+	RIDLEY,
+	MOTHER_BRAIN,
+	EXPLOSION,
+	MARU_MARI,
+	ENERGY_ITEM,
+	MISSILE_ITEM,
+	BOMB_ITEM,
+	BOMB_WEAPON
 };
 //================= END OBJECT TYPE ============
 
@@ -72,7 +98,7 @@ enum OBJECT_TYPE
 
 //================ SPRITE SAMUS ================
 #define WIDTH_SAMUS_STAND 42
-#define HEIGHT_SAMUS_STAND 66
+#define HEIGHT_SAMUS_STAND 64
 #define COUNT_SAMUS_STAND 1
 #define STAND_RIGHT_PATH L"sprites\\STAND_RIGHT.txt"
 #define STAND_LEFT_PATH L"sprites\\STAND_LEFT.txt"
@@ -158,7 +184,7 @@ enum OBJECT_TYPE
 
 //================ BRICK SIZE =============================================
 #define BRICK_SIZE 32
-#define BRICK_TEXTURE L"brick_32x32.png"
+#define BRICK_TEXTURE L"map\\brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
 //================ GAME SOUND =============================================
@@ -174,14 +200,7 @@ enum OBJECT_TYPE
 #define WIDTH_BULLET 24
 #define HEIGHT_BULLET 28
 
-enum ITEM_TYPE
-{
-	MARU_MARI,
-	ENERGY_ITEM,
-	MISSILE_ITEM
-};
-
-#define ITEM_TIME_SURVIVE 5000
+#define ITEM_TIME_SURVIVE 10
 #define ITEM_SPRITE_PATH L"sprites\\item\\items_sprite_sheet.png"
 
 //========= ITEM MARU MARI
@@ -205,20 +224,14 @@ enum ITEM_TYPE
 #define ITEM_MISSILE_COUNT 1
 
 #define ITEM_MISSILE_GAIN 3
-//================ END GAME ITEM ===================================
 
-//================= ENEMY TYPE =================
-enum ENEMY_TYPE
-{
-	ZOOMER_YELLOW = 0,
-	ZOOMER_PINK = 1,
-	SKREE = 2,
-	BLOCK = 3,
-	BEE = 4,
-	RIDLEY = 5,
-	MOTHER_BRAIN = 6,
-};
-//================= END ENEMY TYPE =============
+//========= ITEM BOMB
+#define ITEM_BOMB_PATH L"sprites\\item\\ITEM_BOMB.txt"
+#define BOMB_PATH L"sprites\\item\\BOMB.txt"
+#define ITEM_BOMB_WIDTH 32
+#define ITEM_BOMB_HEIGHT 37
+#define BOMB_SIZE 17
+//================ END GAME ITEM ===================================
 
 //================== ENEMY =====================
 //================== ZOOMER =====================
@@ -317,18 +330,13 @@ enum ENEMY_TYPE
 //================= END GATE ===========
 
 //================ EFFECT ===================
-enum EFFECT_TYPE
-{
-	EXPLOSION
-};
-
-#define EFFECT_TIME_SURVIVE 300
-#define EFFECT_SPRITE_PATH L"sprites\\effect\\explosion.png"
+#define EFFECT_TIME_SURVIVE 2
+#define EFFECT_SPRITE_PATH L"sprites\\explode_effect\\explosion.png"
 
 //========== EFFECT EXPLOSION
-#define EFFECT_EXPLOSION L"sprites\\effect\\EFFECT_EXPLOSION.txt"
-#define EFFECT_EXPLOSION_WIDTH 64
-#define EFFECT_EXPLOSION_HEIGHT 64
+#define EFFECT_EXPLOSION L"sprites\\explode_effect\\EFFECT_EXPLOSION.txt"
+#define EFFECT_EXPLOSION_WIDTH 32
+#define EFFECT_EXPLOSION_HEIGHT 32
 #define EFFECT_EXPLOSION_COUNT 3
 
 //================ END EFFECT ===============

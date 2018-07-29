@@ -1,14 +1,10 @@
 ﻿#include "TileObject.h"
 
 TileObject::TileObject(float x, float y)
-{
-	
+{	
 	//Set type
 	this->type = BRICK;
 	currentSprite = nullptr;
-	/*currentSprite = new Sprite();
-	currentSprite->width = BRICK_SIZE;
-	currentSprite->height = BRICK_SIZE;*/
 
 	pos_x = x;
 	pos_y = y;

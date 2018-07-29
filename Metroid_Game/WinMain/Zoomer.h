@@ -20,7 +20,7 @@ protected:
 	Sprite * right;
 public:
 	Zoomer();
-	Zoomer(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type);
+	Zoomer(LPD3DXSPRITE spriteHandler, World * manager);
 	~Zoomer();
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
 	//============== OVERRIDE VIRTUAL METHOD ===================

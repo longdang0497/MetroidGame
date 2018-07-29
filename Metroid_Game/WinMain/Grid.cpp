@@ -119,6 +119,7 @@ void Grid::handleCollision(GameObject * object_a, GameObject * object_b)
 	}
 }
 
+//broadphasing
 void Grid::handleObject(GameObject * object, GameObject * other)
 {
 	int attackDistance = 50;

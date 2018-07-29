@@ -130,6 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BombWeapon.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -168,6 +170,8 @@
     <ClCompile Include="Zoomer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BombWeapon.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletManager.h" />
     <ClInclude Include="Camera.h" />
@@ -206,10 +210,9 @@
     <ClInclude Include="Zoomer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="brick_16x16.png" />
-    <Image Include="brick_32x32.png" />
     <Image Include="enemy\explosion.png" />
     <Image Include="enemy\metroid_enemies_sheet.png" />
+    <Image Include="map\brick_32x32.png" />
     <Image Include="scene\gameover_background.png" />
     <Image Include="scene\intro_background.png" />
     <Image Include="scene\start_background.png" />
@@ -235,14 +238,19 @@
     <Text Include="enemy\ZOOMER_YELLOW_LEFT.txt" />
     <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt" />
     <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
-    <Text Include="field1.txt" />
+    <Text Include="map\fieldBossMB.txt" />
+    <Text Include="map\fieldBossRidley.txt" />
+    <Text Include="map\fieldRoom1.txt" />
+    <Text Include="map\fieldStair.txt" />
     <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt" />
     <Text Include="sprites\gate\GATE_BLOCK.txt" />
     <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt" />
     <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt" />
     <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt" />
     <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt" />
+    <Text Include="sprites\item\BOMB.txt" />
     <Text Include="sprites\item\BULLET.txt" />
+    <Text Include="sprites\item\ITEM_BOMB.txt" />
     <Text Include="sprites\item\ITEM_ENERGY.txt" />
     <Text Include="sprites\item\ITEM_MISSILE.txt" />
     <Text Include="sprites\item\MARU_MARI.txt" />

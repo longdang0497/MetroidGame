@@ -3,7 +3,7 @@
 
 MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid) :Item(spriteHandler, manager, grid)
 {
-	item_type = MARU_MARI;
+	this->type = MARU_MARI;
 	maruMari = NULL;
 	isActive = true;
 
@@ -50,9 +50,7 @@ void MaruMari::Render()
 	if (!isActive)
 		return;
 
-	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
 	currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
-	spriteHandler->End();
 }
 
 void MaruMari::Destroy()

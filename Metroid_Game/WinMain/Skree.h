@@ -10,7 +10,7 @@ protected:
 	int animate_rate;	// cần biến này vì khi dí theo Samus animate rate thay đổi
 public:
 	Skree();
-	Skree(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type);
+	Skree(LPD3DXSPRITE spriteHandler, World * manager);
 	~Skree();
 
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);

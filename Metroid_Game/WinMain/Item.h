@@ -3,7 +3,6 @@
 class Item : public GameObject
 {
 protected:
-	ITEM_TYPE item_type;
 	float time_survive;
 	int number_gain;
 public:

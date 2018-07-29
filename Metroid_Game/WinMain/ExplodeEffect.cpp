@@ -1,45 +1,73 @@
 ﻿#include "ExplodeEffect.h"
 
 ExplodeEffect::ExplodeEffect(LPD3DXSPRITE spriteHandler, World *manager, Grid * grid) : Effect(spriteHandler, manager, grid)
-{/*
-	effect_type = EXPLOSION;
+{
+	this->type = EXPLOSION;
+	this->grid = grid;
+	this->manager = manager;
 	explode = nullptr;
-	currentSprite = explode;*/
+	isActive = false;
 }
 
 ExplodeEffect::~ExplodeEffect()
 {
-	//delete explode;
+	currentSprite = nullptr; delete currentSprite;
+	delete explode;
+	delete manager;
+	delete grid;
 }
 
 void ExplodeEffect::Update(float t)
 {
-	/*DWORD now = GetTickCount();
-	if (now - last_time > 1000 / ANIMATE_RATE)
+	if (isActive == true && manager->bomb->getBombExplode() == true)
 	{
-		currentSprite->updateIndex();
-		last_time = now;
-	}*/
+		time_survive = EFFECT_TIME_SURVIVE;
+		DWORD now = GetTickCount();
+		if (now - last_time > 1000 / ANIMATE_RATE)
+		{
+			//if (isRendering == true)
+				currentSprite->updateIndex();
+			last_time = now;
+		}
+	}
+	else
+		return;
 
-	//// Tính thời gian hiển thị
-	//time_survive -= t;
-	//// Nếu hết thời gian thì không hiển thị nữa
-	//if (time_survive <= 0)
-	//{
-	//	isActive = false;
-	//}
+	// Tính thời gian hiển thị
+	time_survive -= t;
+
+	if (time_survive <= 0)
+		isActive = false;
 }
 
 void ExplodeEffect::Render()
 {
+	D3DXVECTOR3 position;
+	position.x = pos_x;
+	position.y = pos_y;
+	position.z = 0;
+
+	if (isActive == true && manager->bomb->getBombExplode() == true)
+	{
+		//isRendering == true;
+		currentSprite->drawSprite(EFFECT_EXPLOSION_WIDTH, EFFECT_EXPLOSION_HEIGHT, position);
+	}
+		
+}
+
+void ExplodeEffect::CreateExplode(float x, float y)
+{
+	this->pos_y = y;
+	this->pos_x = x;
+	currentSprite = explode;
 }
 
 void ExplodeEffect::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 {
-	//if (d3ddv == NULL) return;
-	////Create sprite handler
-	//HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
-	//if (result != D3D_OK) return;
+	if (d3ddv == NULL) return;
+	//Create sprite handler
+	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
+	if (result != D3D_OK) return;
 
-	//currentSprite = new Sprite(spriteHandler, texture, EFFECT_EXPLOSION, EFFECT_EXPLOSION_WIDTH, EFFECT_EXPLOSION_HEIGHT, EFFECT_EXPLOSION_COUNT);
+	explode = new Sprite(spriteHandler, texture, EFFECT_EXPLOSION, EFFECT_EXPLOSION_WIDTH, EFFECT_EXPLOSION_HEIGHT, EFFECT_EXPLOSION_COUNT);
 }

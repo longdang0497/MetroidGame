@@ -6,9 +6,8 @@ Skree::Skree()
 {
 }
 
-Skree::Skree(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type) : Enemy(spriteHandler, manager)
+Skree::Skree(LPD3DXSPRITE spriteHandler, World * manager) : Enemy(spriteHandler, manager)
 {
-	this->enemy_type = enemy_type;
 	this->isActive = true;
 
 	//Set animate rate ban đầu

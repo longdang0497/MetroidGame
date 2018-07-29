@@ -5,9 +5,8 @@ Zoomer::Zoomer()
 {
 }
 
-Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type) : Enemy(spriteHandler, manager)
+Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager) : Enemy(spriteHandler, manager)
 {
-	this->enemy_type = enemy_type;
 	this->isActive = true;
 
 	//Set vận tốc
@@ -35,7 +34,7 @@ void Zoomer::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 
 	LPWSTR top_path = NULL, bottom_path = NULL, left_path = NULL, right_path = NULL;
 
-	switch (enemy_type)
+	switch (this->type)
 	{
 	case ZOOMER_YELLOW:
 		top_path = ZOOMER_YELLOW_TOP;
@@ -308,7 +307,6 @@ void Zoomer::Render()
 	// Nếu không active thì không render
 	if (!isActive)
 		return;
-	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
 	switch (state)
 	{
 	case ON_ZOOMER_UP:
@@ -324,7 +322,6 @@ void Zoomer::Render()
 		right->drawSprite(right->getWidth(), right->getHeight(), position);
 		break;
 	}
-	spriteHandler->End();
 }
 
 void Zoomer::Destroy()

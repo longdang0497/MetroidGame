@@ -8,9 +8,6 @@
 
 class Enemy : public GameObject
 {
-protected:
-	ENEMY_TYPE enemy_type;
-
 public:
 	float time_freeze;	// thời gian dừng khi bị hit
 	float health;		// Máu của object
@@ -23,9 +20,6 @@ public:
 	virtual void InitPostition();
 	virtual void InitPostition(int x, int y);
 	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
-
-	ENEMY_TYPE GetEnemyType();
-	void SetEnemyType(ENEMY_TYPE enemy_type);
 
 	//============== OVERRIDE VIRTUAL METHOD ===============
 	virtual void Render();

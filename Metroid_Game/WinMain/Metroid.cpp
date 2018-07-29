@@ -15,15 +15,27 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
-	//world->maruMari->Init(420, 360);
-	//world->grid->add(world->maruMari);
-	//world->gateLeft->Init(2224, 160);
-	//world->gateLeft->grid->add(world->gateLeft);
-	//world->gateRight->Init(2304, 160);
-	//world->gateRight->grid->add(world->gateRight);
+	world->maruMari->Init(420, 290);
+	world->grid->add(world->maruMari);
 
-	//world->gateBlock->Init(2240, 160);
-	//world->gateBlock->grid->add(world->gateBlock);
+	world->itemBomb->Init(1056, 352);
+	world->grid->add(world->itemBomb);
+
+	world->bomb->CreateBomb(0, 0);
+	world->grid->add(world->bomb);
+	world->bomb->setActive(false);
+
+	world->explode->CreateExplode(360, 360);
+	world->grid->add(world->explode);
+	world->explode->setActive(false);
+
+	world->gateLeft->Init(2224, 160);
+	world->gateLeft->grid->add(world->gateLeft);
+	world->gateRight->Init(2304, 160);
+	world->gateRight->grid->add(world->gateRight);
+
+	world->gateBlock->Init(2240, 160);
+	world->gateBlock->grid->add(world->gateBlock);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -51,12 +63,12 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 
 Metroid::~Metroid()
 {
-	//delete(map);
-	//delete(world);
+	delete(map);
+	delete(world);
 }
 
 /*
-	Khoi tao Spritehandler va Texture cho game
+	Khoi tao Spritehandler cho game
 */
 void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 {
@@ -66,8 +78,6 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	HRESULT result = D3DXCreateSprite(d3ddev, &spriteHandler);
 	if (result != D3D_OK) 
 		trace(L"Unable to create SpriteHandler");
-
-	//manager = new Manager(this->spriteHandler);
 
 	/*bool check = sound->Init(_dxgraphics->getWnd());
 	if (!check)
@@ -84,7 +94,7 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	this->_InitSprites(d3ddev);
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), "field1.txt", this->_device, 0, 0, world->grid);
+	this->map = new Map(this->getSpriteHandler(), MAP_ROOM1, world, 0, 0, world->grid);
 		
 	if (camera) 
 	{
@@ -156,18 +166,7 @@ void Metroid::UpdateFrame(float Delta)
 		return;
 	}
 
-	world->Update(Delta);
-	/*if (manager->GetState() == true)
-		manager->Update(Delta);*/
-	/*for (int i = 0; i < world->zoomerYellow.size(); i++)
-	{
-		D3DXVECTOR2 enemy(world->zoomerYellow[i]->getPosX(), world->zoomerYellow[i]->getPosY());
-		if (Math::isPointinRectangle(enemy, this->camera->getBoundary())) {
-			world->zoomerYellow[i]->setActive(true);
-			world->zoomerYellow[i]->Update(Delta);
-		}
-	}*/
-	
+	world->Update(Delta);	
 
 	if (world->samus->isSamusDeath() == true)
 	{
@@ -242,8 +241,6 @@ void Metroid::RenderFrame(LPDIRECT3DDEVICE9 d3ddv)
 {
 	map->drawMap();
 	world->Render();
-	/*if (manager->GetState() == true)
-		manager->Render();*/
 }
 
 void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
@@ -364,17 +361,14 @@ void Metroid::OnKeyDown(int KeyCode)
 			case DIK_SPACE:
 				if (_input->IsKeyDown(DIK_SPACE))
 				{
-					bool activeBullet = true;
-					manager->SetState(activeBullet);
-					float x = world->samus->getPosX() + 5;
-					float y = world->samus->getPosY() + 6;
-					if (world->samus->GetState() == STAND_RIGHT) 
-						manager->_CreateBullets(x, y, 0.2, 0);
-					else if (world->samus->GetState() == STAND_LEFT)
-						manager->_CreateBullets(x, y, -0.2, 0);
-					/*if (samus->GetState() == AIMING_UP_LEFT || samus->GetState() == AIMING_UP_RIGHT || samus->GetState() == IDLING_AIM_UP_LEFT ||
-					samus->GetState() == IDLING_AIM_UP_RIGHT) manager->_CreateBullets(x, y, 0, 0.2);*/
-					
+					world->bomb->setActive(true);
+					world->bomb->setTimeSurvive(3);
+					float bombPosX = world->samus->getPosX() + world->samus->currentSprite->getWidth() / 2;
+					float bombPosY = world->samus->getPosY() + world->samus->currentSprite->getHeight() / 2;
+					//world->bomb->ResetBomb(bombPosX, bombPosY);
+					world->bomb->setPosX(bombPosX);
+					world->bomb->setPosY(bombPosY);
+					//world->bomb->setBombNo(0);
 				}
 				break;
 			case DIK_DOWN:
@@ -396,77 +390,6 @@ void Metroid::OnKeyDown(int KeyCode)
 				}		
 				break;
 			case DIK_UP:
-				//if (_input->IsKeyDown(DIK_UP))
-				//{
-				//	if (world->samus->GetState() != MORPH_RIGHT && _input->IsKeyDown(DIK_RIGHT))
-				//	{
-				//		start_jump = 0; // GetTickCount();
-				//		//now_jump = GetTickCount();						
-
-				//		time_jump = 0.15f;
-				//		world->samus->SetState(MORPH_RIGHT);
-				//		//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-				//		now_jump = GetCurrentTime();
-				//		float deltaTime = now_jump - start_jump;
-				//		if (deltaTime >= time_jump) // 10 * tick_per_frame)
-				//		{
-				//			deltaTime = time_jump;
-				//			world->samus->vy -= world->samus->gravity * deltaTime;
-				//			//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-				//		}
-				//	}
-				//	if (world->samus->GetState() != MORPH_LEFT && _input->IsKeyDown(DIK_LEFT))
-				//	{
-				//		start_jump = GetTickCount();
-				//		now_jump = GetTickCount();
-				//		world->samus->SetState(MORPH_LEFT);
-				//		world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-				//		now_jump = GetTickCount();
-				//		if ((now_jump - start_jump) <= 10 * tick_per_frame)
-				//		{
-				//			world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-				//		}
-				//	}
-				//	if (world->samus->getVelocityXLast() < 0)
-				//	{
-				//		if (world->samus->GetState() != JUMP_LEFT && world->samus->GetState() != MORPH_LEFT
-				//			&& world->samus->GetState() != JUMP_SHOOT_UP_LEFT)
-				//		{
-				//			start_jump = GetTickCount();
-				//			now_jump = GetTickCount();
-				//			if (world->samus->GetState() == STAND_SHOOT_UP_LEFT)
-				//				world->samus->SetState(JUMP_SHOOT_UP_LEFT);
-				//			else
-				//				world->samus->SetState(JUMP_LEFT);
-				//			world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-				//			now_jump = GetTickCount();
-				//			if ((now_jump - start_jump) <= 10 * tick_per_frame)
-				//			{
-				//				world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-				//			}
-				//		}
-				//	}
-				//	if (world->samus->getVelocityXLast() > 0)
-				//	{
-				//		if (world->samus->GetState() != JUMP_RIGHT && world->samus->GetState() != MORPH_RIGHT
-				//			&& world->samus->GetState() != JUMP_SHOOT_UP_RIGHT)
-				//		{
-				//			start_jump = GetTickCount();
-				//			now_jump = GetTickCount();
-				//			if (world->samus->GetState() == STAND_SHOOT_UP_RIGHT)
-				//				world->samus->SetState(JUMP_SHOOT_UP_RIGHT);
-				//			else
-				//				world->samus->SetState(JUMP_RIGHT);
-				//			world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST);
-				//			now_jump = GetTickCount();
-				//			if ((now_jump - start_jump) <= 10 * tick_per_frame)
-				//			{
-				//				world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST);
-				//			}
-				//		}
-				//	}
-				//}
-
 				/*if (_input->IsKeyDown(DIK_UP))
 				{
 					if (world->samus->getVelocityXLast() < 0)
@@ -542,6 +465,12 @@ void Metroid::OnKeyUp(int KeyCode)
 		{
 			world->samus->SetState(STAND_LEFT);
 		}
+		break;
+	case DIK_SPACE:
+		if (world->bomb->isActive == false)
+			world->bomb->ResetBombNo(1);
+		else if (world->bomb->isActive == false)
+			world->bomb->setBombNo(0);
 		break;
 	}
 }

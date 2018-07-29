@@ -5,7 +5,6 @@
 class Effect :	public GameObject
 {
 protected:
-	EFFECT_TYPE effect_type;
 	float time_survive;
 public:
 	Effect(LPD3DXSPRITE spriteHandler, World *manager, Grid* grid);

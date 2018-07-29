@@ -13,6 +13,7 @@
 #include "Math.h"
 #include <d3dx9.h>
 #include "Grid.h"
+#include "World.h"
 #include "TileObject.h"
 
 class Camera;
@@ -26,7 +27,7 @@ class Map {
 		int y_pixel;
 	};
 public:
-	Map(LPD3DXSPRITE spriteHandler, string filePath, DeviceManager *deviceManager, int left, int top, Grid * grid);
+	Map(LPD3DXSPRITE spriteHandler, string filePath, World * world, int left, int top, Grid * grid);
 
 	~Map();
 
@@ -43,7 +44,6 @@ public:
 	// Load map lên
 	bool loadMap(string filePath);
 
-	LPDIRECT3DDEVICE9 getDevice();
 	LPDIRECT3DTEXTURE9 getTexture();
 	vector<string> getStringMap();
 
@@ -56,8 +56,7 @@ private:
 	int roomID;
 	Sprite *sprite;
 	Grid * grid;
-
-	DeviceManager *deviceManager;
+	World * world;
 
 	//Start coordinate of the camera
 	RECT m_boundary = RECT();
@@ -69,5 +68,6 @@ private:
 	int m_max_Row;
 	int m_max_Column;
 
+	LPDIRECT3DDEVICE9 d3ddv;
 	LPDIRECT3DTEXTURE9 texture;
 };

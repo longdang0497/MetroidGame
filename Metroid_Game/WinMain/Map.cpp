@@ -1,13 +1,14 @@
 ﻿#include "Map.h"
 
-
-Map::Map(LPD3DXSPRITE spriteHandler, string filePath, DeviceManager *deviceManager, int left, int top, Grid * grid) {
+Map::Map(LPD3DXSPRITE spriteHandler, string filePath, World * world, int left, int top, Grid * grid) {
 	this->filePath = filePath;
-	this->deviceManager = deviceManager;
-
+	this->world = world;
 	this->grid = grid;
+
+	spriteHandler->GetDevice(&d3ddv);
+
 	Texture * text1 = new Texture();
-	this->texture = text1->loadTexture(this->deviceManager->getdevice(), L"brick_32x32.png");
+	this->texture = text1->loadTexture(d3ddv, BRICK_TEXTURE);
 	if (texture == NULL)
 		trace(L"Unable to load BrickTexture");
 	
@@ -22,6 +23,8 @@ Map::Map(LPD3DXSPRITE spriteHandler, string filePath, DeviceManager *deviceManag
 
 Map::~Map() {
 	delete sprite;
+	delete world;
+	delete grid;
 }
 
 void Map::setLimitation(int x, int y, int width, int height) {
@@ -36,10 +39,6 @@ void Map::setLimitation(int x, int y, int width, int height) {
 RECT Map::getBoundary()
 {
 	return m_boundary;
-}
-
-LPDIRECT3DDEVICE9 Map::getDevice() {
-	return this->deviceManager->getdevice();
 }
 
 LPDIRECT3DTEXTURE9 Map::getTexture() {
@@ -161,8 +160,6 @@ void Map::drawBrick(brick value) {
 	}
 	case 'd':
 	{
-		sprite->drawSprite(0, 12 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
-
 		break;
 	}
 	case 'e':
@@ -364,11 +361,6 @@ void Map::drawBrick(brick value) {
 	case 'T':
 	{
 		sprite->drawSprite(0, 52 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
-		break;
-	}
-	case'U':
-	{
-		sprite->drawSprite(0, 53 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
 	case '0':

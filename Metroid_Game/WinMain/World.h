@@ -11,9 +11,10 @@
 #include "Gate.h"
 #include "GateBlock.h"
 #include "ExplodeEffect.h"
+#include "Bomb.h"
+#include "BombWeapon.h"
 
 using namespace std;
-//#include "BulletManager.h"
 
 /*
 Class này chứa tất cả những thứ trong Game
@@ -32,6 +33,8 @@ public:
 	MaruMari * maruMari;
 	Skree * skree;
 	ExplodeEffect * explode;
+	Bomb * bomb;
+	ItemBomb * itemBomb;
 	//Manager * bulletManager;
 	LPD3DXSPRITE spriteHandler;
 	vector<Zoomer*> zoomerYellow = vector<Zoomer*>(3);
