@@ -219,6 +219,7 @@
     <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt" />
     <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
     <Text Include="field1.txt" />
+    <Text Include="Monster_Room1.txt" />
     <Text Include="sprites\item\BULLET.txt" />
     <Text Include="sprites\item\ITEM_ENERGY.txt" />
     <Text Include="sprites\item\ITEM_MISSILE.txt" />

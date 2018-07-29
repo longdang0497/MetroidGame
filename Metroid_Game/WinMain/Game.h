@@ -15,7 +15,6 @@
 class Game
 {
 	protected:
-		Camera * camera;
 		DWORD _DeltaTime;		// Time between the last frame and current frame
 		Input * _input;
 		static Graphics * _dxgraphics;
@@ -38,6 +37,7 @@ class Game
 		virtual void OnKeyUp(int KeyCode) = 0;
 		//======================= END VIRTUAL METHOD ======================
 	public:
+		Camera * camera;
 		//Doi tuong Direct Sound
 		//static SoundManager *gameSound;
 		Game();

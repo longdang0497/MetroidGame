@@ -99,8 +99,9 @@ void Samus::Destroy()
 	//--TO DO: Đưa Samus ra khỏi viewport
 }
 
-Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager)
+Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 {
+	this->grid = grid;
 	this->setType(SAMUS);
 	this->spriteHandler = spriteHandler;
 	this->manager = manager;
@@ -247,10 +248,13 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
+	float newPosX = pos_x + vx * t;
+	float newPosY = pos_y + vy * t;
 	//vy += gravity;
-
-	pos_x += vx * t;
-	pos_y += vy * t;
+	if (!this->grid->updateGrid(this, newPosX, newPosY)) {
+		pos_x = newPosX;
+		pos_y = newPosY;
+	}
 
 	// Animate samus if he is running
 	DWORD now = GetTickCount();

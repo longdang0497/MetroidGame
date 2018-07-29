@@ -18,10 +18,12 @@ public:
 
 	void add(GameObject *object);
 	void resetGrid(int width, int height);
-	void handleCell(GameObject *, int row, int column);
-	void handleCollision(GameObject * a, GameObject *b);
-	void handleObject(GameObject *a, GameObject *b);
-	void updateGrid(vector<GameObject*> listObject);
+	bool handleCell(GameObject *, int row, int column);
+	bool handleCollision(GameObject * a, GameObject *b);
+	bool handleObject(GameObject *a, GameObject *b);
+	bool updateGrid(GameObject*, float newPosX, float newPosY);
 	void setDeltaTime(float deltaTime);
 	float getDeltaTime();
+
+	void handleSamus(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 };

@@ -22,10 +22,19 @@ public:
 	Zoomer();
 	Zoomer(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type);
 	~Zoomer();
-	void InitSprites(LPDIRECT3DTEXTURE9 texture);
+	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv);
+
+
+	void setState(ZOOMER_STATE _state);
+	ZOOMER_STATE getState();
+
+
+
 	//============== OVERRIDE VIRTUAL METHOD ===================
 	virtual void Update(float t);
 	virtual void Render();
+	virtual void setEnemyStatefromString(string _state);
+	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ===============
 	void Destroy();
 };

@@ -39,7 +39,7 @@ public:
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus
 	Samus();
-	Samus(LPD3DXSPRITE spriteHandler, World * manager);
+	Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid);
 	~Samus();
 
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);

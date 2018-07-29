@@ -16,6 +16,13 @@ public:
 	float health;		// Máu của object
 	float damage;		// Lượng sát thương gây ra của object
 	bool DeathByShoot;
+
+	bool isActive = false;
+	bool isDeath = false;
+
+	string direction = "";
+
+
 	Enemy();
 	Enemy(LPD3DXSPRITE spriteHandler, World * manager);
 	~Enemy();
@@ -26,10 +33,15 @@ public:
 
 	ENEMY_TYPE GetEnemyType();
 	void SetEnemyType(ENEMY_TYPE enemy_type);
+	void SetDirection(string _direction);
 
 	//============== OVERRIDE VIRTUAL METHOD ===============
 	virtual void Render();
 	virtual void Update(float t);
+	virtual void setEnemyStatefromString(string _state);
+	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ============
+
+	bool isInsideMapBound(RECT cameraBound);
 };
 

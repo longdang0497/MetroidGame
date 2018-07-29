@@ -7,9 +7,8 @@
 class GameObject
 {
 public:
-	friend class Grid;
+	Grid * grid;
 	World * manager;	// con trỏ đến world để thao tác với các object ở world khi cần thiết
-
 	int width;
 	int height;
 	float pos_x;		// x postition of object
@@ -21,7 +20,6 @@ public:
 	Sprite * currentSprite;
 	GameObject * previousUnit;
 	GameObject * nextUnit;
-
 	float vx;		// x velocity
 	float vy;		// y velocity
 
@@ -42,7 +40,6 @@ public:
 	GameObject();
 	~GameObject();
 	float sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDirection, float deltaTime);
-	bool isCollided(GameObject* object2);
 	//======================== GET - SET METHOD ================================
 	OBJECT_TYPE getType();
 	void setType(OBJECT_TYPE type);

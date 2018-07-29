@@ -390,6 +390,9 @@
     <Text Include="sprites\item\MARU_MARI.txt">
       <Filter>Resource Files\sprites\item</Filter>
     </Text>
+    <Text Include="Monster_Room1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound\bullet.wav">

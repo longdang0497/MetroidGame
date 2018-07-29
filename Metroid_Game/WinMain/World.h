@@ -24,6 +24,7 @@ public:
 	Samus * samus;
 	MaruMari * maruMari;
 	vector<Bullet*> samusBullet;
+	vector<Enemy*> enemy;
 	LPD3DXSPRITE spriteHandler;
 
 	World();
@@ -34,4 +35,6 @@ public:
 	void Render();
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv);
 
+	void loadEnemyPositions(string filePath);
+	vector<string> World::split(string s, string c);
 };

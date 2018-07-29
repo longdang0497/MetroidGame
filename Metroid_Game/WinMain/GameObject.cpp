@@ -93,23 +93,36 @@ float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDi
 												// neu khong co va cham
 	if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
 		collisionDirection = NONE;
-		return 1.0f;
+		return deltaTime;
 	}
+	// Chỗ này có một cái hơi fun đó là khi vy = 0 mà pos_y dù nó thấp hơn vật khác vẫn bị xét là va chạm với cạnh, tương tự với vx
 	else {
 		if (xEntry > yEntry) { // này là đã va chạm ở trục Y rồi
 			if (xInvEntry > 0.0f) {
-				collisionDirection = RIGHT;
+				if (this->pos_y + this->height <= object->pos_y || this->pos_y >= object->pos_y + object->height)
+					collisionDirection = NONE;
+				else
+					collisionDirection = RIGHT;
 			}
 			else {
-				collisionDirection = LEFT;
+				if (this->pos_y >= object->pos_y + object->height || this->pos_y + this->height <= object->pos_y)
+					collisionDirection = NONE;
+				else
+					collisionDirection = LEFT;
 			}
 		}
 		else {			// Này là va chạm với trục X rồi nè
 			if (yInvEntry > 0.0f) {
-				collisionDirection = BOTTOM;
+				if (this->pos_x + this->width <= object->pos_x || this->pos_x >= object->pos_x + object->width)
+					collisionDirection = NONE;
+				else
+					collisionDirection = BOTTOM;
 			}
 			else {
-				collisionDirection = TOP;
+				if (this->pos_x + this->width <= object->pos_x || this->pos_x >= object->pos_x + object->width)
+					collisionDirection = NONE;
+				else
+					collisionDirection = TOP;
 			}
 		}
 	}
@@ -118,31 +131,6 @@ float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDi
 	return entryTime;
 }
 
-bool GameObject::isCollided(GameObject* otherObject) {
-	RECT o1 = this->GetBound();
-	RECT o2 = otherObject->GetBound();
-
-	bool top = o1.top >= o2.top && o1.top <= o2.bottom;
-	bool bot = o1.bottom >= o2.top && o1.bottom <= o2.bottom;
-	bool right = o1.right <= o2.right && o1.right >= o2.left;
-	bool left = o1.left <= o2.right && o1.left >= o2.left;
-
-	bool first_case = (left && bot) || (left && top);
-	bool second_case = (right && bot) || (right && top);
-
-	bool third_caseA = left && (o1.bottom >= o2.bottom) && (o1.top <= o2.top);
-	bool third_caseB = right && (o1.bottom >= o2.bottom) && (o1.top <= o2.top);
-	bool third_case = third_caseA || third_caseB;
-
-	bool fourth_caseA = top && (o1.left >= o2.left) && (o1.right <= o2.right);
-	bool fourth_caseB = bot && (o1.left >= o2.left) && (o1.right <= o2.right);
-	bool fourth_case = fourth_caseA || fourth_caseB;
-
-	if (first_case || second_case || third_case || fourth_case)
-		return true;
-
-	return false;
-}
 
 void GameObject::Update(float t)
 {
