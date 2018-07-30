@@ -86,18 +86,36 @@ bool Grid::handleCell(GameObject* object, int row, int column) {
 				isCollision = true;
 
 			// Còn đây là xét với các cell kế bên
-			if (row > 0 && column > 0)
-				if (this->handleObject(object, cells[row - 1][column - 1])) // trai tren
-					isCollision = true;
 			if (row > 0)
 				if (this->handleObject(object, cells[row - 1][column])) // phia tren
 					isCollision = true;
-			if (column > 0)
-				if (this->handleObject(object, cells[row][column - 1])) // phia trai
+			if (row < this->numOfRow - 1)
+				if (this->handleObject(object, cells[row + 1][column])) // phia duoi
 					isCollision = true;
-			if (column > 0 && row < numOfRow - 1)
-				if (this->handleObject(object, cells[row - 1][column + 1])) // trai duoi
-					isCollision = true;
+
+			if (object->vx <= 0) {    // Neu van toc nang giam thi xet ben trai
+				if (row > 0 && column > 0)
+					if (this->handleObject(object, cells[row - 1][column - 1])) // trai tren
+						isCollision = true;
+				if (column > 0)
+					if (this->handleObject(object, cells[row][column - 1])) // phia trai
+						isCollision = true;
+				if (column > 0 && row < numOfRow - 1)
+					if (this->handleObject(object, cells[row + 1][column - 1])) // trai duoi
+						isCollision = true;
+			}
+			else {
+				if (row > 0 && column < this->numOfColumn - 1)
+					if (this->handleObject(object, cells[row - 1][column + 1])) // phai tren
+						isCollision = true;
+				if (column < this->numOfColumn - 1)
+					if (this->handleObject(object, cells[row][column + 1]))    // ben phai
+						isCollision = true;
+				if (column < this->numOfColumn - 1 && row < this->numOfRow - 1)
+					if (this->handleObject(object, cells[row + 1][column + 1])) // phai duoi
+						isCollision = true;
+			}
+			
 		}
 	}
 	return isCollision;
