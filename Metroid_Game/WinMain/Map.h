@@ -12,7 +12,8 @@
 #include <vector>
 #include "Math.h"
 #include <d3dx9.h>
-
+#include "Grid.h"
+#include "Brick.h"
 class Camera;
 
 using namespace std;
@@ -49,7 +50,13 @@ public:
 
 	int getRow();
 	int getColumn();
+
+	void setGrid(Grid*);
+	Grid* getGrid();
+
+	void inputBrickToGrid();
 private:
+	Grid * grid;
 	std::string filePath;
 	vector<string> stringMap;
 	vector<brick> drawBrickArray = vector<brick> ();

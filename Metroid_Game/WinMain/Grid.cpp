@@ -20,9 +20,9 @@ Grid::Grid(int height, int width) {
 	this->numOfRow = (int)ceil(height * BRICK_SIZE / CELL_SIZE);
 	this->numOfColumn = (int)ceil(width * BRICK_SIZE / CELL_SIZE);
 
-	for (int i = 0; i < numOfRow; i++)
+	for (int i = 0; i <= numOfRow; i++)
 	{
-		for (int j = 0; j < numOfColumn; j++)
+		for (int j = 0; j <= numOfColumn; j++)
 			cells[i][j] = NULL;
 	}
 	this->deltaTime = 0.0f;

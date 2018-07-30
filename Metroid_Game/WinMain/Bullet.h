@@ -23,7 +23,6 @@ public:
 	Bullet(LPD3DXSPRITE spriteHandler);
 	~Bullet();
 	
-
 	void setDirection(Bullet_SAMUS_Direction direction);
 	Bullet_SAMUS_Direction getDirection();
 	void setIsRendered(bool isRendered);

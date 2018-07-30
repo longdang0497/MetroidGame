@@ -44,8 +44,8 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 
 Metroid::~Metroid()
 {
-	//delete(map);
-	//delete(world);
+	delete(map);
+	delete(world);
 }
 
 /*
@@ -60,7 +60,6 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (result != D3D_OK) 
 		trace(L"Unable to create SpriteHandler");
 
-	
 	_texture = texture.loadTexture(d3ddev, BRICK_TEXTURE);
 	if (_texture == NULL)
 		trace(L"Unable to load BrickTexture");
@@ -71,6 +70,10 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	int height = this->map->getRow();
 	int width = this->map->getColumn();
 	world = new World(spriteHandler, this, width, height);
+
+	this->map->setGrid(world->grid);
+	this->map->inputBrickToGrid();
+
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
 	this->_InitPositions();

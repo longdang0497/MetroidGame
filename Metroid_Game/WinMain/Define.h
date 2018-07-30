@@ -336,8 +336,8 @@ enum Bullet_SAMUS_Direction
 
 //================== Grid ====================
 #define CELL_SIZE 128
-#define DEFINE_ROW 50
-#define DEFINE_COLUMN 100
+#define DEFINE_ROW 8
+#define DEFINE_COLUMN 20
 #define COLLISION_DISTANCE 15
 enum COLLISION_DIRECTION {
 	TOP,
