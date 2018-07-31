@@ -15,7 +15,8 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
-	this->world->grid->add(this->world->samus);	world->maruMari->Init(420, 290);
+	this->world->grid->add(this->world->samus);	
+	world->maruMari->Init(420, 290);
 	world->grid->add(world->maruMari);
 
 	world->itemBomb->Init(1056, 352);
@@ -89,7 +90,7 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (intro != NULL)
 		sound->Loopsound(intro);*/
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), _texture, "field1.txt", this->_device, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), MAP_ROOM1, 0, 0);
 
 	int height = this->map->getRow();
 	int width = this->map->getColumn();
@@ -100,9 +101,6 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
-
-	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), MAP_ROOM1, world, 0, 0, world->grid);
 		
 	if (camera) 
 	{
@@ -652,15 +650,13 @@ void Metroid::OnKeyUp(int KeyCode)
 		}
 		break;
 	case DIK_Z:
-	{
 		for (int i = 0; i < this->world->samusBullet.size(); i++) {
 			this->world->samusBullet[i]->setActive(false);
 			if (!this->world->samusBullet[i]->getIsRendered()) {
 				this->world->samusBullet[i]->setCount(0);
 			}
 		}
-	}
-	}
+		break;
 	case DIK_SPACE:
 		/*if (world->bomb->isActive == false)
 			world->bomb->ResetBombNo(1);

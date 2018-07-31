@@ -6,10 +6,9 @@ Zoomer::Zoomer()
 
 }
 
-Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type) : Enemy(spriteHandler, manager)
+Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type) : Enemy(spriteHandler, manager)
 {
-	this->setType(ENEMY);
-	this->enemy_type = enemy_type;
+	this->type = enemy_type;
 	this->isActive = false;
 
 	//Set vận tốc
@@ -34,7 +33,7 @@ void Zoomer::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 texture = texture2.loadTexture(d3ddv, ENEMY_SPRITE_PATH);
 	if (texture == NULL)
 		trace(L"Unable to load zoomerTexture");
-	switch (enemy_type)
+	switch (this->type)
 	{
 	case ZOOMER_YELLOW:
 		top_path = ZOOMER_YELLOW_TOP;

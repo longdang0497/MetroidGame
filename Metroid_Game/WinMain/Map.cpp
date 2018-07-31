@@ -1,8 +1,7 @@
 ﻿#include "Map.h"
 
-Map::Map(LPD3DXSPRITE spriteHandler, string filePath, World * world, int left, int top, Grid * grid) {
+Map::Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top) {
 	this->filePath = filePath;
-	this->world = world;
 	this->grid = grid;
 
 	spriteHandler->GetDevice(&d3ddv);
@@ -23,7 +22,6 @@ Map::Map(LPD3DXSPRITE spriteHandler, string filePath, World * world, int left, i
 
 Map::~Map() {
 	delete sprite;
-	delete world;
 	delete grid;
 }
 
@@ -59,7 +57,7 @@ bool Map::loadMap(string filePath) {
 			column = str.length();
 		stringMap.push_back(str);
 
-		int index = 0;
+		/*int index = 0;
 		while (index < str.length())
 		{
 			if (str[index] != '0')
@@ -72,7 +70,7 @@ bool Map::loadMap(string filePath) {
 				delete tile;
 			}
 			index++;
-		}
+		}*/
 	}
 
 	m_max_Row = row;

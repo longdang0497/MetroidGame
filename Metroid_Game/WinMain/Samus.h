@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef _SAMUS_H
-#define _SAMUS_H_
 #include "Sprite.h"
 #include "GameObject.h"
 #include "trace.h"

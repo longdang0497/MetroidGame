@@ -20,7 +20,7 @@ protected:
 	Sprite * right;
 public:
 	Zoomer();
-	Zoomer(LPD3DXSPRITE spriteHandler, World * manager, ENEMY_TYPE enemy_type);
+	Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type);
 	~Zoomer();
 	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv);
 

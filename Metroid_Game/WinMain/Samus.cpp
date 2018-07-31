@@ -115,7 +115,7 @@ void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
 	pos_x = 1376;	
-	pos_y = 352;	
+	pos_y = 320;	
 
 	vx = 0;
 	vx_last = 1.0f;
@@ -253,7 +253,7 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-if (isOnGround == false)
+	if (isOnGround == false)
 		vy += gravity;
 	else if (isOnGround == true)
 		vy = 0;

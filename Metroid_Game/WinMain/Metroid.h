@@ -29,7 +29,7 @@ private:
 	DWORD now_jump;
 	DWORD tick_per_frame;
 
-	Map *map;
+	Map * map;
 	Texture texture;
 public:
 	Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate);

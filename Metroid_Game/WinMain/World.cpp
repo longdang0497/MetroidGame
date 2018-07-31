@@ -18,7 +18,7 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int heigh
 	gateLeft = new Gate(spriteHandler, this, grid);
 	gateBlock = new GateBlock(spriteHandler, this, grid);
 	samus = new Samus(spriteHandler, this, grid);
-	grid->addFollowing(samus);
+	//grid->addFollowing(samus);
 	maruMari = new MaruMari(spriteHandler, this, grid);
 	//skree = new Skree(spriteHandler, this, SKREE);
 	explode = new ExplodeEffect(spriteHandler, this, grid);
@@ -38,7 +38,7 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int heigh
 	this->samusBullet.push_back(bullet2);
 	this->samusBullet.push_back(bullet3);
 
-	maruMari = new MaruMari(spriteHandler, this);
+	maruMari = new MaruMari(spriteHandler, this, this->grid);
 	loadEnemyPositions("Monster_Room1.txt");
 
 }
@@ -124,8 +124,8 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
 	if (gate_texture == NULL)
 		trace(L"Unable to load Gate Texture");
-	gateRight->InitSprites(d3ddv, gate_texture, RIGHT);
-	gateLeft->InitSprites(d3ddv, gate_texture, LEFT);
+	gateRight->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
+	gateLeft->InitSprites(d3ddv, gate_texture, GATE_LEFT);
 	gateBlock->InitSprites(d3ddv, gate_texture);
 
 	Texture * textureExplode = new Texture();

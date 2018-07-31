@@ -12,8 +12,8 @@ enum GATE_STATE {  //State of Gate
 
 enum GATE_TYPE
 {
-	LEFT,
-	RIGHT
+	GATE_LEFT,
+	GATE_RIGHT
 };
 
 class Gate : public GameObject

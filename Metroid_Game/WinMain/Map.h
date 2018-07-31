@@ -14,7 +14,6 @@
 #include <d3dx9.h>
 #include "Brick.h"
 #include "Grid.h"
-#include "World.h"
 #include "TileObject.h"
 
 class Camera;
@@ -28,7 +27,7 @@ class Map {
 		int y_pixel;
 	};
 public:
-	Map(LPD3DXSPRITE spriteHandler, string filePath, World * world, int left, int top, Grid * grid);
+	Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top);
 
 	~Map();
 
@@ -64,7 +63,6 @@ private:
 	vector<brick> drawBrickArray = vector<brick>();
 	int roomID;
 	Sprite *sprite;
-	Grid * grid;
 
 	//Start coordinate of the camera
 	RECT m_boundary = RECT();
