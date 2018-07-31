@@ -11,6 +11,19 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int heigh
 {
 	this->spriteHandler = spriteHandler;
 	this->metroid = metroid;
+	//bulletManager = new Manager(spriteHandler);
+	//Khởi tạo các đối tượng trong World
+	grid = new Grid();
+	gateRight = new Gate(spriteHandler, this, grid);
+	gateLeft = new Gate(spriteHandler, this, grid);
+	gateBlock = new GateBlock(spriteHandler, this, grid);
+	samus = new Samus(spriteHandler, this, grid);
+	grid->addFollowing(samus);
+	maruMari = new MaruMari(spriteHandler, this, grid);
+	//skree = new Skree(spriteHandler, this, SKREE);
+	explode = new ExplodeEffect(spriteHandler, this, grid);
+	bomb = new Bomb(spriteHandler, this);
+	itemBomb = new ItemBomb(spriteHandler, this, grid);
 
 	grid = new Grid(height, width);
 
@@ -32,6 +45,17 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int heigh
 
 World::~World()
 {
+	delete(samus);
+	delete(maruMari);
+	delete(gateRight);
+	delete(gateLeft);
+	delete(gateBlock);
+	delete(grid);
+	delete(metroid);
+	//delete(skree);
+	delete(explode);
+	delete(bomb);
+	delete(itemBomb);
 }
 
 void World::Update(float t)
@@ -84,19 +108,45 @@ void World::Render()
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 {
-	Texture * texture = new Texture();
-	LPDIRECT3DTEXTURE9 samus_texture = texture->loadTexture(d3ddv, TEXTURE_GAME_CHARACTERS);
+	Texture * textureSamus = new Texture();
+	LPDIRECT3DTEXTURE9 samus_texture = textureSamus->loadTexture(d3ddv, TEXTURE_GAME_CHARACTERS);
 	if (samus_texture == NULL)
-		trace(L"Unable to load PlayerTexture");
+		trace(L"Unable to load Samus Texture");
 	samus->InitSprites(d3ddv, samus_texture);
 
-	Texture * texture1 = new Texture();
-	LPDIRECT3DTEXTURE9 maru_texture = texture1->loadTexture(d3ddv, ITEM_SPRITE_PATH);
+	Texture * textureMaru = new Texture();
+	LPDIRECT3DTEXTURE9 maru_texture = textureMaru->loadTexture(d3ddv, ITEM_SPRITE_PATH);
 	if (maru_texture == NULL)
-		trace(L"Unable to load PlayerTexture");
+		trace(L"Unable to load Maru Mari Texture");
 	maruMari->InitSprites(d3ddv, maru_texture);
 
-	// Bullet Texture
+	Texture * textureGate = new Texture();
+	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
+	if (gate_texture == NULL)
+		trace(L"Unable to load Gate Texture");
+	gateRight->InitSprites(d3ddv, gate_texture, RIGHT);
+	gateLeft->InitSprites(d3ddv, gate_texture, LEFT);
+	gateBlock->InitSprites(d3ddv, gate_texture);
+
+	Texture * textureExplode = new Texture();
+	LPDIRECT3DTEXTURE9 explode_texture = textureExplode->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
+	if (explode_texture == NULL)
+		trace(L"Unable to load Explode Texture");
+	explode->InitSprites(d3ddv, explode_texture);
+
+	Texture * textureItemBomb = new Texture();
+	LPDIRECT3DTEXTURE9 itemBomb_texture = textureItemBomb->loadTexture(d3ddv, ITEM_SPRITE_PATH);
+	if (itemBomb_texture == NULL)
+		trace(L"Unable to load item Bomb Texture");
+	itemBomb->InitSprites(d3ddv, itemBomb_texture);
+
+	Texture * textureBomb = new Texture();
+	LPDIRECT3DTEXTURE9 bomb_texture = textureBomb->loadTexture(d3ddv, BOMB_TEXTURE);
+	if (bomb_texture == NULL)
+		trace(L"Unable to load Bomb Texture");
+	bomb->InitSprites(d3ddv, bomb_texture);
+
+// Bullet Texture
 	Texture texture2;
 	LPDIRECT3DTEXTURE9 bulletTexture = texture2.loadTexture(d3ddv, SAMUS_BULLET_PATH);
 	if (bulletTexture == NULL)

@@ -28,6 +28,10 @@ void GameObject::Render()
 {
 }
 
+void GameObject::updateState()
+{
+}
+
 void GameObject::Init(float posX, float posY)
 {
 	this->pos_x = posX;
@@ -256,18 +260,21 @@ void GameObject::setgravity(float value)
 	gravity = value;
 }
 
-void GameObject::SetBound(int objWidth, int objHeight)
+void GameObject::Translate(D3DXVECTOR2 vector)
 {
-	rigidBody.x = objWidth;
-	rigidBody.y = objHeight;
+	pos_x += vector.x;
+	pos_y -= vector.y;
 }
 
 RECT GameObject::GetBound()
 {
-	objBound.left = pos_x;
-	objBound.right = pos_x + rigidBody.x;
-	objBound.top = pos_y;
-	objBound.bottom = pos_y - rigidBody.y;
+	if (currentSprite != nullptr)
+	{
+		objBound.left = pos_x;
+		objBound.right = pos_x + currentSprite->getWidth();
+		objBound.top = pos_y;
+		objBound.bottom = pos_y + currentSprite->getHeight();
+	}
 
 	return objBound;
 }
