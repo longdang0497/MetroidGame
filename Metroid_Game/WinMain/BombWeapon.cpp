@@ -83,8 +83,8 @@ void Bomb::Destroy()
 {
 	isExplode = true;
 	manager->explode->setActive(true);
-	manager->explode->setPosX(this->pos_x);
-	manager->explode->setPosY(this->pos_y);
+	manager->explode->setPosX(this->pos_x - 32);
+	manager->explode->setPosY(this->pos_y - 32);
 	/*float time = manager->explode->getTimeSurvive();
 	if (time < 0)
 		manager->explode->setActive(false);*/

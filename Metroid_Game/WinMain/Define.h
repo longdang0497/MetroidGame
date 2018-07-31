@@ -333,8 +333,8 @@ enum OBJECT_TYPE
 
 //========== EFFECT EXPLOSION
 #define EFFECT_EXPLOSION L"sprites\\explode_effect\\EFFECT_EXPLOSION.txt"
-#define EFFECT_EXPLOSION_WIDTH 32
-#define EFFECT_EXPLOSION_HEIGHT 32
+#define EFFECT_EXPLOSION_WIDTH 64
+#define EFFECT_EXPLOSION_HEIGHT 64
 #define EFFECT_EXPLOSION_COUNT 3
 
 //================ END EFFECT ===============
