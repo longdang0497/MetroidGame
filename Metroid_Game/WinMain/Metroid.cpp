@@ -359,16 +359,18 @@ void Metroid::OnKeyDown(int KeyCode)
 			switch (KeyCode)
 			{
 			case DIK_SPACE:
-				if (_input->IsKeyDown(DIK_SPACE))
-				{
+				if (_input->IsKeyDown(DIK_SPACE) && world->bomb->getBombExplode() == true)
+				{		
 					world->bomb->setActive(true);
-					world->bomb->setTimeSurvive(3);
-					float bombPosX = world->samus->getPosX() + world->samus->currentSprite->getWidth() / 2;
-					float bombPosY = world->samus->getPosY() + world->samus->currentSprite->getHeight() / 2;
-					//world->bomb->ResetBomb(bombPosX, bombPosY);
+					world->bomb->setTimeSurvive(3);	
+					world->bomb->setBombExplode(false);
+					
+					float xpos = world->samus->getPosX();
+					float ypos = world->samus->getPosY();
+					float bombPosX = xpos + world->samus->currentSprite->getWidth() / 2;
+					float bombPosY = ypos + world->samus->currentSprite->getHeight() / 2;
 					world->bomb->setPosX(bombPosX);
-					world->bomb->setPosY(bombPosY);
-					//world->bomb->setBombNo(0);
+					world->bomb->setPosY(bombPosY);		
 				}
 				break;
 			case DIK_DOWN:
@@ -467,10 +469,10 @@ void Metroid::OnKeyUp(int KeyCode)
 		}
 		break;
 	case DIK_SPACE:
-		if (world->bomb->isActive == false)
+		/*if (world->bomb->isActive == false)
 			world->bomb->ResetBombNo(1);
 		else if (world->bomb->isActive == false)
-			world->bomb->setBombNo(0);
+			world->bomb->setBombNo(0);*/
 		break;
 	}
 }

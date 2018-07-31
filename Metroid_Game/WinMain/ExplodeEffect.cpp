@@ -19,9 +19,10 @@ ExplodeEffect::~ExplodeEffect()
 
 void ExplodeEffect::Update(float t)
 {
+
 	if (isActive == true && manager->bomb->getBombExplode() == true)
 	{
-		time_survive = EFFECT_TIME_SURVIVE;
+		//time_survive = EFFECT_TIME_SURVIVE;
 		DWORD now = GetTickCount();
 		if (now - last_time > 1000 / ANIMATE_RATE)
 		{
@@ -29,25 +30,31 @@ void ExplodeEffect::Update(float t)
 				currentSprite->updateIndex();
 			last_time = now;
 		}
+		// Tính thời gian hiển thị
+		time_survive -= t;
+		if (time_survive < 0)
+		{
+			isActive = false;
+		}
+			
 	}
 	else
 		return;
 
-	// Tính thời gian hiển thị
-	time_survive -= t;
-
-	if (time_survive <= 0)
-		isActive = false;
+	
 }
 
 void ExplodeEffect::Render()
 {
+	if (time_survive <= 0)
+		isActive = false;
+
 	D3DXVECTOR3 position;
 	position.x = pos_x;
 	position.y = pos_y;
 	position.z = 0;
 
-	if (isActive == true && manager->bomb->getBombExplode() == true)
+	if (isActive == true && manager->bomb->getBombExplode() == true && time_survive > 0)
 	{
 		//isRendering == true;
 		currentSprite->drawSprite(EFFECT_EXPLOSION_WIDTH, EFFECT_EXPLOSION_HEIGHT, position);

@@ -346,6 +346,9 @@
     <Image Include="sprites\explode_effect\explosion.png">
       <Filter>Resource Files\sprites\explode_effect</Filter>
     </Image>
+    <Image Include="sprites\item\bomb.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="sprites\JUMP_LEFT.txt">

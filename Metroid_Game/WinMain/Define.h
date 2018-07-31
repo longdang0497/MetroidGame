@@ -227,10 +227,8 @@ enum OBJECT_TYPE
 
 //========= ITEM BOMB
 #define ITEM_BOMB_PATH L"sprites\\item\\ITEM_BOMB.txt"
-#define BOMB_PATH L"sprites\\item\\BOMB.txt"
 #define ITEM_BOMB_WIDTH 32
 #define ITEM_BOMB_HEIGHT 37
-#define BOMB_SIZE 17
 //================ END GAME ITEM ===================================
 
 //================== ENEMY =====================
@@ -330,7 +328,7 @@ enum OBJECT_TYPE
 //================= END GATE ===========
 
 //================ EFFECT ===================
-#define EFFECT_TIME_SURVIVE 2
+#define EFFECT_TIME_SURVIVE 1
 #define EFFECT_SPRITE_PATH L"sprites\\explode_effect\\explosion.png"
 
 //========== EFFECT EXPLOSION
@@ -340,3 +338,12 @@ enum OBJECT_TYPE
 #define EFFECT_EXPLOSION_COUNT 3
 
 //================ END EFFECT ===============
+
+//================ BOMB =====================
+#define BOMB_PATH L"sprites\\item\\BOMB.txt"
+#define BOMB_WIDTH 19
+#define BOMB_HEIGHT 18
+#define BOMB_SPRITE_COUNT 2
+#define BOMB_TEXTURE L"sprites\\item\\bomb.png"
+
+//================ END BOMB =================

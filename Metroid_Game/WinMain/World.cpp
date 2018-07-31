@@ -118,13 +118,17 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 		trace(L"Unable to load Explode Texture");
 	explode->InitSprites(d3ddv, explode_texture);
 
+	Texture * textureItemBomb = new Texture();
+	LPDIRECT3DTEXTURE9 itemBomb_texture = textureItemBomb->loadTexture(d3ddv, ITEM_SPRITE_PATH);
+	if (itemBomb_texture == NULL)
+		trace(L"Unable to load item Bomb Texture");
+	itemBomb->InitSprites(d3ddv, itemBomb_texture);
+
 	Texture * textureBomb = new Texture();
-	LPDIRECT3DTEXTURE9 bomb_texture = textureBomb->loadTexture(d3ddv, ITEM_SPRITE_PATH);
+	LPDIRECT3DTEXTURE9 bomb_texture = textureBomb->loadTexture(d3ddv, BOMB_TEXTURE);
 	if (bomb_texture == NULL)
 		trace(L"Unable to load Bomb Texture");
 	bomb->InitSprites(d3ddv, bomb_texture);
-	itemBomb->InitSprites(d3ddv, bomb_texture);
-
 
 	Texture * textureZoomer = new Texture();
 	LPDIRECT3DTEXTURE9 zoomer_texture = textureZoomer->loadTexture(d3ddv, ENEMY_SPRITE_PATH);

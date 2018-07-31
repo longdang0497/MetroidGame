@@ -218,6 +218,7 @@
     <Image Include="scene\start_background.png" />
     <Image Include="sprites\explode_effect\explosion.png" />
     <Image Include="sprites\gate\GATE_32.png" />
+    <Image Include="sprites\item\bomb.png" />
     <Image Include="sprites\item\bullet.png" />
     <Image Include="sprites\item\bulletx2.png" />
     <Image Include="sprites\item\items_sprite_sheet.png" />

@@ -29,7 +29,7 @@ void Bomb::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
 	if (result != D3D_OK) return;
 
-	bomb = new Sprite(spriteHandler, texture, BOMB_PATH, BOMB_SIZE, BOMB_SIZE, 1);
+	bomb = new Sprite(spriteHandler, texture, BOMB_PATH, BOMB_WIDTH, BOMB_HEIGHT, BOMB_SPRITE_COUNT);
 }
 
 void Bomb::CreateBomb(float posX, float posY)
@@ -41,17 +41,29 @@ void Bomb::CreateBomb(float posX, float posY)
 
 void Bomb::Update(float t)
 {
-	if (isActive == true)
+	if (isActive == true && isExplode == false)
 	{
+		// Animate samus if he is running
+		DWORD now = GetTickCount();
+		if (now - last_time > 1000 / ANIMATE_RATE)
+		{
+			currentSprite->updateIndex();
+			last_time = now;
+		}	
+
 		// Tính thời gian hiển thị
 		time_survive -= t;
 		// Nếu hết thời gian thì nổ
 		if (time_survive <= 0)
 		{
 			isActive = false;
-			Destroy();
+			manager->explode->setTimeSurvive(EFFECT_TIME_SURVIVE);
+			if (manager->explode->getTimeSurvive() > 0)
+			{
+				Destroy();
+			}			
 		}
-	}
+	}	
 }
 
 void Bomb::Render()
@@ -61,8 +73,10 @@ void Bomb::Render()
 	position.y = pos_y;
 	position.z = 0;
 
-	if (isActive == true)
+	if (isActive == true && isExplode == false)
+	{
 		currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
+	}		
 }
 
 void Bomb::Destroy()
@@ -71,6 +85,9 @@ void Bomb::Destroy()
 	manager->explode->setActive(true);
 	manager->explode->setPosX(this->pos_x);
 	manager->explode->setPosY(this->pos_y);
+	/*float time = manager->explode->getTimeSurvive();
+	if (time < 0)
+		manager->explode->setActive(false);*/
 }
 
 void Bomb::ResetBomb(float x, float y)
@@ -78,13 +95,13 @@ void Bomb::ResetBomb(float x, float y)
 	this->pos_x = x;
 	this->pos_y = y;
 }
-
-void Bomb::setBombNo(int value)
-{
-	countBomb = value;
-}
-
-void Bomb::ResetBombNo(int value)
-{
-	countBomb = 1;
-}
+//
+//void Bomb::setBombNo(int value)
+//{
+//	countBomb = value;
+//}
+//
+//int Bomb::getBombNo()
+//{
+//	return countBomb;
+//}

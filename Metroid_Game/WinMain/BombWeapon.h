@@ -7,9 +7,8 @@ class Bomb : public GameObject
 {
 private:
 	Sprite * bomb;
-	int countBomb = 1;
 	float time_survive = 0;
-	bool isExplode = false;
+	bool isExplode = true;
 public:
 	Bomb();
 	Bomb(LPD3DXSPRITE spriteHandler, World * manager);
@@ -21,8 +20,8 @@ public:
 	void Render();
 	void Destroy();
 	void ResetBomb(float x, float y);
-	void setBombNo(int value);
-	void ResetBombNo(int value);
+	//void setBombNo(int value);
+	//int getBombNo();
 	float getTimeSurvive() { return time_survive; };
 	void setBombExplode(bool value) { isExplode = value; };
 	bool getBombExplode() { return isExplode; };
