@@ -1,12 +1,12 @@
 ﻿#pragma once
-#ifndef _METROID_H_
-#define _METROID_H_
-#include "Loader.h"
 #include "Define.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
 #include "World.h"
+#include <time.h>
+#include "trace.h"
+#include "utils.h"
 
 class Metroid : public Game
 {
@@ -15,7 +15,6 @@ protected:
 	LPDIRECT3DSURFACE9 introscreen;
 	LPDIRECT3DSURFACE9 gameoverscreen;
 	LPD3DXSPRITE spriteHandler;
-	LPDIRECT3DTEXTURE9 _texture;
 	World * world;
 	CSound * intro;
 	CSound * appear;
@@ -28,11 +27,6 @@ private:
 	DWORD start_jump;
 	DWORD now_jump;
 	DWORD tick_per_frame;
-
-	Loader * loadRoom1;
-	Loader * loadRoom2;
-	Loader * loadRoom3;
-	Loader * loadStair;
 
 	Map * mapRoom1;
 	Map * mapRoom2;
@@ -71,7 +65,6 @@ public:
 	float time_jump;
 	float time_freezing;
 	float time_in_game;
-	float currentTime = 0;
 
 	LPD3DXSPRITE getSpriteHandler();
 	Map * getMapRoom1();
@@ -82,5 +75,3 @@ public:
 	ROOM_NUMBER getRoomNum();
 	void setRoomNum(ROOM_NUMBER value);
 };
-
-#endif // !_METROID_

@@ -48,7 +48,7 @@ void Bomb::Update(float t)
 		DWORD now = GetTickCount();
 		if (now - last_time > 1000 / ANIMATE_RATE)
 		{
-			currentSprite->updateIndex();
+			currentSprite->updateSprite();
 			last_time = now;
 		}	
 

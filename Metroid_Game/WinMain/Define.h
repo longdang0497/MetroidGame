@@ -16,7 +16,6 @@ class Enemy;
 class Zoomer;
 class Gate;
 class GateBlock;
-class Skree;
 class Effect;
 class ExplodeEffect;
 
@@ -27,11 +26,11 @@ class ExplodeEffect;
 #define TIME_FREEZING 5000
 #define TIME_IN_GAME 7000
 
-#define JUMP_VELOCITY_BOOST 10.0f
-#define JUMP_VELOCITY_BOOST_FIRST 70.0f
-#define FALLDOWN_VELOCITY_DECREASE 50.0f
+#define JUMP_VELOCITY_BOOST 0.5f
+#define JUMP_VELOCITY_BOOST_FIRST 64.0f
+#define FALLDOWN_VELOCITY_DECREASE 0.3f
+#define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 30
-#define LIVE_TIME 3000
 #define LIVE_TIME 3000
 
 #define SAMUS_SPEED 200.0f
@@ -49,7 +48,6 @@ enum ROOM_NUMBER {
 	ROOM3,
 	STAIR
 };
-
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
 #define GAME_SCREEN_RESOLUTION_800_600_24   1
@@ -129,7 +127,7 @@ enum OBJECT_TYPE
 
 //================ SPRITE SAMUS ================
 #define WIDTH_SAMUS_STAND 42
-#define HEIGHT_SAMUS_STAND 64
+#define HEIGHT_SAMUS_STAND 66
 #define COUNT_SAMUS_STAND 1
 #define STAND_RIGHT_PATH L"sprites\\STAND_RIGHT.txt"
 #define STAND_LEFT_PATH L"sprites\\STAND_LEFT.txt"
@@ -215,7 +213,7 @@ enum OBJECT_TYPE
 
 //================ BRICK SIZE =============================================
 #define BRICK_SIZE 32.0f
-#define BRICK_TEXTURE L"map\\brick_32x32.png"
+#define BRICK_TEXTURE L"brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
 //================ GAME SOUND =============================================
@@ -226,12 +224,8 @@ enum OBJECT_TYPE
 //================ END GAME SOUND =========================================
 
 //================ GAME ITEM ===========================
-#define BULLET_PATH L"sprites\\item\\BULLET.txt"
-#define BULLET_TEXTURE L"sprites\\item\\bulletx2.png"
-#define WIDTH_BULLET 24
-#define HEIGHT_BULLET 28
 
-#define ITEM_TIME_SURVIVE 10
+#define ITEM_TIME_SURVIVE 5000
 #define ITEM_SPRITE_PATH L"sprites\\item\\items_sprite_sheet.png"
 
 //========= ITEM MARU MARI
@@ -263,12 +257,27 @@ enum OBJECT_TYPE
 //================ END GAME ITEM ===================================
 
 //================== ENEMY =====================
+
 //================== ZOOMER =====================
+enum ZOOMER_STATE
+{
+	ON_ZOOMER_UP,
+	ON_ZOOMER_BOTTOM,
+	ON_ZOOMER_LEFT,
+	ON_ZOOMER_RIGHT,
+};
+
+enum ZOOMER_DIRECTION {
+	ZOOMER_UP,
+	ZOOMER_LEFT,
+	ZOOMER_RIGHT,
+	ZOOMER_DOWN
+};
 #define ENEMY_SPRITE_PATH L"enemy\\metroid_enemies_sheet.png"
 #define ZOOMER_WIDTH 36
 #define ZOOMER_HEIGHT 32
 #define ZOOMER_SPRITE_COUNT 2
-#define ZOOMER_SPEED 75.0f
+#define ZOOMER_SPEED 60.0f
 
 ///////ENERGY
 #define ENERGY_SPRITE_PATH L"sprites\\energy\\energy.png"
@@ -301,7 +310,7 @@ enum OBJECT_TYPE
 #define ZOOMER_PINK_RIGHT L"enemy\\ZOOMER_PINK_RIGHT.txt"
 //================== END ZOOMER =================
 
-//================== SKREE  =====================
+//================== BIRD  =====================
 
 #define SKREE_WIDTH 36
 #define SKREE_HEIGHT 52
@@ -314,6 +323,7 @@ enum OBJECT_TYPE
 #define SKREE_BOOST_ANIMATE_RATE 30
 //================== END SKREE =================
 
+
 //================== BLOCK =====================
 
 #define BLOCK_WIDTH 36
@@ -322,8 +332,8 @@ enum OBJECT_TYPE
 #define BLOCK_SPEED 0.1f
 
 //--YElLOW
-#define BLOCK_LEFT L"sprites\\enemy\\BLOCK_LEFT.txt"
-#define BLOCK_RIGHT L"sprites\\enemy\\BLOCK_RIGHT.txt"
+#define BLOCK_LEFT "sprites\\enemy\\BLOCK_LEFT.txt"
+#define BLOCK_RIGHT "sprites\\enemy\\BLOCK_RIGHT.txt"
 //================== END BLOCK =================
 
 //================== BEE  =====================
@@ -333,10 +343,49 @@ enum OBJECT_TYPE
 
 #define BEE_FLY_SPRITE_COUNT 2
 
-#define BEE_FLY L"sprites\\enemy\\BEE_FLY.txt"
+#define BEE_FLY "sprites\\enemy\\BEE_FLY.txt"
 //================== END BEE =================
 
 //================== END ENEMY =================
+
+
+//================== Bullet ====================
+#define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
+#define X_VELOCITY_BULLET 12
+#define Y_VELOCITY_BULLET 12
+#define BULLET_COUNT 8
+#define WIDTH_BULLET 12
+#define HEIGHT_BULLET 14
+
+enum Bullet_SAMUS_Direction
+{
+	SHOOT_UP_LEFT,
+	SHOOT_UP_RIGHT,
+	SHOOT_LEFT,
+	SHOOT_RIGHT,
+	OFF
+};
+
+//================== END Bullet ====================
+
+//================== Grid ====================
+#define CELL_SIZE 128
+#define DEFINE_ROW 8
+#define DEFINE_COLUMN 20
+#define COLLISION_DISTANCE 15
+enum COLLISION_DIRECTION {
+	TOP,
+	BOTTOM,
+	LEFT,
+	RIGHT,
+	NONE
+};
+//================== END Grid ====================
+
+#define ZOOMER_YELLOW_CASE 0
+#define ZOOMER_PINK_CASE 1
+#define SKREE_CASE 2
+#define RIO_CASE 3
 
 //================ GATE ===============
 #define GATE_SPRITES_PATH L"sprites\\gate\\GATE_32.png"
@@ -378,40 +427,3 @@ enum OBJECT_TYPE
 #define BOMB_TEXTURE L"sprites\\item\\bomb.png"
 
 //================ END BOMB =================
-//================== Bullet ====================
-#define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
-#define X_VELOCITY_BULLET 12
-#define Y_VELOCITY_BULLET 12
-#define BULLET_COUNT 8
-#define WIDTH_BULLET 12
-#define HEIGHT_BULLET 14
-
-enum Bullet_SAMUS_Direction
-{
-	SHOOT_UP_LEFT,
-	SHOOT_UP_RIGHT,
-	SHOOT_LEFT,
-	SHOOT_RIGHT,
-	OFF
-};
-
-//================== END Bullet ====================
-
-//================== Grid ====================
-#define CELL_SIZE 128
-#define DEFINE_ROW 8
-#define DEFINE_COLUMN 20
-#define COLLISION_DISTANCE 15
-enum COLLISION_DIRECTION {
-	TOP,
-	BOTTOM,
-	LEFT,
-	RIGHT,
-	NONE
-};
-//================== END Grid ====================
-
-#define ZOOMER_YELLOW_CASE 0
-#define ZOOMER_PINK_CASE 1
-#define SKREE_CASE 2
-#define RIO_CASE 3

@@ -12,13 +12,13 @@ Brick::~Brick()
 {
 }
 
-Brick::Brick(float x, float y, int width, int height, Grid * grid){
+Brick::Brick(float x, float y, int width, int height){
 	this->type = BRICK;
 	this->pos_x = x;
 	this->pos_y = y;
 	this->width = width;
 	this->height = height;
-	this->grid = grid;
+	this->isActive = true;
 }
 
 void Brick::InitSprites(LPDIRECT3DDEVICE9 d3ddev, LPDIRECT3DTEXTURE9 texture) {

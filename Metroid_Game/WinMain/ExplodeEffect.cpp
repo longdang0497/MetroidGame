@@ -29,7 +29,7 @@ void ExplodeEffect::Update(float t)
 		if (now - last_time > 1000 / ANIMATE_RATE)
 		{
 			//if (isRendering == true)
-			currentSprite->updateIndex();
+			currentSprite->updateSprite();
 			last_time = now;
 		}
 		// Tính thời gian hiển thị
