@@ -50,6 +50,7 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
 
+	currentSprite = nullptr;
 	//Set type
 	this->type = SAMUS;
 
@@ -59,8 +60,8 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
 
-	this->height = 64;
-	this->width = 32;
+	/*this->height = 64;
+	this->width = 32;*/
 }
 
 Samus::~Samus()
@@ -253,9 +254,9 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	if (isOnGround == false)
+	/*if (isOnGround == false)
 		vy += gravity;
-	else if (isOnGround == true)
+	else */if (isOnGround == true)
 		vy = 0;
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;

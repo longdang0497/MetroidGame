@@ -13,6 +13,7 @@ Bomb::Bomb(LPD3DXSPRITE spriteHandler, World * manager)
 	this->manager = manager;
 	bomb = nullptr;
 	isActive = false;
+	currentSprite = nullptr;
 }
 
 Bomb::~Bomb()

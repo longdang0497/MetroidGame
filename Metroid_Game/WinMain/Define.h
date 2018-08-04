@@ -43,6 +43,13 @@ class ExplodeEffect;
 #define MAP_ROOM3 "map\\fieldBossMB.txt"
 #define MAP_STAIR "map\\fieldStair.txt"
 
+enum ROOM_NUMBER {
+	ROOM1,
+	ROOM2,
+	ROOM3,
+	STAIR
+};
+
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
 #define GAME_SCREEN_RESOLUTION_800_600_24   1
@@ -207,7 +214,7 @@ enum OBJECT_TYPE
 //================ END ROOM LIMITATION ==================================
 
 //================ BRICK SIZE =============================================
-#define BRICK_SIZE 32
+#define BRICK_SIZE 32.0f
 #define BRICK_TEXTURE L"map\\brick_32x32.png"
 //================ END BRICK SIZE =========================================
 

@@ -1,8 +1,7 @@
 ﻿#include "Map.h"
 
-Map::Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top) {
-	this->filePath = filePath;
-	this->grid = grid;
+Map::Map(LPD3DXSPRITE spriteHandler, Loader * loader, int left, int top) {
+	this->loader = loader;
 
 	spriteHandler->GetDevice(&d3ddv);
 
@@ -10,19 +9,23 @@ Map::Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top) {
 	this->texture = text1->loadTexture(d3ddv, BRICK_TEXTURE);
 	if (texture == NULL)
 		trace(L"Unable to load BrickTexture");
-	
+
 	this->sprite = new Sprite(spriteHandler, this->texture, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, 1, 1);
 	if (this->sprite == NULL)
-		trace(L"Unable to load map sprite");
-	if (!this->loadMap(this->filePath)) {
-		trace(L"Unable to load map");
-	}
+		trace(L"Unable to load mapRoom1 sprite");
+
+	this->stringMap = this->loader->getStringMap();
+	this->m_max_Row = this->loader->getRow();
+	this->m_max_Column = this->loader->getCol();
+
 	this->setLimitation(left, top, m_max_Column * BRICK_SIZE, m_max_Row * BRICK_SIZE);
+	delete text1;
 }
 
 Map::~Map() {
 	delete sprite;
 	delete grid;
+	delete(loader);
 }
 
 void Map::setLimitation(int x, int y, int width, int height) {
@@ -47,41 +50,46 @@ vector<string> Map::getStringMap() {
 	return this->stringMap;
 }
 
-bool Map::loadMap(string filePath) {
-	ifstream file_txt(filePath);
-	string str;
-	int row = 0, column = 0;
-	while (getline(file_txt, str)) {
-		row++;
-		if (str.length() > column)
-			column = str.length();
-		stringMap.push_back(str);
-
-		/*int index = 0;
-		while (index < str.length())
-		{
-			if (str[index] != '0')
-			{
-				float y = (row - 1)*BRICK_SIZE;
-				float x = (index)*BRICK_SIZE;
-				TileObject * tile = new TileObject(x,y);
-				grid->add(tile);
-				tile = nullptr;
-				delete tile;
-			}
-			index++;
-		}*/
-	}
-
-	m_max_Row = row;
-	m_max_Column = column;
-
-	if (!stringMap.empty())
-		return true;
-	return false;
+void Map::setStringMap(vector<string> value)
+{
+	stringMap = value;
 }
 
-void Map::drawMap() 
+//bool Map::loadMap(string filePath) {
+//	ifstream file_txt(filePath);
+//	string str;
+//	int row = 0, column = 0;
+//	while (getline(file_txt, str)) {
+//		row++;
+//		if (str.length() > column)
+//			column = str.length();
+//		stringMap.push_back(str);
+//
+//		/*int index = 0;
+//		while (index < str.length())
+//		{
+//			if (str[index] != '0')
+//			{
+//				float y = (row - 1)*BRICK_SIZE;
+//				float x = (index)*BRICK_SIZE;
+//				TileObject * tile = new TileObject(x,y);
+//				grid->add(tile);
+//				tile = nullptr;
+//				delete tile;
+//			}
+//			index++;
+//		}*/
+//	}
+//
+//	m_max_Row = row;
+//	m_max_Column = column;
+//
+//	if (!stringMap.empty())
+//		return true;
+//	return false;
+//}
+
+void Map::drawMap()
 {
 	for (int i = 0; i < drawBrickArray.size(); i++)
 	{
@@ -404,8 +412,18 @@ int Map::getRow() {
 	return this->m_max_Row;
 }
 
+void Map::setRow(int value)
+{
+	m_max_Row = value;
+}
+
 int Map::getColumn() {
 	return this->m_max_Column;
+}
+
+void Map::setColumn(int value)
+{
+	m_max_Column = value;
 }
 
 void Map::setGrid(Grid * grid) {
@@ -431,8 +449,10 @@ void Map::inputBrickToGrid() {
 			if (this->stringMap[i][j] != '0') {
 				float x = (float)j * 32;
 				float y = (float)i * 32;
-				Brick * brick = new Brick(x, y, BRICK_SIZE, BRICK_SIZE);
+				Brick * brick = new Brick(x, y, BRICK_SIZE, BRICK_SIZE, this->grid);
 				this->grid->add(brick);
+				brick = nullptr;
+				delete brick;
 			}
 		}
 	}

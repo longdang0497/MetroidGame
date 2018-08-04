@@ -8,7 +8,7 @@ ItemBomb::ItemBomb(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid) :It
 	isActive = false;
 	this->grid = grid;
 	this->manager = manager;
-
+	this->spriteHandler = spriteHandler;
 	this->type = BOMB_ITEM;
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;

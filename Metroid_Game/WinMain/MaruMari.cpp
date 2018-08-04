@@ -6,7 +6,10 @@ MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid) :It
 	this->type = MARU_MARI;
 	maruMari = NULL;
 	isActive = true;
+	this->spriteHandler = spriteHandler;
+	this->manager = manager;
 
+	currentSprite = nullptr;
 	this->grid = grid;
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
@@ -38,6 +41,13 @@ void MaruMari::Init(float posX, float posY)
 
 void MaruMari::Update(float t)
 {
+	float newPosX = pos_x + vx * t;
+	float newPosY = pos_y + vy * t;
+	//vy += gravity;
+	if (!this->grid->updateGrid(this, newPosX, newPosY)) {
+		pos_x = newPosX;
+		pos_y = newPosY;
+	}
 }
 
 void MaruMari::Render()

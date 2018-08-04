@@ -16,6 +16,7 @@ void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
 	this->world->grid->add(this->world->samus);	
+
 	world->maruMari->Init(420, 290);
 	world->grid->add(world->maruMari);
 
@@ -30,13 +31,13 @@ void Metroid::_InitPositions()
 	world->grid->add(world->explode);
 	world->explode->setActive(false);
 
-	world->gateLeft->Init(2224, 160);
+	/*world->gateLeft->Init(2224, 160);
 	world->gateLeft->grid->add(world->gateLeft);
 	world->gateRight->Init(2304, 160);
 	world->gateRight->grid->add(world->gateRight);
 
 	world->gateBlock->Init(2240, 160);
-	world->gateBlock->grid->add(world->gateBlock);
+	world->gateBlock->grid->add(world->gateBlock);*/
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -64,7 +65,14 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 
 Metroid::~Metroid()
 {
-	delete(map);
+	delete(mapRoom1);
+	delete(mapRoom2);
+	delete(mapRoom3);
+	delete(mapStair);
+	delete(loadRoom1);
+	delete(loadRoom2);
+	delete(loadRoom3);
+	delete(loadStair);
 	delete(world);
 }
 
@@ -89,15 +97,22 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	CSound * intro = sound->LoadSound(GAME_INTRO_SOUND);
 	if (intro != NULL)
 		sound->Loopsound(intro);*/
-	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), MAP_ROOM1, 0, 0);
 
-	int height = this->map->getRow();
-	int width = this->map->getColumn();
+	loadRoom1 = new Loader(MAP_ROOM1);
+	//loadRoom2 = new Loader(MAP_ROOM2);
+	//loadRoom3 = new Loader(MAP_ROOM3);
+	//loadStair = new Loader(MAP_STAIR);
+ // +this->loadStair->getCol();
+
+	// Khoi tao map
+	this->mapRoom1 = new Map(this->getSpriteHandler(), loadRoom1, 0, 0);
+
+	int height = this->mapRoom1->getRow();
+	int width = this->mapRoom1->getColumn();
 	world = new World(spriteHandler, this, width, height);
 
-	this->map->setGrid(world->grid);
-	this->map->inputBrickToGrid();
+	this->mapRoom1->setGrid(world->grid);
+	this->mapRoom1->inputBrickToGrid();
 
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
@@ -105,7 +120,7 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (camera) 
 	{
 		camera->Follow(world->samus);
-		camera->SetMapBoundary(map->getBoundary());
+		camera->SetMapBoundary(mapRoom1->getBoundary());
 	}
 	this->_InitPositions();
 }
@@ -125,7 +140,7 @@ void Metroid::Update(float Delta)
 		// game running
 	case GAMEMODE_GAMERUN:
 		this->camera->Update();
-		map->UpdateMap(this->camera->getBoundary());
+		mapRoom1->UpdateMap(this->camera->getBoundary());
 		UpdateFrame(Delta);
 		break;
 		// game over
@@ -251,7 +266,7 @@ void Metroid::RenderGameOver(LPDIRECT3DDEVICE9 d3ddv)
 //render từng object trong game
 void Metroid::RenderFrame(LPDIRECT3DDEVICE9 d3ddv)
 {
-	map->drawMap();
+	mapRoom1->drawMap();
 	world->Render();
 }
 
@@ -675,6 +690,31 @@ LPD3DXSPRITE Metroid::getSpriteHandler() {
 	return this->spriteHandler;
 }
 
-Map * Metroid::getMap() {
-	return this->map;
+Map * Metroid::getMapRoom1() {
+	return this->mapRoom1;
+}
+
+Map * Metroid::getMapRoom2()
+{
+	return this->mapRoom2;
+}
+
+Map * Metroid::getMapRoom3()
+{
+	return this->mapRoom3;
+}
+
+Map * Metroid::getMapStair()
+{
+	return this->mapStair;
+}
+
+ROOM_NUMBER Metroid::getRoomNum()
+{
+	return roomNum;
+}
+
+void Metroid::setRoomNum(ROOM_NUMBER value)
+{
+	roomNum = value;
 }

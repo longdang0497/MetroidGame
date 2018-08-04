@@ -3,10 +3,12 @@
 ExplodeEffect::ExplodeEffect(LPD3DXSPRITE spriteHandler, World *manager, Grid * grid) : Effect(spriteHandler, manager, grid)
 {
 	this->type = EXPLOSION;
+	this->spriteHandler = spriteHandler;
 	this->grid = grid;
 	this->manager = manager;
 	explode = nullptr;
 	isActive = false;
+	currentSprite = nullptr;
 }
 
 ExplodeEffect::~ExplodeEffect()
@@ -27,7 +29,7 @@ void ExplodeEffect::Update(float t)
 		if (now - last_time > 1000 / ANIMATE_RATE)
 		{
 			//if (isRendering == true)
-				currentSprite->updateIndex();
+			currentSprite->updateIndex();
 			last_time = now;
 		}
 		// Tính thời gian hiển thị

@@ -192,6 +192,9 @@
     <ClCompile Include="BombWeapon.cpp">
       <Filter>Source Files\Character</Filter>
     </ClCompile>
+    <ClCompile Include="Loader.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -308,6 +311,9 @@
     <ClInclude Include="BombWeapon.h">
       <Filter>Header Files\Character</Filter>
     </ClInclude>
+    <ClInclude Include="Loader.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="sprites\Player_32x16.png">
@@ -348,6 +354,30 @@
     </Image>
     <Image Include="sprites\item\bomb.png">
       <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="enemy\explosion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="enemy\metroid_enemies_sheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="scene\gameover_background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="scene\intro_background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="scene\start_background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\item\bullet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\item\bulletx2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\item\items_sprite_sheet.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -495,6 +525,11 @@
     <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt">
       <Filter>Resource Files\sprites\explode_effect</Filter>
     </Text>
+    <Text Include="Monster_Room1.txt" />
+    <Text Include="sprites\item\BULLET.txt" />
+    <Text Include="sprites\item\ITEM_ENERGY.txt" />
+    <Text Include="sprites\item\ITEM_MISSILE.txt" />
+    <Text Include="sprites\item\MARU_MARI.txt" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound\bullet.wav">

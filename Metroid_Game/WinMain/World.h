@@ -30,13 +30,14 @@ public:
 	Gate * gateLeft;
 	GateBlock * gateBlock;
 	Samus * samus;
-	vector<Enemy*> enemy;
+	vector<Enemy*> enemy = vector<Enemy*>();
 	MaruMari * maruMari;
-	Skree * skree;
+	//Skree * skree;
 	ExplodeEffect * explode;
 	Bomb * bomb;
 	ItemBomb * itemBomb;
-	vector<Bullet*> samusBullet;	LPD3DXSPRITE spriteHandler;
+	vector<Bullet*> samusBullet = vector<Bullet*>();	
+	LPD3DXSPRITE spriteHandler;
 
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int height);
