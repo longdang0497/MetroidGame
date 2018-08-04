@@ -12,10 +12,8 @@
 #include <vector>
 #include "Math.h"
 #include <d3dx9.h>
-#include "Brick.h"
 #include "Grid.h"
-#include "TileObject.h"
-
+#include "Brick.h"
 class Camera;
 
 using namespace std;
@@ -27,7 +25,7 @@ class Map {
 		int y_pixel;
 	};
 public:
-	Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top);
+	Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture,string filePath, DeviceManager *deviceManager, int left, int top);
 
 	~Map();
 
@@ -44,6 +42,7 @@ public:
 	// Load map lên
 	bool loadMap(string filePath);
 
+	LPDIRECT3DDEVICE9 getDevice();
 	LPDIRECT3DTEXTURE9 getTexture();
 	vector<string> getStringMap();
 
@@ -60,9 +59,11 @@ private:
 	Grid * grid;
 	std::string filePath;
 	vector<string> stringMap;
-	vector<brick> drawBrickArray = vector<brick>();
+	vector<brick> drawBrickArray = vector<brick> ();
 	int roomID;
 	Sprite *sprite;
+
+	DeviceManager *deviceManager;
 
 	//Start coordinate of the camera
 	RECT m_boundary = RECT();
@@ -74,6 +75,5 @@ private:
 	int m_max_Row;
 	int m_max_Column;
 
-	LPDIRECT3DDEVICE9 d3ddv;
 	LPDIRECT3DTEXTURE9 texture;
 };

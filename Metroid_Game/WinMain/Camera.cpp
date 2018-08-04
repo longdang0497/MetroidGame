@@ -42,10 +42,8 @@ void Camera::Update()
 		eye.x = m_following->pos_x;
 		eye.y = m_following->pos_y;
 
-		m_following->lastPosY = m_following->pos_y;
-
 		//set bound camera
-		Camera_bound.top	= m_map_bound.top - CAMERA_FOLLOW_POINT_TOP_RATIO * height;
+		Camera_bound.top = m_map_bound.top - CAMERA_FOLLOW_POINT_TOP_RATIO * height;
 		Camera_bound.bottom = m_map_bound.bottom + CAMERA_FOLLOW_POINT_BOTTOM_RATIO * height;
 		Camera_bound.left	= m_following->pos_x - CAMERA_FOLLOW_POINT_LEFT_RATIO * width;
 		Camera_bound.right	= m_following->pos_x + CAMERA_FOLLOW_POINT_RIGHT_RATIO * width;

@@ -26,10 +26,6 @@ Sprite::Sprite(LPD3DXSPRITE sprite, LPDIRECT3DTEXTURE9 texture, int width, int h
 		return;
 }
 
-Sprite::Sprite()
-{
-}
-
 Sprite::Sprite(LPD3DXSPRITE SpriteHandler, LPDIRECT3DTEXTURE9 texture, LPWSTR _coord, int width, int height, int count)
 {
 	this->count = count;
@@ -58,13 +54,6 @@ Sprite::~Sprite() {
 
 // Cap nhat vi tri cua sprite tiep theo
 void Sprite::updateSprite() {
-	this->currentIndexOfSprite += 1;
-	if (this->currentIndexOfSprite >= (this->startIndexOfSprite + this->count))
-		this->currentIndexOfSprite = startIndexOfSprite;
-}
-
-void Sprite::updateIndex()
-{
 	this->_Index = (this->_Index + 1) % count;
 }
 
@@ -205,14 +194,4 @@ void Sprite::setHeight(int value)
 int Sprite::getHeight()
 {
 	return height;
-}
-
-int Sprite::GetIndex()
-{
-	return this->_Index;
-}
-
-int Sprite::GetCount()
-{
-	return count;
 }

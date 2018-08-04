@@ -18,6 +18,7 @@ Brick::Brick(float x, float y, int width, int height){
 	this->pos_y = y;
 	this->width = width;
 	this->height = height;
+	this->isActive = true;
 }
 
 void Brick::InitSprites(LPDIRECT3DDEVICE9 d3ddev, LPDIRECT3DTEXTURE9 texture) {

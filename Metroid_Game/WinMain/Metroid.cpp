@@ -15,28 +15,9 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
-	this->world->grid->add(this->world->samus);	
-	world->maruMari->Init(420, 290);
-	world->grid->add(world->maruMari);
-
-	world->itemBomb->Init(1056, 352);
-	world->grid->add(world->itemBomb);
-
-	world->bomb->CreateBomb(0, 0);
-	world->grid->add(world->bomb);
-	world->bomb->setActive(false);
-
-	world->explode->CreateExplode(360, 360);
-	world->grid->add(world->explode);
-	world->explode->setActive(false);
-
-	world->gateLeft->Init(2224, 160);
-	world->gateLeft->grid->add(world->gateLeft);
-	world->gateRight->Init(2304, 160);
-	world->gateRight->grid->add(world->gateRight);
-
-	world->gateBlock->Init(2240, 160);
-	world->gateBlock->grid->add(world->gateBlock);
+	this->world->grid->add(this->world->samus);
+	world->maruMari->Init(420, 352);
+	this->world->grid->add(this->world->maruMari);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -49,7 +30,6 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 	isFreezing = false;
 
 	sound = new GameSound();	
-
 
 	time_jump = 3 * _DeltaTime;
 	time_freezing = TIME_FREEZING;
@@ -69,7 +49,7 @@ Metroid::~Metroid()
 }
 
 /*
-	Khoi tao Spritehandler cho game
+	Khoi tao Spritehandler va Texture cho game
 */
 void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 {
@@ -80,17 +60,12 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (result != D3D_OK) 
 		trace(L"Unable to create SpriteHandler");
 
-	/*bool check = sound->Init(_dxgraphics->getWnd());
-	if (!check)
-	{
-		MessageBox(_dxgraphics->getWnd(), L"Error initialize sound !", L"Error", MB_OK);
-	}
+	_texture = texture.loadTexture(d3ddev, BRICK_TEXTURE);
+	if (_texture == NULL)
+		trace(L"Unable to load BrickTexture");
 
-	CSound * intro = sound->LoadSound(GAME_INTRO_SOUND);
-	if (intro != NULL)
-		sound->Loopsound(intro);*/
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), MAP_ROOM1, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), _texture, "field1.txt", this->_device, 0, 0);
 
 	int height = this->map->getRow();
 	int width = this->map->getColumn();
@@ -101,13 +76,14 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
-		
+	this->_InitPositions();
+
 	if (camera) 
 	{
 		camera->Follow(world->samus);
 		camera->SetMapBoundary(map->getBoundary());
 	}
-	this->_InitPositions();
+
 }
 
 //Kiểm tra screen Mode (bắt đầu, room1, room2,... hay gameover)
@@ -137,22 +113,13 @@ void Metroid::Update(float Delta)
 
 void Metroid::UpdateIntro(float Delta)
 {
-	//DWORD now = GetTickCount();
-	//if (now - Delta  > 1000 / 100)
-	//{
-	//	intro->Next();
-	//	Delta = now;
-	//}
 }
 
 //update các object trong game
 void Metroid::UpdateFrame(float Delta)
 {
-	currentTime = Delta;
 	if (isInGame)
 	{
-		/*for (int i = 0; i < world->zoomerYellow.size(); i++)
-			world->zoomerYellow[i]->setActive(false);*/
 		time_in_game -= Delta;
 		if (time_in_game <= 0)
 		{
@@ -171,13 +138,7 @@ void Metroid::UpdateFrame(float Delta)
 		return;
 	}
 
-	world->Update(Delta);	
-
-	if (world->samus->isSamusDeath() == true)
-	{
-		screenMode = GAMEMODE_GAMEOVER;
-		return;
-	}
+	world->Update(Delta);
 	
 
 	if (world->samus->isSamusDeath() == true)
@@ -537,66 +498,7 @@ void Metroid::OnKeyDown(int KeyCode)
 		// game running
 		case GAMEMODE_GAMERUN:// -------------------------------------------------
 		{
-			switch (KeyCode)
-			{
-			case DIK_SPACE:
-				if (_input->IsKeyDown(DIK_SPACE) && world->bomb->getBombExplode() == true)
-				{		
-					world->bomb->setActive(true);
-					world->bomb->setTimeSurvive(3);	
-					world->bomb->setBombExplode(false);
-					
-					float xpos = world->samus->getPosX();
-					float ypos = world->samus->getPosY();
-					float bombPosX = xpos + world->samus->currentSprite->getWidth() / 2;
-					float bombPosY = ypos + world->samus->currentSprite->getHeight() / 2;
-					world->bomb->setPosX(bombPosX);
-					world->bomb->setPosY(bombPosY);		
-				}
-				break;
-			case DIK_DOWN:
-				if (_input->IsKeyDown(DIK_DOWN) && world->samus->canMorph) {
-					if (world->samus->getVelocityXLast() < 0) {
-						if (world->samus->GetState() == STAND_LEFT || world->samus->GetState() == RUNNING_LEFT) {
-							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f); 
-							world->samus->SetState(TRANSFORM_BALL_LEFT);
-							world->samus->isMorphing = true;
-						}
-					}
-					else if (world->samus->getVelocityXLast() > 0) {
-						if (world->samus->GetState() == STAND_RIGHT || world->samus->GetState() == RUNNING_RIGHT) {
-							world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() + 32.0f); 
-							world->samus->SetState(TRANSFORM_BALL_RIGHT);
-							world->samus->isMorphing = true;
-						}
-					}
-				}		
-				break;
-			case DIK_UP:
-				/*if (_input->IsKeyDown(DIK_UP))
-				{
-					if (world->samus->getVelocityXLast() < 0)
-						world->samus->SetState(JUMP_LEFT);
-					else if (world->samus->getVelocityXLast() > 0)
-						world->samus->SetState(JUMP_RIGHT);
-					float previous = 0;
-					float current = GetTickCount();
 
-					while (true)
-					{
-						previous = current;
-						current = GetTickCount();
-
-						float deltaTime = current - previous;
-						if (deltaTime > 10 * tick_per_frame)
-							deltaTime = 10 * tick_per_frame;
-						if(world->samus->getVelocityXLast() > 0)
-							world->samus->SetState(JUMP_RIGHT);
-						world->samus->vy += world->samus->gravity * deltaTime;
-					}
-				}*/
-				break;
-			}
 		}
 		break;
 		// game over
@@ -616,53 +518,15 @@ void Metroid::OnKeyUp(int KeyCode)
 {
 	switch (KeyCode)
 	{
-	case DIK_DOWN:
-		if (world->samus->getVelocityXLast() < 0)
-		{
-			world->samus->SetState(STAND_LEFT);
-			if (world->samus->isMorphing == true)
-			{
-				world->samus->isMorphing = false;
-				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
-			}				
-		}
-		else if (world->samus->getVelocityXLast() > 0)
-		{
-			world->samus->isMorphing = false;
-			world->samus->SetState(STAND_RIGHT);
-			if (world->samus->isMorphing == true)
-			{
-				world->samus->isMorphing = false;
-				world->samus->Reset(world->samus->getPosX(), world->samus->getPosY() - 32.0f);
-			}
-		}
-		break;
-	case DIK_UP:
-		if (world->samus->GetState() == JUMP_RIGHT || world->samus->GetState() == JUMP_SHOOT_UP_RIGHT
-			|| world->samus->GetState() == MORPH_RIGHT)
-		{
-			world->samus->SetState(STAND_RIGHT);
-		}
-		else if (world->samus->GetState() == JUMP_LEFT || world->samus->GetState() == JUMP_SHOOT_UP_LEFT
-			|| world->samus->GetState() == MORPH_LEFT)
-		{
-			world->samus->SetState(STAND_LEFT);
-		}
-		break;
 	case DIK_Z:
+	{
 		for (int i = 0; i < this->world->samusBullet.size(); i++) {
 			this->world->samusBullet[i]->setActive(false);
 			if (!this->world->samusBullet[i]->getIsRendered()) {
 				this->world->samusBullet[i]->setCount(0);
 			}
 		}
-		break;
-	case DIK_SPACE:
-		/*if (world->bomb->isActive == false)
-			world->bomb->ResetBombNo(1);
-		else if (world->bomb->isActive == false)
-			world->bomb->setBombNo(0);*/
-		break;
+	}
 	}
 }
 

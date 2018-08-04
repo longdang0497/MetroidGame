@@ -6,7 +6,7 @@ protected:
 	float time_survive;
 	int number_gain;
 public:
-	Item(LPD3DXSPRITE sprietHandler, World * manager, Grid * grid);
+	Item(LPD3DXSPRITE sprietHandler, World * manager);
 	~Item();
 	int getNumberGain();
 	void setNumberGain(int num);

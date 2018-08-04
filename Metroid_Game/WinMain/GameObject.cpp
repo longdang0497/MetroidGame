@@ -28,10 +28,6 @@ void GameObject::Render()
 {
 }
 
-void GameObject::updateState()
-{
-}
-
 void GameObject::Init(float posX, float posY)
 {
 	this->pos_x = posX;
@@ -102,7 +98,7 @@ float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDi
 	// Chỗ này có một cái hơi fun đó là khi vy = 0 mà pos_y dù nó thấp hơn vật khác vẫn bị xét là va chạm với cạnh, tương tự với vx
 	else {
 		if (xEntry > yEntry) { // này là đã va chạm ở trục Y rồi
-			if (xInvEntry > 0.0f) {
+			if (xInvEntry >= 0.0f) {
 				if (this->pos_y + this->height <= object->pos_y || this->pos_y >= object->pos_y + object->height)
 					collisionDirection = NONE;
 				else
@@ -116,7 +112,7 @@ float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDi
 			}
 		}
 		else {			// Này là va chạm với trục X rồi nè
-			if (yInvEntry > 0.0f) {
+			if (yInvEntry >= 0.0f) {
 				if (this->pos_x + this->width <= object->pos_x || this->pos_x >= object->pos_x + object->width)
 					collisionDirection = NONE;
 				else
@@ -260,21 +256,18 @@ void GameObject::setgravity(float value)
 	gravity = value;
 }
 
-void GameObject::Translate(D3DXVECTOR2 vector)
+void GameObject::SetBound(int objWidth, int objHeight)
 {
-	pos_x += vector.x;
-	pos_y -= vector.y;
+	rigidBody.x = objWidth;
+	rigidBody.y = objHeight;
 }
 
 RECT GameObject::GetBound()
 {
-	if (currentSprite != nullptr)
-	{
-		objBound.left = pos_x;
-		objBound.right = pos_x + currentSprite->getWidth();
-		objBound.top = pos_y;
-		objBound.bottom = pos_y + currentSprite->getHeight();
-	}
+	objBound.left = pos_x;
+	objBound.right = pos_x + rigidBody.x;
+	objBound.top = pos_y;
+	objBound.bottom = pos_y - rigidBody.y;
 
 	return objBound;
 }

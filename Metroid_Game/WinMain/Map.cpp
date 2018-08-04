@@ -1,17 +1,15 @@
-﻿#include "Map.h"
+#include "Map.h"
 
-Map::Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top) {
+
+Map::Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture, string filePath, DeviceManager *deviceManager, int left, int top) {
+	this->grid = nullptr;
 	this->filePath = filePath;
-	this->grid = grid;
-
-	spriteHandler->GetDevice(&d3ddv);
-
-	Texture * text1 = new Texture();
-	this->texture = text1->loadTexture(d3ddv, BRICK_TEXTURE);
-	if (texture == NULL)
-		trace(L"Unable to load BrickTexture");
+	this->deviceManager = deviceManager;
 	
-	this->sprite = new Sprite(spriteHandler, this->texture, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, 1, 1);
+	this->texture = texture;
+	if (this->texture == NULL)
+		trace(L"Unable to read map texture");
+	this->sprite = new Sprite(spriteHandler, this->getTexture(), WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, 1, 1);
 	if (this->sprite == NULL)
 		trace(L"Unable to load map sprite");
 	if (!this->loadMap(this->filePath)) {
@@ -39,6 +37,10 @@ RECT Map::getBoundary()
 	return m_boundary;
 }
 
+LPDIRECT3DDEVICE9 Map::getDevice() {
+	return this->deviceManager->getdevice();
+}
+
 LPDIRECT3DTEXTURE9 Map::getTexture() {
 	return this->texture;
 }
@@ -56,21 +58,6 @@ bool Map::loadMap(string filePath) {
 		if (str.length() > column)
 			column = str.length();
 		stringMap.push_back(str);
-
-		/*int index = 0;
-		while (index < str.length())
-		{
-			if (str[index] != '0')
-			{
-				float y = (row - 1)*BRICK_SIZE;
-				float x = (index)*BRICK_SIZE;
-				TileObject * tile = new TileObject(x,y);
-				grid->add(tile);
-				tile = nullptr;
-				delete tile;
-			}
-			index++;
-		}*/
 	}
 
 	m_max_Row = row;
@@ -81,8 +68,7 @@ bool Map::loadMap(string filePath) {
 	return false;
 }
 
-void Map::drawMap() 
-{
+void Map::drawMap() {
 	for (int i = 0; i < drawBrickArray.size(); i++)
 	{
 		drawBrick(drawBrickArray[i]);
@@ -158,6 +144,8 @@ void Map::drawBrick(brick value) {
 	}
 	case 'd':
 	{
+		sprite->drawSprite(0, 12 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
+
 		break;
 	}
 	case 'e':
@@ -361,6 +349,11 @@ void Map::drawBrick(brick value) {
 		sprite->drawSprite(0, 52 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
 		break;
 	}
+	case'U':
+	{
+		sprite->drawSprite(0, 53 * BRICK_SIZE, WIDTH_SPRITE_BRICK, HEIGHT_SPRITE_BRICK, pos);
+		break;
+	}
 	case '0':
 	{
 		break;
@@ -377,7 +370,7 @@ void Map::Update(int roomID) {
 void Map::UpdateMap(RECT cameraBound) {
 	drawBrickArray.clear();
 	RECT bound = cameraBound;
-	bound.left -= 2 * BRICK_SIZE;
+	bound.left -=  2 * BRICK_SIZE;
 	bound.top -= 2 * BRICK_SIZE;
 	vector<string> strBrick = this->getStringMap();
 
@@ -389,7 +382,7 @@ void Map::UpdateMap(RECT cameraBound) {
 			float x_pixel = m_boundary.left + j * BRICK_SIZE;
 			float y_pixel = m_boundary.top + i * BRICK_SIZE;
 			D3DXVECTOR2 point(x_pixel, y_pixel);
-			if (Math::isPointinRectangle(point, bound)) {
+			if ( Math::isPointinRectangle(point, bound) ) {
 				brick new_brick = brick();
 				new_brick.type = strBrick[i][j];
 				new_brick.x_pixel = x_pixel;
