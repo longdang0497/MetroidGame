@@ -130,8 +130,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bomb.cpp" />
-    <ClCompile Include="BombWeapon.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -141,17 +139,12 @@
     <ClCompile Include="DXUT.cpp" />
     <ClCompile Include="DXUTenum.cpp" />
     <ClCompile Include="DXUTmisc.cpp" />
-    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="ExplodeEffect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Gate.cpp" />
-    <ClCompile Include="GateBlock.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MaruMari.cpp" />
@@ -160,19 +153,15 @@
     <ClCompile Include="Samus.cpp" />
     <ClCompile Include="SDKsound.cpp" />
     <ClCompile Include="SDKwavefile.cpp" />
-    <ClCompile Include="Skree.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TileObject.cpp" />
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="Zoomer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bomb.h" />
-    <ClInclude Include="BombWeapon.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
@@ -183,17 +172,12 @@
     <ClInclude Include="DXUT.h" />
     <ClInclude Include="DXUTenum.h" />
     <ClInclude Include="DXUTmisc.h" />
-    <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="ExplodeEffect.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Gate.h" />
-    <ClInclude Include="GateBlock.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="Loader.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MaruMari.h" />
     <ClInclude Include="Math.h" />
@@ -201,29 +185,17 @@
     <ClInclude Include="Samus.h" />
     <ClInclude Include="SDKsound.h" />
     <ClInclude Include="SDKwavefile.h" />
-    <ClInclude Include="Skree.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TileObject.h" />
     <ClInclude Include="trace.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="Zoomer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="enemy\explosion.png" />
-    <Image Include="enemy\metroid_enemies_sheet.png" />
-    <Image Include="map\brick_32x32.png" />
-    <Image Include="scene\gameover_background.png" />
-    <Image Include="scene\intro_background.png" />
-    <Image Include="scene\start_background.png" />
-    <Image Include="sprites\explode_effect\explosion.png" />
-    <Image Include="sprites\gate\GATE_32.png" />
-    <Image Include="sprites\item\bomb.png" />
-    <Image Include="sprites\item\bullet.png" />
-    <Image Include="sprites\item\bulletx2.png" />
-    <Image Include="sprites\item\items_sprite_sheet.png" />
+    <Image Include="brick_16x16.png" />
+    <Image Include="brick_32x32.png" />
     <Image Include="enemy\explosion.png" />
     <Image Include="enemy\metroid_enemies_sheet.png" />
     <Image Include="scene\gameover_background.png" />
@@ -235,7 +207,6 @@
     <Image Include="sprites\Player_32x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="enemy\SKREE.txt" />
     <Text Include="enemy\BEE_FLY.txt" />
     <Text Include="enemy\BIRD_FLY.txt" />
     <Text Include="enemy\BLOCK_LEFT.txt" />
@@ -249,22 +220,7 @@
     <Text Include="enemy\ZOOMER_YELLOW_LEFT.txt" />
     <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt" />
     <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
-    <Text Include="map\fieldBossMB.txt" />
-    <Text Include="map\fieldBossRidley.txt" />
-    <Text Include="map\fieldRoom1.txt" />
-    <Text Include="map\fieldStair.txt" />
-    <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt" />
-    <Text Include="sprites\gate\GATE_BLOCK.txt" />
-    <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt" />
-    <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt" />
-    <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt" />
-    <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt" />
-    <Text Include="sprites\item\BOMB.txt" />
-    <Text Include="sprites\item\BULLET.txt" />
-    <Text Include="sprites\item\ITEM_BOMB.txt" />
-    <Text Include="sprites\item\ITEM_ENERGY.txt" />
-    <Text Include="sprites\item\ITEM_MISSILE.txt" />
-    <Text Include="sprites\item\MARU_MARI.txt" />
+    <Text Include="field1.txt" />
     <Text Include="Monster_Room1.txt" />
     <Text Include="sprites\item\BULLET.txt" />
     <Text Include="sprites\item\ITEM_ENERGY.txt" />

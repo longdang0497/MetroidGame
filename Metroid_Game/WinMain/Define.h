@@ -9,16 +9,6 @@ class Game;
 class Bullet;
 class Grid;
 class GameObject;
-class Bomb;
-class ItemBomb;
-class Item;
-class Enemy;
-class Zoomer;
-class Gate;
-class GateBlock;
-class Skree;
-class Effect;
-class ExplodeEffect;
 
 #define KEYBOARD_BUFFER_SIZE	1024
 #define KEY_DOWN(code) ( IsKeyDown(code) )
@@ -27,28 +17,16 @@ class ExplodeEffect;
 #define TIME_FREEZING 5000
 #define TIME_IN_GAME 7000
 
-#define JUMP_VELOCITY_BOOST 10.0f
-#define JUMP_VELOCITY_BOOST_FIRST 70.0f
-#define FALLDOWN_VELOCITY_DECREASE 50.0f
+#define JUMP_VELOCITY_BOOST 0.5f
+#define JUMP_VELOCITY_BOOST_FIRST 64.0f
+#define FALLDOWN_VELOCITY_DECREASE 0.3f
+#define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 30
-#define LIVE_TIME 3000
 #define LIVE_TIME 3000
 
 #define SAMUS_SPEED 200.0f
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
-
-#define MAP_ROOM1 "map\\fieldRoom1.txt"
-#define MAP_ROOM2 "map\\fieldBossRidley.txt"
-#define MAP_ROOM3 "map\\fieldBossMB.txt"
-#define MAP_STAIR "map\\fieldStair.txt"
-
-enum ROOM_NUMBER {
-	ROOM1,
-	ROOM2,
-	ROOM3,
-	STAIR
-};
 
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
@@ -129,7 +107,7 @@ enum OBJECT_TYPE
 
 //================ SPRITE SAMUS ================
 #define WIDTH_SAMUS_STAND 42
-#define HEIGHT_SAMUS_STAND 64
+#define HEIGHT_SAMUS_STAND 66
 #define COUNT_SAMUS_STAND 1
 #define STAND_RIGHT_PATH L"sprites\\STAND_RIGHT.txt"
 #define STAND_LEFT_PATH L"sprites\\STAND_LEFT.txt"
@@ -214,8 +192,8 @@ enum OBJECT_TYPE
 //================ END ROOM LIMITATION ==================================
 
 //================ BRICK SIZE =============================================
-#define BRICK_SIZE 32.0f
-#define BRICK_TEXTURE L"map\\brick_32x32.png"
+#define BRICK_SIZE 32
+#define BRICK_TEXTURE L"brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
 //================ GAME SOUND =============================================
@@ -226,12 +204,8 @@ enum OBJECT_TYPE
 //================ END GAME SOUND =========================================
 
 //================ GAME ITEM ===========================
-#define BULLET_PATH L"sprites\\item\\BULLET.txt"
-#define BULLET_TEXTURE L"sprites\\item\\bulletx2.png"
-#define WIDTH_BULLET 24
-#define HEIGHT_BULLET 28
 
-#define ITEM_TIME_SURVIVE 10
+#define ITEM_TIME_SURVIVE 5000
 #define ITEM_SPRITE_PATH L"sprites\\item\\items_sprite_sheet.png"
 
 //========= ITEM MARU MARI
@@ -255,20 +229,30 @@ enum OBJECT_TYPE
 #define ITEM_MISSILE_COUNT 1
 
 #define ITEM_MISSILE_GAIN 3
-
-//========= ITEM BOMB
-#define ITEM_BOMB_PATH L"sprites\\item\\ITEM_BOMB.txt"
-#define ITEM_BOMB_WIDTH 32
-#define ITEM_BOMB_HEIGHT 37
 //================ END GAME ITEM ===================================
 
 //================== ENEMY =====================
+
 //================== ZOOMER =====================
+enum ZOOMER_STATE
+{
+	ON_ZOOMER_UP,
+	ON_ZOOMER_BOTTOM,
+	ON_ZOOMER_LEFT,
+	ON_ZOOMER_RIGHT,
+};
+
+enum ZOOMER_DIRECTION {
+	ZOOMER_UP,
+	ZOOMER_LEFT,
+	ZOOMER_RIGHT,
+	ZOOMER_DOWN
+};
 #define ENEMY_SPRITE_PATH L"enemy\\metroid_enemies_sheet.png"
 #define ZOOMER_WIDTH 36
 #define ZOOMER_HEIGHT 32
 #define ZOOMER_SPRITE_COUNT 2
-#define ZOOMER_SPEED 75.0f
+#define ZOOMER_SPEED 60.0f
 
 ///////ENERGY
 #define ENERGY_SPRITE_PATH L"sprites\\energy\\energy.png"
@@ -301,18 +285,18 @@ enum OBJECT_TYPE
 #define ZOOMER_PINK_RIGHT L"enemy\\ZOOMER_PINK_RIGHT.txt"
 //================== END ZOOMER =================
 
-//================== SKREE  =====================
+//================== BIRD  =====================
 
-#define SKREE_WIDTH 36
-#define SKREE_HEIGHT 52
+#define BIRD_WIDTH 36
+#define BIRD_HEIGHT 52
 
-#define SKREE_COUNT 3
+#define BIRD_FLY_SPRITE_COUNT 3
 
-#define SKREE_PATH L"enemy\\SKREE.txt"
+#define BIRD_FLY "sprites\\enemy\\BIRD_FLY.txt"
 
-#define SKREE_STANDARD_ANIMATE_RATE 7
-#define SKREE_BOOST_ANIMATE_RATE 30
-//================== END SKREE =================
+#define BIRD_STANDARD_ANIMATE_RATE 7
+#define BIRD_BOOST_ANIMATE_RATE 30
+//================== END BIRD =================
 
 //================== BLOCK =====================
 
@@ -322,8 +306,8 @@ enum OBJECT_TYPE
 #define BLOCK_SPEED 0.1f
 
 //--YElLOW
-#define BLOCK_LEFT L"sprites\\enemy\\BLOCK_LEFT.txt"
-#define BLOCK_RIGHT L"sprites\\enemy\\BLOCK_RIGHT.txt"
+#define BLOCK_LEFT "sprites\\enemy\\BLOCK_LEFT.txt"
+#define BLOCK_RIGHT "sprites\\enemy\\BLOCK_RIGHT.txt"
 //================== END BLOCK =================
 
 //================== BEE  =====================
@@ -333,51 +317,12 @@ enum OBJECT_TYPE
 
 #define BEE_FLY_SPRITE_COUNT 2
 
-#define BEE_FLY L"sprites\\enemy\\BEE_FLY.txt"
+#define BEE_FLY "sprites\\enemy\\BEE_FLY.txt"
 //================== END BEE =================
 
 //================== END ENEMY =================
 
-//================ GATE ===============
-#define GATE_SPRITES_PATH L"sprites\\gate\\GATE_32.png"
-#define GATE_LEFT_EXISTS L"sprites\\gate\\GATE_LEFT_EXISTS.txt"
-#define GATE_RIGHT_EXISTS L"sprites\\gate\\GATE_RIGHT_EXISTS.txt"
-#define GATE_EXISTS_COUNT 1
 
-#define GATE_LEFT_DESTROYING L"sprites\\gate\\GATE_LEFT_DESTROYING.txt"
-#define GATE_RIGHT_DESTROYING L"sprites\\gate\\GATE_RIGHT_DESTROYING.txt"
-#define GATE_DESTROYING_COUNT 3
-
-#define GATE_WIDTH 16
-#define GATE_HEIGHT 96
-
-#define GATE_BLOCK_PATH L"sprites\\gate\\GATE_BLOCK.txt"
-#define GATE_BLOCK_WIDTH 64
-#define GATE_BLOCK_HEIGHT 96
-
-#define GATE_TIME_SURVIVE 3
-//================= END GATE ===========
-
-//================ EFFECT ===================
-#define EFFECT_TIME_SURVIVE 1
-#define EFFECT_SPRITE_PATH L"sprites\\explode_effect\\explosion.png"
-
-//========== EFFECT EXPLOSION
-#define EFFECT_EXPLOSION L"sprites\\explode_effect\\EFFECT_EXPLOSION.txt"
-#define EFFECT_EXPLOSION_WIDTH 64
-#define EFFECT_EXPLOSION_HEIGHT 64
-#define EFFECT_EXPLOSION_COUNT 3
-
-//================ END EFFECT ===============
-
-//================ BOMB =====================
-#define BOMB_PATH L"sprites\\item\\BOMB.txt"
-#define BOMB_WIDTH 19
-#define BOMB_HEIGHT 18
-#define BOMB_SPRITE_COUNT 2
-#define BOMB_TEXTURE L"sprites\\item\\bomb.png"
-
-//================ END BOMB =================
 //================== Bullet ====================
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
 #define X_VELOCITY_BULLET 12

@@ -1,4 +1,4 @@
-#include "Bullet.h"
+﻿#include "Bullet.h"
 
 Bullet::Bullet() {
 	this->isActive = false;
@@ -7,10 +7,10 @@ Bullet::Bullet() {
 	this->setType(BULLET);
 }
 
-// isActive v� isRendered khi nh?n s? ki?n b?n d?n s? = true, s? kh�c nhau l�:
-// isActive: D�ng d? x�c d?nh d?n c� du?c kh?i t?o r?i hay chua.
-// isRendered: D�ng d? x�c d?nh v� t�nh to�n kho?n c�ch th?i gian c�c vi�n d?n
-// du?c b?n ra theo tr�nh t? (? d�y l� 3 vi�n d?n).
+// isActive và isRendered khi nhận sự kiện bắn đạn sẽ = true, sự khác nhau là:
+// isActive: Dùng để xác định đạn có được khởi tạo rồi hay chưa.
+// isRendered: Dùng để xác định và tính toán khoản cách thời gian các viên đạn
+// được bắn ra theo trình tự (ở đây là 3 viên đạn).
 Bullet::Bullet(LPD3DXSPRITE spriteHandler) {
 	this->spriteHandler = spriteHandler;
 	this->isActive = false;
@@ -60,8 +60,8 @@ void Bullet::Update(float delta) {
 
 }
 
-// C?p nh?t l?i v? tr� c?a vi�n d?n theo con samus khi d� di h?t qu�ng du?ng b?n.
-// �u?c c?p nh?t theo t�nh tr?ng c?a vi�n d?n
+// Cập nhật lại vị trí của viên đạn theo con samus khi đã đi hết quãng đường bắn.
+// Được cập nhật theo tình trạng của viên đạn
 void Bullet::Update(float t, float posX, float posY) {
 	if (this->direction == OFF && this->tempDirection == OFF)
 	{

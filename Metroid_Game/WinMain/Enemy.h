@@ -8,6 +8,10 @@
 
 class Enemy : public GameObject
 {
+protected:
+	LPDIRECT3DTEXTURE9 texture;
+	float initPosX;
+	float initPosY;
 public:
 	float time_freeze;	// thời gian dừng khi bị hit
 	float health;		// Máu của object
@@ -17,18 +21,13 @@ public:
 	bool isActive = false;
 	bool isDeath = false;
 
-	string direction = "";
-
-
 	Enemy();
 	Enemy(LPD3DXSPRITE spriteHandler, World * manager);
 	~Enemy();
 
 	virtual void InitPostition();
 	virtual void InitPostition(int x, int y);
-	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv);
-
-	void SetDirection(string _direction);
+	virtual void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
 
 	//============== OVERRIDE VIRTUAL METHOD ===============
 	virtual void Render();
@@ -38,5 +37,13 @@ public:
 	//============== END OVERRIDE VIRTUAL METHOD ============
 
 	bool isInsideMapBound(RECT cameraBound);
+
+	void setTexture(LPDIRECT3DTEXTURE9 texture);
+	LPDIRECT3DTEXTURE9 getTexture();
+
+	void setInitPosX(float x);
+	float getInitPosX();
+	void setInitPosY(float y);
+	float getInitPosY();
 };
 

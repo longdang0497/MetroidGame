@@ -1,7 +1,7 @@
 ﻿#pragma once
 #ifndef _METROID_H_
 #define _METROID_H_
-#include "Loader.h"
+
 #include "Define.h"
 #include "Game.h"
 #include "Sprite.h"
@@ -29,17 +29,7 @@ private:
 	DWORD now_jump;
 	DWORD tick_per_frame;
 
-	Loader * loadRoom1;
-	Loader * loadRoom2;
-	Loader * loadRoom3;
-	Loader * loadStair;
-
-	Map * mapRoom1;
-	Map * mapRoom2;
-	Map * mapRoom3;
-	Map * mapStair;
-
-	ROOM_NUMBER roomNum;
+	Map *map;
 	Texture texture;
 public:
 	Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate);
@@ -71,16 +61,9 @@ public:
 	float time_jump;
 	float time_freezing;
 	float time_in_game;
-	float currentTime = 0;
 
 	LPD3DXSPRITE getSpriteHandler();
-	Map * getMapRoom1();
-	Map * getMapRoom2();
-	Map * getMapRoom3();
-	Map * getMapStair();
-
-	ROOM_NUMBER getRoomNum();
-	void setRoomNum(ROOM_NUMBER value);
+	Map *getMap();
 };
 
 #endif // !_METROID_

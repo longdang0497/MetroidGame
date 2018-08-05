@@ -19,7 +19,67 @@ void Samus::Render()
 
 		position.z = 0;
 
-		currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
+		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND| D3DXSPRITE_OBJECTSPACE);
+
+		switch (state)
+		{
+		case STAND_RIGHT:
+			standRight->drawSprite(standRight->getWidth(), standRight->getHeight(), position);
+			break;
+		case STAND_LEFT:
+			standLeft->drawSprite(standLeft->getWidth(), standLeft->getHeight(), position);
+			break;
+		case RUNNING_RIGHT:
+			runRight->drawSprite(runRight->getWidth(), runRight->getHeight(), position);
+			break;
+		case RUNNING_LEFT:
+			runLeft->drawSprite(runLeft->getWidth(), runLeft->getHeight(), position);
+			break;
+		case STAND_SHOOT_UP_LEFT:
+			standShootL->drawSprite(standShootL->getWidth(), standShootL->getHeight(), position);
+			break;
+		case STAND_SHOOT_UP_RIGHT:
+			standShootR->drawSprite(standShootR->getWidth(), standShootR->getHeight(), position);
+			break;
+		case MORPH_LEFT:
+			morphLeft->drawSprite(morphLeft->getWidth(), morphLeft->getHeight(), position);
+			break;
+		case MORPH_RIGHT:
+			morphRight->drawSprite(morphRight->getWidth(), morphRight->getHeight(), position);
+			break;
+		case RUN_SHOOTING_LEFT:
+			runShootL->drawSprite(runShootL->getWidth(), runShootL->getHeight(), position);
+			break;
+		case RUN_SHOOTING_RIGHT:
+			runShootR->drawSprite(runShootR->getWidth(), runShootR->getHeight(), position);
+			break;
+		case RUN_SHOOT_UP_LEFT:
+			runShootUpL->drawSprite(runShootUpL->getWidth(), runShootUpL->getHeight(), position);
+			break;
+		case RUN_SHOOT_UP_RIGHT:
+			runShootUpR->drawSprite(runShootUpR->getWidth(), runShootUpR->getHeight(), position);
+			break;
+		case JUMP_LEFT:
+			jumpLeft->drawSprite(jumpLeft->getWidth(), jumpLeft->getHeight(), position);
+			break;
+		case JUMP_RIGHT:
+			jumpRight->drawSprite(jumpRight->getWidth(), jumpRight->getHeight(), position);
+			break;
+		case TRANSFORM_BALL_LEFT:
+			ballLeft->drawSprite(ballLeft->getWidth(), ballLeft->getHeight(), position);
+			break;
+		case TRANSFORM_BALL_RIGHT:
+			ballRight->drawSprite(ballRight->getWidth(), ballRight->getHeight(), position);
+			break;
+		case JUMP_SHOOT_UP_LEFT:
+			jumpShootL->drawSprite(jumpShootL->getWidth(), jumpShootL->getHeight(), position);
+			break;
+		case JUMP_SHOOT_UP_RIGHT:
+			jumpShootR->drawSprite(jumpShootR->getWidth(), jumpShootR->getHeight(), position);
+			break;
+		}
+
+		spriteHandler->End();
 	}	
 }
 
@@ -27,6 +87,7 @@ Samus::Samus()
 {
 	this->isActive = true;
 	this->isBall = false;
+
 	this->setType(SAMUS);
 }
 
@@ -38,7 +99,7 @@ void Samus::Destroy()
 	//--TO DO: Đưa Samus ra khỏi viewport
 }
 
-Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
+Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 {
 	this->grid = grid;
 	this->setType(SAMUS);
@@ -46,11 +107,9 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 	this->manager = manager;
 	this->isActive = true;
 
-	this->grid = grid;
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
 
-	currentSprite = nullptr;
 	//Set type
 	this->type = SAMUS;
 
@@ -60,13 +119,12 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
 
-	/*this->height = 64;
-	this->width = 32;*/
+	this->height = 64;
+	this->width = 32;
 }
 
 Samus::~Samus()
 {
-	currentSprite = nullptr; delete (currentSprite);
 	delete(standRight);
 	delete(standLeft);
 	delete(runRight);
@@ -115,16 +173,16 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	pos_x = 1376;	
-	pos_y = 320;	
-
+	/*pos_x = 992;	
+	pos_y = 320;*/	
+	this->pos_x = 1140;
+	this->pos_y = 352;
 	vx = 0;
 	vx_last = 1.0f;
-	vy = 0;
+	vy = 0.0f;
 
 	//Init state of samus
-	SetState(STAND_RIGHT);
-	//currentSprite = standRight;
+	state = STAND_RIGHT;
 }
 
 SAMUS_STATE Samus::GetState()
@@ -135,75 +193,11 @@ SAMUS_STATE Samus::GetState()
 void Samus::SetState(SAMUS_STATE value)
 {
 	state = value;
-	switch (state)
-	{
-	case STAND_RIGHT:
-		currentSprite = standRight;
-		break;
-	case STAND_LEFT:
-		currentSprite = standLeft;
-		break;
-	case RUNNING_LEFT:
-		currentSprite = runLeft;
-		break;
-	case RUNNING_RIGHT:
-		currentSprite = runRight;
-		break;
-	case STAND_SHOOT_UP_LEFT:
-		currentSprite = standShootL;
-		pos_y += Math::abs(standShootL->getHeight(), standLeft->getHeight());
-		break;
-	case STAND_SHOOT_UP_RIGHT:
-		currentSprite = standShootR;
-		pos_y += Math::abs(standShootR->getHeight(), standRight->getHeight());
-		break;
-	case MORPH_LEFT:
-		currentSprite = morphLeft;
-		break;
-	case MORPH_RIGHT:
-		currentSprite = morphRight;
-		break;
-	case RUN_SHOOTING_LEFT:
-		currentSprite = runShootL;
-		break;
-	case RUN_SHOOTING_RIGHT:
-		currentSprite = runShootR;
-		break;
-	case RUN_SHOOT_UP_LEFT:
-		currentSprite = runShootUpL;
-		break;
-	case RUN_SHOOT_UP_RIGHT:
-		currentSprite = runShootUpR;
-		break;
-	case JUMP_LEFT:
-		currentSprite = jumpLeft;
-		break;
-	case JUMP_RIGHT:
-		currentSprite = jumpRight;
-		break;
-	case TRANSFORM_BALL_LEFT:
-		currentSprite = ballLeft;
-		break;
-	case TRANSFORM_BALL_RIGHT:
-		currentSprite = ballRight;
-		break;
-	case JUMP_SHOOT_UP_LEFT:
-		currentSprite = jumpShootL;
-		break;
-	case JUMP_SHOOT_UP_RIGHT:
-		currentSprite = jumpShootR;
-		break;
-	}
 }
 
 bool Samus::isSamusJumping()
 {
 	return isJumping;
-}
-
-void Samus::updateState()
-{
-	canMorph = true;
 }
 
 void Samus::ResetAllSprites()
@@ -254,23 +248,82 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	/*if (isOnGround == false)
-		vy += gravity;
-	else */if (isOnGround == true)
-		vy = 0;
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
-	//vy += gravity;
-	if (!this->grid->updateGrid(this, newPosX, newPosY)) {
+
+	int row = (int)floor(this->pos_y / CELL_SIZE);
+	int column = (int)floor(this->pos_x / CELL_SIZE);
+	if (!this->grid->handleCell(this, row, column)) {
 		pos_x = newPosX;
 		pos_y = newPosY;
 	}
+
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
+
+	//pos_x = newPosX;
+	//pos_y = newPosY;
 
 	// Animate samus if he is running
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
 	{
-		currentSprite->updateIndex();
+		switch (state)
+		{
+		case STAND_RIGHT:
+			standRight->updateSprite();
+			break;
+		case STAND_LEFT:
+			standLeft->updateSprite();
+			break;
+		case RUNNING_LEFT:
+			runLeft->updateSprite();
+			break;
+		case RUNNING_RIGHT:
+			runRight->updateSprite();
+			break;
+		case STAND_SHOOT_UP_LEFT:
+			standShootL->updateSprite();
+			break;
+		case STAND_SHOOT_UP_RIGHT:
+			standShootR->updateSprite();
+			break;
+		case MORPH_LEFT:
+			morphLeft->updateSprite();
+			break;
+		case MORPH_RIGHT:
+			morphRight->updateSprite();
+			break;
+		case RUN_SHOOTING_LEFT:
+			runShootL->updateSprite();
+			break;
+		case RUN_SHOOTING_RIGHT:
+			runShootR->updateSprite();
+			break;
+		case RUN_SHOOT_UP_LEFT:
+			runShootUpL->updateSprite();
+			break;
+		case RUN_SHOOT_UP_RIGHT:
+			runShootUpR->updateSprite();
+			break;
+		case JUMP_LEFT:
+			jumpLeft->updateSprite();
+			break;
+		case JUMP_RIGHT:
+			jumpRight->updateSprite();
+			break;
+		case TRANSFORM_BALL_LEFT:
+			ballLeft->updateSprite();
+			break;
+		case TRANSFORM_BALL_RIGHT:
+			ballRight->updateSprite();
+			break;
+		case JUMP_SHOOT_UP_LEFT:
+			jumpShootL->updateSprite();
+			break;
+		case JUMP_SHOOT_UP_RIGHT:
+			jumpShootR->updateSprite();
+			break;
+		}
 		last_time = now;
 	}
 	
