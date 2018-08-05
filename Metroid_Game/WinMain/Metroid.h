@@ -7,6 +7,7 @@
 #include <time.h>
 #include "trace.h"
 #include "utils.h"
+#include "Loader.h"
 
 class Metroid : public Game
 {
@@ -32,6 +33,11 @@ private:
 	Map * mapRoom2;
 	Map * mapRoom3;
 	Map * mapStair;
+
+	Loader * loadMap1;
+	Loader * loadMap2;
+	Loader * loadMap3;
+	Loader * loadStair;
 
 	ROOM_NUMBER roomNum;
 	Texture texture;

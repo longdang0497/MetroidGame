@@ -8,6 +8,7 @@ GateBlock::GateBlock(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 
 GateBlock::~GateBlock()
 {
+	currentSprite = nullptr; delete currentSprite;
 	delete(gateBlock);
 }
 

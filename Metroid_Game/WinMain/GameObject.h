@@ -36,6 +36,9 @@ public:
 	DWORD last_time; // this is to control the animate rate of object
 	RECT objBound;
 	D3DXVECTOR2 rigidBody;
+
+	bool canJump = true;
+	bool isFalling = true;
 public:
 	GameObject();
 	~GameObject();
@@ -46,6 +49,11 @@ public:
 
 	bool isActivated();
 	void setActive(bool value);
+
+	bool isObjectFalling();
+	void setFalling(bool value);
+	bool canObjectJump();
+	void setJump(bool value);
 
 	void setlastPosX(float posx);
 	void setlastPosY(float posy);

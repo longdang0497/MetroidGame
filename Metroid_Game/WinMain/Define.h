@@ -27,8 +27,9 @@ class ExplodeEffect;
 #define TIME_IN_GAME 7000
 
 #define JUMP_VELOCITY_BOOST 0.5f
-#define JUMP_VELOCITY_BOOST_FIRST 64.0f
-#define FALLDOWN_VELOCITY_DECREASE 0.3f
+#define JUMP_VELOCITY_BOOST_FIRST 160.0f
+#define FALLDOWN_VELOCITY_DECREASE 0.5f
+#define MAX_VELOCITY_Y 50.0f
 #define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 30
 #define LIVE_TIME 3000
@@ -370,8 +371,8 @@ enum Bullet_SAMUS_Direction
 
 //================== Grid ====================
 #define CELL_SIZE 128
-#define DEFINE_ROW 8
-#define DEFINE_COLUMN 20
+#define DEFINE_ROW 25
+#define DEFINE_COLUMN 25
 #define COLLISION_DISTANCE 15
 enum COLLISION_DIRECTION {
 	TOP,

@@ -35,6 +35,7 @@ public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
 	bool isMorphing = false;
+	bool canJump = false;
 
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus

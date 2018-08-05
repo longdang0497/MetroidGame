@@ -57,6 +57,8 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 	gameoverscreen = NULL;
 
 	screenMode = GAMEMODE_GAMERUN; // GAMEMODE_INTRO;
+
+	roomNum = ROOM1;
 }
 
 Metroid::~Metroid()
@@ -80,15 +82,64 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 	if (result != D3D_OK) 
 		trace(L"Unable to create SpriteHandler");
 
+	loadMap1 = new Loader(MAP_ROOM1);
+	loadMap2 = new Loader(MAP_ROOM2);
+	loadMap3 = new Loader(MAP_ROOM3);
+	loadStair = new Loader(MAP_STAIR);
+
 	// Khoi tao map
 	mapRoom1 = new Map(this->getSpriteHandler(), MAP_ROOM1, 0, 0);
+	mapRoom1->setLimitation(loadMap1->getCol(), loadMap1->getRow());
 
-	int height = this->mapRoom1->getRow();
-	int width = this->mapRoom1->getColumn();
-	world = new World(spriteHandler, this, width, height);
+	/*int topRoom2 = this->mapRoom1->getBoundary().top - this->loadMap2->getRow() * 32;
+	int leftRoom2 = this->mapRoom1->getBoundary().right - this->loadMap2->getCol() * 32;
+	int topRoom3 = this->mapRoom1->getBoundary().top - topRoom2 - this->loadMap3->getRow() * 32;
+	int leftRoom3 = this->mapRoom1->getBoundary().right - this->loadMap3->getCol() * 32;
+	int topStair = this->mapRoom1->getBoundary().bottom - this->loadStair->getRow() * 32;
+	int leftStair = this->mapRoom1->getBoundary().right;
+
+	mapRoom2 = new Map(this->getSpriteHandler(), MAP_ROOM2, topRoom2, leftRoom2);
+	mapRoom2->setLimitation(loadMap2->getCol(), loadMap2->getRow());
+
+	mapRoom3 = new Map(this->getSpriteHandler(), MAP_ROOM3, topRoom3, leftRoom3);
+	mapRoom3->setLimitation(loadMap3->getCol(), loadMap3->getRow());
+
+	mapStair = new Map(this->getSpriteHandler(), MAP_STAIR, topStair, leftStair);
+	mapStair->setLimitation(loadStair->getCol(), loadStair->getRow());
+*/
+
+	int gridHeight = 0, gridWidth = 0;
+	switch (roomNum) {
+	case ROOM1:
+		gridHeight = this->loadMap1->getRow();
+		gridWidth = this->loadMap1->getCol();
+		break;
+	case ROOM2:
+		//gridHeight = this->loadMap2->getRow();
+		//gridWidth = this->loadMap2->getCol();
+		break;
+	case ROOM3:
+		//gridHeight = this->loadMap3->getRow();
+		//gridWidth = this->loadMap3->getCol();
+		break;
+	case STAIR:
+		//gridHeight = this->loadStair->getRow();
+		//gridWidth = this->loadStair->getCol();
+		break;
+	}
+	world = new World(spriteHandler, this, gridWidth, gridWidth);
 
 	this->mapRoom1->setGrid(world->grid);
 	this->mapRoom1->inputBrickToGrid();
+
+	/*this->mapRoom2->setGrid(world->grid);
+	this->mapRoom2->inputBrickToGrid();
+
+	this->mapRoom3->setGrid(world->grid);
+	this->mapRoom3->inputBrickToGrid();
+
+	this->mapStair->setGrid(world->grid);
+	this->mapStair->inputBrickToGrid();*/
 
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
@@ -117,7 +168,20 @@ void Metroid::Update(float Delta)
 		// game running
 	case GAMEMODE_GAMERUN:
 		this->camera->Update();
-		mapRoom1->UpdateMap(this->camera->getBoundary());
+		switch (roomNum) {
+		case ROOM1:
+			mapRoom1->UpdateMap(this->camera->getBoundary());
+			break;
+		case ROOM2:
+			//mapRoom2->UpdateMap(this->camera->getBoundary());
+			break;
+		case ROOM3:
+			//mapRoom3->UpdateMap(this->camera->getBoundary());
+			break;
+		case STAIR:
+			//mapStair->UpdateMap(this->camera->getBoundary());
+			break;
+		}
 		UpdateFrame(Delta);
 		break;
 		// game over
@@ -228,7 +292,20 @@ void Metroid::RenderGameOver(LPDIRECT3DDEVICE9 d3ddv)
 //render từng object trong game
 void Metroid::RenderFrame(LPDIRECT3DDEVICE9 d3ddv)
 {
-	mapRoom1->drawMap();
+	switch (roomNum) {
+	case ROOM1:
+		mapRoom1->drawMap();
+		break;
+	case ROOM2:
+		//mapRoom2->drawMap();
+		break;
+	case ROOM3:
+		//mapRoom3->drawMap();
+		break;
+	case STAIR:
+		//mapStair->drawMap();
+		break;
+	}
 	world->Render();
 }
 
@@ -529,6 +606,15 @@ void Metroid::OnKeyDown(int KeyCode)
 						this->world->samus->setIsBall(true);
 					}
 				}
+				break;
+			case DIK_X:
+				if (_input->IsKeyDown(DIK_X) && world->samus->canJump == true)
+				{
+					world->samus->canJump = true;
+					if (world->samus->getVelocityY() > MAX_VELOCITY_Y)
+						world->samus->setVelocityY(MAX_VELOCITY_Y);
+				}
+
 				break;
 			}
 		}

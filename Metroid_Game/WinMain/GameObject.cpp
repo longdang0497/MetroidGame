@@ -90,7 +90,7 @@ float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDi
 	float entryTime = max(xEntry, yEntry);      // Cho biet thoi gian bat dau va cham
 	float exitTime = min(xExit, yExit);			// Cho biet thoi gian ket thuc va cham
 
-												// neu khong co va cham
+	// neu khong co va cham
 	if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
 		collisionDirection = NONE;
 		return deltaTime;
@@ -115,7 +115,7 @@ float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDi
 			if (yInvEntry >= 0.0f) {
 				if (this->pos_x + this->width <= object->pos_x || this->pos_x >= object->pos_x + object->width)
 					collisionDirection = NONE;
-				else
+				else 
 					collisionDirection = BOTTOM;
 			}
 			else {
@@ -181,6 +181,26 @@ bool GameObject::isActivated()
 	return isActive;
 }
 
+bool GameObject::isObjectFalling()
+{
+	return isFalling;
+}
+
+void GameObject::setFalling(bool value)
+{
+	isFalling = value;
+}
+
+bool GameObject::canObjectJump()
+{
+	return canJump;
+}
+
+void GameObject::setJump(bool value)
+{
+	canJump = value;
+}
+
 void GameObject::setActive(bool value)
 {
 	this->isActive = value;
@@ -243,6 +263,16 @@ void GameObject::setHeight(int value)
 
 int GameObject::getHeight()
 {
+	if (this->getType() != BRICK && this->getType() != ZOOMER_PINK && this->getType() != ZOOMER_YELLOW)
+	{
+		this->setWidth(this->currentSprite->getWidth());
+		this->setHeight(this->currentSprite->getHeight());
+	}
+	else if (this->getType() == BRICK)
+	{
+		this->setWidth(BRICK_SIZE);
+		this->setHeight(BRICK_SIZE);
+	}
 	return height;
 }
 

@@ -9,6 +9,7 @@ Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 	this->height = GATE_HEIGHT;
 	this->grid = grid;
 
+	currentSprite = nullptr;
 	exists_right = nullptr;
 	exists_left = nullptr;
 	destroying_right = nullptr;

@@ -14,10 +14,9 @@ using namespace std;
 class Loader
 {
 private:
-	string filePath;
 	int m_Row;
 	int m_Col;
-	vector<string> stringMap;
+	string filePath;
 public:
 	Loader();
 	Loader(string filePath);
@@ -26,5 +25,4 @@ public:
 	void loadFile();
 	int getRow();
 	int getCol();
-	vector<string> getStringMap();
 };
