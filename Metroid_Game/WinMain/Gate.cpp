@@ -109,7 +109,7 @@ void Gate::Update(float t)
 		case CLOSE:
 			break;
 		case DESTROYING:
-			currentSprite->updateSprite();
+			currentSprite->updateIndex();
 			if (currentSprite == destroying_left || currentSprite == destroying_right)
 			{
 				if (currentSprite->GetIndex() == currentSprite->GetCount() - 1)

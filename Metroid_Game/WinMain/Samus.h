@@ -28,8 +28,6 @@ protected:
 	Sprite * jumpShootR;
 
 	SAMUS_STATE state;	
-
-	int tempX;
 	bool isBall;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
@@ -52,6 +50,7 @@ public:
 	//bool isSamusCrouch();
 	bool isSamusDeath();
 
+	void updateState();
 	void ResetAllSprites();
 	bool GetStateActive();
 

@@ -1,7 +1,7 @@
 ﻿#include  "Item.h"
 #include "World.h"
 
-Item::Item(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
+Item::Item(LPD3DXSPRITE sprietHandler, World * manager, Grid * grid)
 {
 	this->type = ITEM;
 	this->spriteHandler = spriteHandler;

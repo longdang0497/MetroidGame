@@ -17,12 +17,12 @@ Grid::Grid() {
 }
 
 Grid::Grid(int height, int width) {
-	this->numOfRow = (int)ceil((float)height * BRICK_SIZE / CELL_SIZE);
-	this->numOfColumn = (int)ceil((float)width * BRICK_SIZE / CELL_SIZE);
+	this->numOfRow = (int)ceil(height * BRICK_SIZE / CELL_SIZE);
+	this->numOfColumn = (int)ceil(width * BRICK_SIZE / CELL_SIZE);
 
-	for (int i = 0; i <= numOfRow; i++)
+	for (int i = 0; i < numOfRow; i++)
 	{
-		for (int j = 0; j <= numOfColumn; j++)
+		for (int j = 0; j < numOfColumn; j++)
 			cells[i][j] = NULL;
 	}
 	this->deltaTime = 0.0f;
@@ -80,7 +80,7 @@ bool Grid::handleCell(GameObject* object, int row, int column) {
 	bool isCollision = false;
 	GameObject *cell = cells[row][column];
 	if (object != NULL) {
-		if ((object->getType() != BRICK || object->getType() != ITEM) && object->isActive) {
+		if ((object->getType() != BRICK || object->getType() != ITEM) && object->isActive != false) {
 			// Đầu tiên là xét trong chính cell của nó trước
 			if (this->handleObject(object, cell))
 				isCollision = true;
@@ -127,32 +127,14 @@ bool Grid::handleCell(GameObject* object, int row, int column) {
 bool Grid::handleObject(GameObject *object, GameObject* otherObject) {
 	bool isCollision = false;
 	while (otherObject != NULL) {
-		if (object != otherObject && otherObject->isActive) {
+		if (object != otherObject) {
 			// Mình phải tính va chạm là từ khoảng cách giữa 2 điểm từ tâm của nó
-			int x1 = 0, y1 = 0;
-			if (object->getType() != BRICK)
-			{
-				x1 = (int)(object->pos_x + object->currentSprite->getWidth() / 2);
-				y1 = (int)(object->pos_y + object->currentSprite->getHeight() / 2);
-			}
-			else if (object->getType() == BRICK)
-			{
-				x1 = (int)(object->pos_x + 16);
-				y1 = (int)(object->pos_y + 16);
-			}
+			int x1 = (int)((object->pos_x + object->width) / 2);
+			int y1 = (int)((object->pos_y + object->height) / 2);
 			D3DXVECTOR2 objectPos(x1, y1);
 
-			int x2 = 0, y2 = 0;
-			if (otherObject->getType() != BRICK)
-			{
-				x2 = (int)(otherObject->pos_x + otherObject->currentSprite->getWidth() / 2);
-				y2 = (int)(otherObject->pos_y + otherObject->currentSprite->getHeight() / 2);
-			}
-			else if (otherObject->getType() == BRICK)
-			{
-				x2 = (int)(otherObject->pos_x + 16);
-				y2 = (int)(otherObject->pos_y + 16);
-			}
+			int x2 = (int)((otherObject->pos_x + otherObject->width) / 2);
+			int y2 = (int)((otherObject->pos_y + otherObject->height) / 2);
 			D3DXVECTOR2 otherPos(x2, y2);
 			if (Math::distance(objectPos, otherPos) < 50) {
 				if (handleCollision(object, otherObject))
@@ -173,9 +155,6 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		if (object->getType() == SAMUS) {
 			this->handleSamus(object, otherObject, collisionDirection, collisionTime);
 		}
-		else if (object->getType() == ZOOMER_PINK || object->getType() == ZOOMER_YELLOW) {
-			this->handleZoomer(object, otherObject, collisionDirection, collisionTime);
-		}
 		return true;
 	}
 	else {
@@ -185,76 +164,11 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 
 void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
 	Samus* samus = dynamic_cast<Samus*>(object);
-	object->pos_y += object->vy * collisionTime *this->getDeltaTime();
-	if (collisionDirection == LEFT) {
-		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
-	}
+	object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+	object->pos_y += object->vy * collisionTime*this->getDeltaTime();
 }
 
-
-// Xử lý zoomer khi va chạm với các thể loại object
-void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
-	Zoomer* zoomer = dynamic_cast<Zoomer*>(object);
-	//if (collisionDirection == BOTTOM) {
-	//	object->pos_y += object->vy * collisionTime * deltaTime;
-	//}
-	//object->pos_x += object->vx *deltaTime;
-
-	OBJECT_TYPE type = otherObject->getType();
-	switch (collisionDirection) {
-	case BOTTOM: {
-		if (type == BRICK) {
-			object->pos_y += object->vy * collisionTime * deltaTime;
-		}	
-	}
-	}
-	object->pos_x += object->vx *deltaTime;
-	/*switch (collisionDirection) {
-	case BOTTOM: {
-		zoomer->setIsBottomCollided(true);
-		OBJECT_TYPE otherObjectType = otherObject->getType();
-		switch (otherObjectType) {
-		case BRICK: {
-			zoomer->setPosY(zoomer->getPosY() + zoomer->getVelocityY()*collisionTime*deltaTime);
-		}break;
-		}
-		zoomer->setPosX(zoomer->getPosX() + zoomer->getVelocityX() * deltaTime);
-	}break;
-
-	case TOP: {
-		zoomer->setIsTopCollided(true);
-		OBJECT_TYPE otherObjectType = otherObject->getType();
-		switch (otherObjectType) {
-		case BRICK: {
-
-		}break;
-		}
-	}break;
-
-	case LEFT: {
-		zoomer->setIsLeftCollided(true);
-		OBJECT_TYPE otherObjectType = otherObject->getType();
-		switch (otherObjectType) {
-		case BRICK: {
-
-		}break;
-		}
-	}break;
-
-	case RIGHT: {
-		zoomer->setIsRightCollided(true);
-		OBJECT_TYPE otherObjectType = otherObject->getType();
-		switch (otherObjectType) {
-		case BRICK: {
-
-		}break;
-		}
-	}break;
-	}*/
-
-}
-
-void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
+bool Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 	// Kiểm tra xem nó có thay đổi cell hay không
 	int oldRow = floor(object->getlastPosY() / CELL_SIZE);
 	int oldColumn = floor(object->getlastPosX() / CELL_SIZE);
@@ -264,7 +178,7 @@ void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 
 	// Nếu không thay đổi cell thì thoát ra
 	if (oldRow == newRow && oldColumn == newColumn) {
-		return; //this->handleCell(object, oldRow, oldColumn);
+		return this->handleCell(object, oldRow, oldColumn);
 	}
 
 	// Xóa object ra khỏi cell hiện tại và cập nhật và cell mới
@@ -277,15 +191,15 @@ void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 	if (cells[oldRow][oldColumn] == object)
 		cells[oldRow][oldColumn] = object->nextUnit;
 
-	/*bool isCollision = false;
-	isCollision = this->handleCell(object, oldRow, oldColumn);*/
+	bool isCollision = false;
+	isCollision = this->handleCell(object, oldRow, oldColumn);
 
 	this->add(object);
 
 	// Cập nhật lại vị trí last Post của object
 	object->setlastPosX(object->getPosX());
 	object->setlastPosY(object->getPosY());
-	//return isCollision;
+	return isCollision;
 }
 
 void Grid::setDeltaTime(float deltaTime) {

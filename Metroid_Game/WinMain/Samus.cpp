@@ -18,6 +18,7 @@ void Samus::Render()
 		}
 
 		position.z = 0;
+
 		currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
 	}	
 }
@@ -26,7 +27,6 @@ Samus::Samus()
 {
 	this->isActive = true;
 	this->isBall = false;
-
 	this->setType(SAMUS);
 }
 
@@ -38,7 +38,7 @@ void Samus::Destroy()
 	//--TO DO: Đưa Samus ra khỏi viewport
 }
 
-Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
+Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 {
 	this->grid = grid;
 	this->setType(SAMUS);
@@ -46,9 +46,11 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	this->manager = manager;
 	this->isActive = true;
 
+	this->grid = grid;
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
 
+	currentSprite = nullptr;
 	//Set type
 	this->type = SAMUS;
 
@@ -58,8 +60,8 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
 
-	this->height = 64;
-	this->width = 32;
+	/*this->height = 64;
+	this->width = 32;*/
 }
 
 Samus::~Samus()
@@ -113,16 +115,16 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	/*pos_x = 992;	
-	pos_y = 320;*/	
-	this->pos_x = 1140;
-	this->pos_y = 352;
+	pos_x = 1376;	
+	pos_y = 320;	
+
 	vx = 0;
 	vx_last = 1.0f;
-	vy = 0.0f;
+	vy = 0;
 
 	//Init state of samus
-	state = STAND_RIGHT;
+	SetState(STAND_RIGHT);
+	//currentSprite = standRight;
 }
 
 SAMUS_STATE Samus::GetState()
@@ -199,6 +201,11 @@ bool Samus::isSamusJumping()
 	return isJumping;
 }
 
+void Samus::updateState()
+{
+	canMorph = true;
+}
+
 void Samus::ResetAllSprites()
 {
 	standRight->Reset();
@@ -247,26 +254,23 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
+	/*if (isOnGround == false)
+		vy += gravity;
+	else */if (isOnGround == true)
+		vy = 0;
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
-
-	int row = (int)floor(this->pos_y / CELL_SIZE);
-	int column = (int)floor(this->pos_x / CELL_SIZE);
-	if (!this->grid->handleCell(this, row, column)) {
+	//vy += gravity;
+	if (!this->grid->updateGrid(this, newPosX, newPosY)) {
 		pos_x = newPosX;
 		pos_y = newPosY;
 	}
-
-	this->grid->updateGrid(this, this->pos_x, this->pos_y);
-
-	//pos_x = newPosX;
-	//pos_y = newPosY;
 
 	// Animate samus if he is running
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
 	{
-		currentSprite->updateSprite();
+		currentSprite->updateIndex();
 		last_time = now;
 	}
 	

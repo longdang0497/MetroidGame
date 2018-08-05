@@ -21,10 +21,9 @@ public:
 	bool handleCell(GameObject *, int row, int column);
 	bool handleCollision(GameObject * a, GameObject *b);
 	bool handleObject(GameObject *a, GameObject *b);
-	void updateGrid(GameObject*, float newPosX, float newPosY);
+	bool updateGrid(GameObject*, float newPosX, float newPosY);
 	void setDeltaTime(float deltaTime);
 	float getDeltaTime();
 
 	void handleSamus(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
-	void handleZoomer(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 };
