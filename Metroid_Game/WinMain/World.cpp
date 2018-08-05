@@ -39,9 +39,9 @@ World::~World()
 {
 	delete(samus);
 	delete(maruMari);
-	delete(gateRight);
+	/*delete(gateRight);
 	delete(gateLeft);
-	delete(gateBlock);
+	delete(gateBlock);*/
 	delete(grid);
 	delete(metroid);
 	delete(explode);
