@@ -425,6 +425,8 @@ void Map::inputBrickToGrid() {
 				float x = (float)j * 32;
 				float y = (float)i * 32;
 				Brick * brick = new Brick(x, y, BRICK_SIZE, BRICK_SIZE);
+				brick->setIndexX(j);
+				brick->setIndexY(i);
 				this->grid->add(brick);
 			}
 		}

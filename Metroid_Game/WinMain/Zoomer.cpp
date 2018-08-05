@@ -162,33 +162,151 @@ void Zoomer::Update(float t)
 	this->setIsBottomCollided(false);
 	this->setIsRightCollided(false);
 	this->setIsLeftCollided(false);
+	this->setIsCollisionHandled(false);
 
 	this->setVelocity();
 
-	float newPosX = pos_x + vx * t;
-	float newPosY = pos_y + vy * t;
 
 	GameObject* object = static_cast<GameObject*>(this);
 	object->isActive = true;
 
-	//if (!this->grid->updateGrid(object, newPosX, newPosY)) {
-	//	//float a = newPosX - (floor(newPosX / 32)) * 32;
-	//	//float b = newPosY - (floor(newPosY / 32)) * 32;
-	//	//pos_x = newPosX - a;
-	//	//pos_y = newPosY - b;
+	int row = (int)floor(this->pos_y / CELL_SIZE);
+	int column = (int)floor(this->pos_x / CELL_SIZE);
 
-	//	//if (this->getDirection() == ZOOMER_RIGHT && this->getState() == ON_ZOOMER_UP) {
-	//	//	this->setState(ON_ZOOMER_RIGHT);
-	//	//	this->setDirection(ZOOMER_DOWN);
-	//	//	pos_y += 32;
-	//	//}
-	//	//else if (this->getDirection() == ZOOMER_DOWN && this->getState() == ON_ZOOMER_RIGHT) {
+	// Xet va cham va cap nhat vi tri
+	this->grid->handleCell(object, row, column);
+	if (!this->getIsCollisionHandled()) {
+		ZOOMER_STATE state = this->getState();
+		ZOOMER_DIRECTION direction = this->getDirection();
 
-	//	//}
+		// Khi không va chạm gì hết sẽ bắt đầu chuyển hướng
+		if (!this->getIsTopCollided() && !this->getIsBottomCollided() 
+			&& !this->getIsLeftCollided() && !this->getIsRightCollided()) {
 
-	//	pos_x = newPosX;
-	//	pos_y = newPosY;
-	//}
+			switch (state) {
+			case ON_ZOOMER_UP: {
+				if (direction == ZOOMER_RIGHT) {
+					this->setState(ON_ZOOMER_RIGHT);
+					this->pos_x = floor(this->pos_x / 32) * 32;			
+				}
+				else if (direction == ZOOMER_LEFT) {
+					this->setState(ON_ZOOMER_LEFT);
+					this->pos_x = floor(this->pos_x / 32) * 32 + 2;
+				}
+
+				this->setDirection(ZOOMER_DOWN);
+				this->pos_y += 10;
+
+				break;
+			}
+			case ON_ZOOMER_BOTTOM: {
+				this->pos_y -= 10;
+				this->setDirection(ZOOMER_UP);
+
+				if (direction == ZOOMER_RIGHT) {
+					this->setState(ON_ZOOMER_RIGHT);
+					this->pos_x = floor(this->pos_x / 32) * 32;
+				}
+				else if (direction == ZOOMER_LEFT) {
+					this->setState(ON_ZOOMER_LEFT);
+					this->pos_x = floor(this->pos_x / 32) * 32 + 2;
+				}
+				break;
+			}
+
+			case ON_ZOOMER_LEFT: {
+
+				this->setDirection(ZOOMER_RIGHT);
+				this->pos_x += 10;
+
+				if (direction == ZOOMER_UP) {
+					this->setState(ON_ZOOMER_UP);
+					this->pos_y = floor(this->pos_y / 32) * 32 + 2;
+				}
+				else if (direction == ZOOMER_DOWN) {
+					this->setState(ON_ZOOMER_BOTTOM);
+					this->pos_y = floor(this->pos_y / 32) * 32;
+				}
+
+				break;
+			}
+
+			case ON_ZOOMER_RIGHT: {
+				this->setDirection(ZOOMER_LEFT);
+				this->pos_x -= 10;
+
+				if (direction == ZOOMER_UP) {
+					this->setState(ON_ZOOMER_UP);
+					this->pos_y = floor(this->pos_y / 32) * 32 + 2;
+				}
+				else if (direction == ZOOMER_DOWN) {
+					this->setState(ON_ZOOMER_BOTTOM);
+					this->pos_y = floor(this->pos_y / 32) * 32;
+				}
+				break;
+			}
+			}
+			
+		}
+		
+		// Khi co 2 dieu kien va cham
+		else if (this->getIsLeftCollided() && this->getIsBottomCollided()) {
+			if (direction == ZOOMER_DOWN) {
+				this->setState(ON_ZOOMER_UP);
+				this->setDirection(ZOOMER_RIGHT);
+			}
+			else if (direction == ZOOMER_LEFT) {
+				this->setState(ON_ZOOMER_RIGHT);
+				this->setDirection(ZOOMER_UP);
+			}
+		}
+		else if (this->getIsTopCollided() && this->getIsLeftCollided()) {
+			if (direction == ZOOMER_LEFT) {
+				this->setDirection(ZOOMER_DOWN);
+				this->setState(ON_ZOOMER_RIGHT);
+			}
+			else if (direction == ZOOMER_UP) {
+				this->setState(ON_ZOOMER_BOTTOM);
+				this->setDirection(ZOOMER_RIGHT);
+			}
+		}
+		else if (this->getIsTopCollided() && this->getIsRightCollided()) {
+			if (direction == ZOOMER_RIGHT) {
+				this->setState(ON_ZOOMER_LEFT);
+				this->setDirection(ZOOMER_DOWN);
+			}
+			else if (direction == ZOOMER_UP) {
+				this->setState(ON_ZOOMER_BOTTOM);
+				this->setDirection(ZOOMER_LEFT);
+			}
+		}
+		else if (this->getIsRightCollided() && this->getIsBottomCollided()) {
+			if (direction == ZOOMER_RIGHT) {
+				this->setState(ON_ZOOMER_LEFT);
+				this->setDirection(ZOOMER_UP);
+			}
+			else if (direction == ZOOMER_DOWN) {
+				this->setState(ON_ZOOMER_UP);
+				this->setDirection(ZOOMER_LEFT);
+			}
+		}
+		else if (this->getIsTopCollided()) {
+			this->pos_x += vx * t;
+		}
+		else if (this->getIsBottomCollided()) {
+			pos_x += vx * t;
+		}
+		else if (this->getIsLeftCollided()) {
+			pos_y += vy * t;
+		}
+		else if (this->getIsRightCollided()) {
+			pos_y += vy * t;
+		}
+		
+	}
+	
+
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_ENEMY_RATE)
@@ -291,4 +409,12 @@ void Zoomer::setIsBottomCollided(bool isBottom) {
 
 bool Zoomer::getIsBottomCollided() {
 	return this->isBottomCollided;
+}
+
+void Zoomer::setIsCollisionHandled(bool isHandled) {
+	this->isCollisionHandled = isHandled;
+}
+
+bool Zoomer::getIsCollisionHandled() {
+	return this->isCollisionHandled;
 }

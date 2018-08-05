@@ -20,6 +20,7 @@ private:
 	bool isRightCollided;
 	bool isTopCollided;
 	bool isBottomCollided;
+	bool isCollisionHandled;
 public:
 	Zoomer();
 	Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type);
@@ -44,6 +45,8 @@ public:
 	bool getIsTopCollided();
 	void setIsBottomCollided(bool isBottom);
 	bool getIsBottomCollided();
+	void setIsCollisionHandled(bool handled);
+	bool getIsCollisionHandled();
 	//============== OVERRIDE VIRTUAL METHOD ===================
 	virtual void Update(float t);
 	virtual void Render();
@@ -51,4 +54,6 @@ public:
 	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ===============
 	void Destroy();
+
+
 };

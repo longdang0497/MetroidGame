@@ -251,7 +251,7 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	this->grid->showAllObject();
+<<<<<<< HEAD
 	isTop = false;
 	isBottom = false;
 	isRight = false;
@@ -270,11 +270,15 @@ void Samus::Update(float t)
 	}
 	
 
+=======
+	this->grid->showAllObject();
+>>>>>>> TheAnh
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
 
 	int row = (int)floor(this->pos_y / CELL_SIZE);
 	int column = (int)floor(this->pos_x / CELL_SIZE);
+<<<<<<< HEAD
 	this->grid->handleCell(this, row, column);
 
 	if (isTop == false && isBottom == false && isLeft == false && isRight == false) {
@@ -289,7 +293,7 @@ void Samus::Update(float t)
 			this->SetState(JUMP_LEFT);*/
 		pos_x += vx * t; 
 		pos_y += vy * t;
-	//}
+	}
 	else if (isTop == true && isBottom == true && isLeft == false && isRight == false)
 	{
 		pos_x += vx * t;
@@ -375,6 +379,12 @@ void Samus::Update(float t)
 		pos_x += vx * t;
 	}
 	
+=======
+	//if (!this->grid->handleCell(this, row, column)) {
+		pos_x = newPosX;
+		pos_y = newPosY;
+	//}
+>>>>>>> TheAnh
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 

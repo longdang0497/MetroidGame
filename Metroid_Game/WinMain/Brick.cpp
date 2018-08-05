@@ -32,3 +32,19 @@ void Brick::Update(float t) {
 void Brick::Render() {
 
 }
+
+void Brick::setIndexX(int x) {
+	this->indexX = x;
+}
+
+int Brick::getIndexX() {
+	return this->indexX;
+}
+
+void Brick::setIndexY(int y) {
+	this->indexY = y;
+}
+
+int Brick::getIndexY() {
+	return this->indexY;
+}
