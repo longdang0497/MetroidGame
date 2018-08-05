@@ -7,7 +7,6 @@ MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid) :It
 	maruMari = NULL;
 	isActive = true;
 
-	currentSprite = nullptr;
 	this->grid = grid;
 	this->manager = manager;
 	this->spriteHandler = spriteHandler;
@@ -19,7 +18,6 @@ MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid) :It
 
 MaruMari::~MaruMari()
 {
-	currentSprite = nullptr; delete currentSprite;
 	delete(maruMari);
 }
 
@@ -38,7 +36,6 @@ void MaruMari::Init(float posX, float posY)
 	this->pos_y = posY;
 	this->isActive = true;
 	time_survive = ITEM_TIME_SURVIVE;
-	currentSprite = maruMari;
 }
 
 void MaruMari::Update(float t)
@@ -47,7 +44,7 @@ void MaruMari::Update(float t)
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
 	{
-		currentSprite->updateSprite();
+		maruMari->updateSprite();
 		last_time = now;
 	}
 
@@ -92,7 +89,9 @@ void MaruMari::Render()
 	if (!isActive)
 		return;
 
-	currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
+	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
+	maruMari->drawSprite(maruMari->getWidth(), maruMari->getHeight(), position);
+	spriteHandler->End();
 }
 
 void MaruMari::Destroy()

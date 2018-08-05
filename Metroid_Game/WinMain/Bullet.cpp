@@ -20,11 +20,9 @@ Bullet::Bullet(LPD3DXSPRITE spriteHandler) {
 	pos_x =	-100.0f;
 	pos_y = -100.0f;
 	this->setType(BULLET);
-	currentSprite = nullptr;
 }
 
 Bullet::~Bullet() {
-	currentSprite = nullptr; delete currentSprite;
 	delete(this->bulletSprite);
 }
 
@@ -49,7 +47,6 @@ void Bullet::initBullet(float posX, float posY) {
 		this->pos_x = posX;
 		this->pos_y = posY;
 	}
-	currentSprite = bulletSprite;
 }
 
 void Bullet::Reset(float posX, float posY) {
@@ -111,7 +108,7 @@ void Bullet::Render() {
 	if (this->count == 3 || this->count == 4 || this->count == 7)
 		return;
 	D3DXVECTOR3 pos = D3DXVECTOR3(this->pos_x, this->pos_y, 0);
-	currentSprite->drawSprite(0, 0, WIDTH_BULLET, HEIGHT_BULLET, pos);
+	this->bulletSprite->drawSprite(0, 0, WIDTH_BULLET, HEIGHT_BULLET, pos);
 }
 
 void Bullet::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture) {

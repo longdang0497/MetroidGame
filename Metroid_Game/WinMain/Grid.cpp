@@ -17,12 +17,12 @@ Grid::Grid() {
 }
 
 Grid::Grid(int height, int width) {
-	this->numOfRow = (int)ceil(height * BRICK_SIZE / CELL_SIZE);
-	this->numOfColumn = (int)ceil(width * BRICK_SIZE / CELL_SIZE);
+	this->numOfRow = (int)ceil((float)height * BRICK_SIZE / CELL_SIZE);
+	this->numOfColumn = (int)ceil((float)width * BRICK_SIZE / CELL_SIZE);
 
-	for (int i = 0; i < numOfRow; i++)
+	for (int i = 0; i <= numOfRow; i++)
 	{
-		for (int j = 0; j < numOfColumn; j++)
+		for (int j = 0; j <= numOfColumn; j++)
 			cells[i][j] = NULL;
 	}
 	this->deltaTime = 0.0f;
@@ -140,11 +140,6 @@ bool Grid::handleObject(GameObject *object, GameObject* otherObject) {
 				x1 = (int)(object->pos_x + 16);
 				y1 = (int)(object->pos_y + 16);
 			}
-			else if (object->getType() == ZOOMER_YELLOW || object->getType() == ZOOMER_PINK)
-			{
-				x1 = (int)(object->pos_x + object->getWidth() / 2);
-				y1 = (int)(object->pos_y + object->getHeight() / 2);
-			}
 			D3DXVECTOR2 objectPos(x1, y1);
 
 			int x2 = 0, y2 = 0;
@@ -157,11 +152,6 @@ bool Grid::handleObject(GameObject *object, GameObject* otherObject) {
 			{
 				x2 = (int)(otherObject->pos_x + 16);
 				y2 = (int)(otherObject->pos_y + 16);
-			}
-			else if (otherObject->getType() == ZOOMER_YELLOW || otherObject->getType() == ZOOMER_PINK)
-			{
-				x2 = (int)(otherObject->pos_x + otherObject->getWidth() / 2);
-				y2 = (int)(otherObject->pos_y + otherObject->getHeight() / 2);
 			}
 			D3DXVECTOR2 otherPos(x2, y2);
 			if (Math::distance(objectPos, otherPos) < 50) {
@@ -196,27 +186,8 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
 	Samus* samus = dynamic_cast<Samus*>(object);
 	object->pos_y += object->vy * collisionTime *this->getDeltaTime();
-
 	if (collisionDirection == LEFT) {
 		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
-	}
-	if (collisionDirection == RIGHT) {
-		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
-	}
-	if (collisionDirection == TOP) {
-		object->setFalling(false);
-		object->setVelocityY(0);
-		object->setJump(true);
-		object->pos_y += object->vy * collisionTime * this->getDeltaTime();
-		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
-	}
-	if (collisionDirection == BOTTOM)
-	{
-		object->setFalling(false);
-		object->setVelocityY(0);		
-		object->setJump(true);
-		object->pos_y += object->vy * collisionTime * this->getDeltaTime();
-		//object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 	}
 }
 

@@ -3,9 +3,6 @@
 Map::Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top) {
 	this->filePath = filePath;
 
-	this->top = top;
-	this->left = left;
-
 	spriteHandler->GetDevice(&d3ddv);
 	
 	Texture * textureMap = new Texture();
@@ -20,6 +17,8 @@ Map::Map(LPD3DXSPRITE spriteHandler, string filePath, int left, int top) {
 	if (!this->loadMap(this->filePath)) {
 		trace(L"Unable to load map");
 	}
+
+	this->setLimitation(left, top, m_max_Column * BRICK_SIZE, m_max_Row * BRICK_SIZE);
 }
 
 Map::~Map() {
@@ -27,13 +26,13 @@ Map::~Map() {
 	delete grid;
 }
 
-void Map::setLimitation(int width, int height) {
-	m_boundary.left = this->left;
-	m_boundary.right = this->left + width * 32;
-	m_boundary.top = this->top;
-	m_boundary.bottom = this->top + height * 32;
-	this->widthLimitation = width * 32;
-	this->heightLimitation = height * 32;
+void Map::setLimitation(int x, int y, int width, int height) {
+	m_boundary.left = x;
+	m_boundary.right = x + width;
+	m_boundary.top = y;
+	m_boundary.bottom = y + height;
+	this->widthLimitation = width;
+	this->heightLimitation = height;
 }
 
 RECT Map::getBoundary()
@@ -56,9 +55,17 @@ vector<string> Map::getStringMap() {
 bool Map::loadMap(string filePath) {
 	ifstream file_txt(filePath);
 	string str;
+	int row = 0, column = 0;
 	while (getline(file_txt, str)) {
+		row++;
+		if (str.length() > column)
+			column = str.length();
 		stringMap.push_back(str);
 	}
+
+	m_max_Row = row;
+	m_max_Column = column;
+
 	if (!stringMap.empty())
 		return true;
 	return false;
@@ -387,6 +394,14 @@ void Map::UpdateMap(RECT cameraBound) {
 			}
 		}
 	}
+}
+
+int Map::getRow() {
+	return this->m_max_Row;
+}
+
+int Map::getColumn() {
+	return this->m_max_Column;
 }
 
 void Map::setGrid(Grid * grid) {

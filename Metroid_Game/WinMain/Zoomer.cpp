@@ -11,7 +11,6 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 	this->setType(enemy_type);
 	this->isActive = false;
 
-	//currentSprite = nullptr;
 	//Set vận tốc
 	vx = 0.0f;
 	vy = 0.0f;
@@ -24,7 +23,6 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 
 Zoomer::~Zoomer()
 {
-	//currentSprite = nullptr; delete currentSprite;
 	delete(top);
 	delete(bottom);
 	delete(left);
@@ -33,11 +31,6 @@ Zoomer::~Zoomer()
 
 void Zoomer::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 {
-	if (d3ddv == NULL) return;
-	//Create sprite handler
-	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
-	if (result != D3D_OK) return;
-
 	LPWSTR top_path = NULL, bottom_path = NULL, left_path = NULL, right_path = NULL;
 	if (texture == NULL)
 		trace(L"Unable to load zoomerTexture");
@@ -72,10 +65,10 @@ void Zoomer::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	}
 
 	//// Khởi tạo sprite
-	top = new Sprite(spriteHandler, this->texture, top_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
-	bottom = new Sprite(spriteHandler, this->texture, bottom_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
-	left = new Sprite(spriteHandler, this->texture, left_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
-	right = new Sprite(spriteHandler, this->texture, right_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
+	top = new Sprite(spriteHandler, texture, top_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
+	bottom = new Sprite(spriteHandler, texture, bottom_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
+	left = new Sprite(spriteHandler, texture, left_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
+	right = new Sprite(spriteHandler, texture, right_path, ZOOMER_WIDTH, ZOOMER_HEIGHT, ZOOMER_SPRITE_COUNT);
 }
 
 void Zoomer::setEnemyStatefromString(string _state) {
@@ -95,21 +88,6 @@ void Zoomer::setEnemyStatefromString(string _state) {
 
 void Zoomer::setState(ZOOMER_STATE _state) {
 	state = _state;
-	/*switch (state)
-	{
-	case ON_ZOOMER_UP:
-		currentSprite = top;
-		break;
-	case ON_ZOOMER_BOTTOM:
-		currentSprite = bottom;
-		break;
-	case ON_ZOOMER_LEFT:
-		currentSprite = left;
-		break;
-	case ON_ZOOMER_RIGHT:
-		currentSprite = right;
-		break;
-	}*/
 }
 
 

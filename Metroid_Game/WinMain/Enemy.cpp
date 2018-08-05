@@ -30,6 +30,10 @@ void Enemy::InitPostition(int x, int y)
 
 void Enemy::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 {
+	if (d3ddv == NULL) return;
+	//Create sprite handler
+	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
+	if (result != D3D_OK) return;
 }
 void Enemy::Update(float t)
 {

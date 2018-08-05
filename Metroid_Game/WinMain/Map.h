@@ -36,7 +36,7 @@ public:
 	void UpdateMap(RECT);
 
 	// Đặt giới hạn load map
-	void setLimitation(int width, int height);
+	void setLimitation(int x, int y, int width, int height);
 	RECT getBoundary();
 
 	// Load map lên
@@ -47,6 +47,9 @@ public:
 	vector<string> getStringMap();
 
 	static const int count = 0;
+
+	int getRow();
+	int getColumn();
 
 	void setGrid(Grid*);
 	Grid* getGrid();
@@ -65,11 +68,12 @@ private:
 	//Start coordinate of the camera
 	RECT m_boundary = RECT();
 
-	int top;
-	int left;
-
+	//TODO: 
 	int widthLimitation;
 	int heightLimitation;
+
+	int m_max_Row;
+	int m_max_Column;
 
 	LPDIRECT3DDEVICE9 d3ddv;
 	LPDIRECT3DTEXTURE9 mapTexture;

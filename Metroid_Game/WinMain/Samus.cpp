@@ -52,14 +52,14 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	//Set type
 	this->type = SAMUS;
 
-	//width = 40;
-	//height = 50;
+	/*width = 40;
+	height = 50;*/
 
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
 
-	//this->height = 64;
-	//this->width = 32;
+	this->height = 64;
+	this->width = 32;
 }
 
 Samus::~Samus()
@@ -113,15 +113,14 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	pos_x = 992;	
-	pos_y = 320;	
-	/*this->pos_x = 1140;
-	this->pos_y = 352;*/
+	/*pos_x = 992;	
+	pos_y = 320;*/	
+	this->pos_x = 1140;
+	this->pos_y = 352;
 	vx = 0;
 	vx_last = 1.0f;
 	vy = 0.0f;
 
-	this->isFalling = true;
 	//Init state of samus
 	state = STAND_RIGHT;
 }
@@ -260,13 +259,6 @@ void Samus::Update(float t)
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 
-	if (this->isFalling == true) 
-		vy += gravity;
-
-	if (canJump)
-	{
-		//vy -= JUMP_VELOCITY_BOOST_FIRST;
-	}
 	//pos_x = newPosX;
 	//pos_y = newPosY;
 
