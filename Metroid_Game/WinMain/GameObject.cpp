@@ -186,6 +186,26 @@ void GameObject::setActive(bool value)
 	this->isActive = value;
 }
 
+bool GameObject::getJump()
+{
+	return canJump;
+}
+
+void GameObject::setJump(bool value)
+{
+	canJump = value;
+}
+
+bool GameObject::getFall()
+{
+	return isFalling;
+}
+
+void GameObject::setFall(bool value)
+{
+	isFalling = value;
+}
+
 void GameObject::setlastPosX(float posx)
 {
 	this->lastPosX = posx;

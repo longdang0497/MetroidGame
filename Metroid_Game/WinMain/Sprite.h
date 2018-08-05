@@ -40,9 +40,12 @@ public:
 	RECT ReadCoord();
 	void Reset();
 
-	void setWidth(int value);
-	int getWidth();
+	void setSpriteWidth(int value);
+	int getSpriteWidth();
 
-	void setHeight(int value);
-	int getHeight();
+	void setSpriteHeight(int value);
+	int getSpriteHeight();
+
+	int GetIndex();
+	int GetCount();
 };

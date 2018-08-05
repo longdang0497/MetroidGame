@@ -8,6 +8,10 @@
 #include "Texture.h"
 #include "Grid.h"
 #include "Bullet.h"
+#include "Gate.h"
+#include "GateBlock.h"
+#include "ExplodeEffect.h"
+#include "BombWeapon.h"
 
 using namespace std;
 
@@ -23,6 +27,12 @@ public:
 	Grid *grid;
 	Samus * samus;
 	MaruMari * maruMari;
+	Gate * gateRight;
+	Gate * gateLeft;
+	GateBlock * gateBlock;
+	ExplodeEffect * explode;
+	Bomb * bomb;
+
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;
 	LPD3DXSPRITE spriteHandler;

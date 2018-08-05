@@ -14,8 +14,6 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 	//Set vận tốc
 	vx = 0.0f;
 	vy = 0.0f;
-	this->width = 30;
-	this->height = 30;
 
 	this->grid = manager->grid;
 }
@@ -156,6 +154,9 @@ void Zoomer::setVelocity() {
 
 void Zoomer::Update(float t)
 {
+	this->width = ZOOMER_WIDTH;
+	this->height = ZOOMER_HEIGHT;
+
 	if (!this->isActive) return;
 	this->setIsTopCollided(false);
 	this->setIsBottomCollided(false);
@@ -225,16 +226,16 @@ void Zoomer::Render()
 	switch (state)
 	{
 	case ON_ZOOMER_UP:
-		top->drawSprite(top->getWidth(), top->getHeight(), position);
+		top->drawSprite(ZOOMER_WIDTH, ZOOMER_HEIGHT, position);
 		break;
 	case ON_ZOOMER_BOTTOM:
-		bottom->drawSprite(bottom->getWidth(), bottom->getHeight(), position);
+		bottom->drawSprite(ZOOMER_WIDTH, ZOOMER_HEIGHT, position);
 		break;
 	case ON_ZOOMER_LEFT:
-		left->drawSprite(left->getWidth(), left->getHeight(), position);
+		left->drawSprite(ZOOMER_WIDTH, ZOOMER_HEIGHT, position);
 		break;
 	case ON_ZOOMER_RIGHT:
-		right->drawSprite(right->getWidth(), right->getHeight(), position);
+		right->drawSprite(ZOOMER_WIDTH, ZOOMER_HEIGHT, position);
 		break;
 	}
 }

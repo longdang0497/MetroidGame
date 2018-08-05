@@ -13,12 +13,14 @@ Bomb::Bomb(LPD3DXSPRITE spriteHandler, World * manager)
 	this->manager = manager;
 	bomb = nullptr;
 	isActive = false;
-	currentSprite = nullptr;
+	this->width = BOMB_WIDTH;
+	this->height = BOMB_HEIGHT;
+	//currentSprite = nullptr;
 }
 
 Bomb::~Bomb()
 {
-	currentSprite = nullptr; delete currentSprite;
+	//currentSprite = nullptr; delete currentSprite;
 	delete bomb;
 	delete manager;
 }
@@ -37,7 +39,7 @@ void Bomb::CreateBomb(float posX, float posY)
 {
 	this->pos_x = posX;
 	this->pos_y = posY;
-	currentSprite = bomb;
+	//currentSprite = bomb;
 }
 
 void Bomb::Update(float t)
@@ -48,7 +50,7 @@ void Bomb::Update(float t)
 		DWORD now = GetTickCount();
 		if (now - last_time > 1000 / ANIMATE_RATE)
 		{
-			currentSprite->updateIndex();
+			bomb->updateSprite();
 			last_time = now;
 		}	
 
@@ -76,7 +78,7 @@ void Bomb::Render()
 
 	if (isActive == true && isExplode == false)
 	{
-		currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
+		bomb->drawSprite(BOMB_WIDTH, BOMB_HEIGHT, position);
 	}		
 }
 

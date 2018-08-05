@@ -18,68 +18,64 @@ void Samus::Render()
 		}
 
 		position.z = 0;
-
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND| D3DXSPRITE_OBJECTSPACE);
-
+		
 		switch (state)
 		{
 		case STAND_RIGHT:
-			standRight->drawSprite(standRight->getWidth(), standRight->getHeight(), position);
+			standRight->drawSprite(standRight->getSpriteWidth(), standRight->getSpriteHeight(), position);
 			break;
 		case STAND_LEFT:
-			standLeft->drawSprite(standLeft->getWidth(), standLeft->getHeight(), position);
+			standLeft->drawSprite(standLeft->getSpriteWidth(), standLeft->getSpriteHeight(), position);
 			break;
 		case RUNNING_RIGHT:
-			runRight->drawSprite(runRight->getWidth(), runRight->getHeight(), position);
+			runRight->drawSprite(runRight->getSpriteWidth(), runRight->getSpriteHeight(), position);
 			break;
 		case RUNNING_LEFT:
-			runLeft->drawSprite(runLeft->getWidth(), runLeft->getHeight(), position);
+			runLeft->drawSprite(runLeft->getSpriteWidth(), runLeft->getSpriteHeight(), position);
 			break;
 		case STAND_SHOOT_UP_LEFT:
-			standShootL->drawSprite(standShootL->getWidth(), standShootL->getHeight(), position);
+			standShootL->drawSprite(standShootL->getSpriteWidth(), standShootL->getSpriteHeight(), position);
 			break;
 		case STAND_SHOOT_UP_RIGHT:
-			standShootR->drawSprite(standShootR->getWidth(), standShootR->getHeight(), position);
+			standShootR->drawSprite(standShootR->getSpriteWidth(), standShootR->getSpriteHeight(), position);
 			break;
 		case MORPH_LEFT:
-			morphLeft->drawSprite(morphLeft->getWidth(), morphLeft->getHeight(), position);
+			morphLeft->drawSprite(morphLeft->getSpriteWidth(), morphLeft->getSpriteHeight(), position);
 			break;
 		case MORPH_RIGHT:
-			morphRight->drawSprite(morphRight->getWidth(), morphRight->getHeight(), position);
+			morphRight->drawSprite(morphRight->getSpriteWidth(), morphRight->getSpriteHeight(), position);
 			break;
 		case RUN_SHOOTING_LEFT:
-			runShootL->drawSprite(runShootL->getWidth(), runShootL->getHeight(), position);
+			runShootL->drawSprite(runShootL->getSpriteWidth(), runShootL->getSpriteHeight(), position);
 			break;
 		case RUN_SHOOTING_RIGHT:
-			runShootR->drawSprite(runShootR->getWidth(), runShootR->getHeight(), position);
+			runShootR->drawSprite(runShootR->getSpriteWidth(), runShootR->getSpriteHeight(), position);
 			break;
 		case RUN_SHOOT_UP_LEFT:
-			runShootUpL->drawSprite(runShootUpL->getWidth(), runShootUpL->getHeight(), position);
+			runShootUpL->drawSprite(runShootUpL->getSpriteWidth(), runShootUpL->getSpriteHeight(), position);
 			break;
 		case RUN_SHOOT_UP_RIGHT:
-			runShootUpR->drawSprite(runShootUpR->getWidth(), runShootUpR->getHeight(), position);
+			runShootUpR->drawSprite(runShootUpR->getSpriteWidth(), runShootUpR->getSpriteHeight(), position);
 			break;
 		case JUMP_LEFT:
-			jumpLeft->drawSprite(jumpLeft->getWidth(), jumpLeft->getHeight(), position);
+			jumpLeft->drawSprite(jumpLeft->getSpriteWidth(), jumpLeft->getSpriteHeight(), position);
 			break;
 		case JUMP_RIGHT:
-			jumpRight->drawSprite(jumpRight->getWidth(), jumpRight->getHeight(), position);
+			jumpRight->drawSprite(jumpRight->getSpriteWidth(), jumpRight->getSpriteHeight(), position);
 			break;
 		case TRANSFORM_BALL_LEFT:
-			ballLeft->drawSprite(ballLeft->getWidth(), ballLeft->getHeight(), position);
+			ballLeft->drawSprite(ballLeft->getSpriteWidth(), ballLeft->getSpriteHeight(), position);
 			break;
 		case TRANSFORM_BALL_RIGHT:
-			ballRight->drawSprite(ballRight->getWidth(), ballRight->getHeight(), position);
+			ballRight->drawSprite(ballRight->getSpriteWidth(), ballRight->getSpriteHeight(), position);
 			break;
 		case JUMP_SHOOT_UP_LEFT:
-			jumpShootL->drawSprite(jumpShootL->getWidth(), jumpShootL->getHeight(), position);
+			jumpShootL->drawSprite(jumpShootL->getSpriteWidth(), jumpShootL->getSpriteHeight(), position);
 			break;
 		case JUMP_SHOOT_UP_RIGHT:
-			jumpShootR->drawSprite(jumpShootR->getWidth(), jumpShootR->getHeight(), position);
+			jumpShootR->drawSprite(jumpShootR->getSpriteWidth(), jumpShootR->getSpriteHeight(), position);
 			break;
 		}
-
-		spriteHandler->End();
 	}	
 }
 
@@ -98,6 +94,11 @@ void Samus::Destroy()
 
 	//--TO DO: Đưa Samus ra khỏi viewport
 }
+
+//void Samus::samusJump(float jumpHeight)
+//{
+//	
+//}
 
 Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 {
@@ -173,13 +174,15 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	/*pos_x = 992;	
-	pos_y = 320;*/	
-	this->pos_x = 1140;
-	this->pos_y = 352;
+	pos_x = 992;	
+	pos_y = 320;	
+	/*this->pos_x = 1140;
+	this->pos_y = 352;*/
 	vx = 0;
 	vx_last = 1.0f;
-	vy = 0.0f;
+	vy = gravity;
+
+	this->isFalling = true;
 
 	//Init state of samus
 	state = STAND_RIGHT;
@@ -248,15 +251,129 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
+	isTop = false;
+	isBottom = false;
+	isRight = false;
+	isLeft = false;
+	isOnGround = false;
+	if (this->isFalling != true)
+		vy = gravity;
+	else
+	{
+		vy += gravity;
+		isOnGround = false;
+		if (vy > MAX_FALLING)
+		{
+			vy = MAX_FALLING;
+		}
+	}
+	
+
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
 
 	int row = (int)floor(this->pos_y / CELL_SIZE);
 	int column = (int)floor(this->pos_x / CELL_SIZE);
-	if (!this->grid->handleCell(this, row, column)) {
-		pos_x = newPosX;
-		pos_y = newPosY;
+	this->grid->handleCell(this, row, column);
+
+	if (isTop == false && isBottom == false && isLeft == false && isRight == false) {
+		/*if (vx > 0 && manager->metroid->getInput()->IsKeyDown(DIK_RIGHT))
+			this->SetState(MORPH_RIGHT);
+		else if (vx > 0)
+			this->SetState(JUMP_RIGHT);
+
+		if (vx < 0 && manager->metroid->getInput()->IsKeyDown(DIK_LEFT))
+			this->SetState(MORPH_LEFT);
+		else if (vx < 0)
+			this->SetState(JUMP_LEFT);*/
+		pos_x += vx * t; 
+		pos_y += vy * t;
 	}
+	else if (isTop == true && isBottom == true && isLeft == false && isRight == false)
+	{
+		pos_x += vx * t;
+		pos_y += vy * t;
+		if (this->GetState() == JUMP_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+	}
+	else if (isLeft == true && isBottom == true && isRight == false && isTop == false)
+	{
+		
+		//if (isFalling != true)
+			//pos_y += vy * t;
+	}
+	else if (isLeft == true && isTop == true && isRight == false && isBottom == false)
+	{
+		pos_x += vx * t;
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isRight == true && isBottom == true && isLeft == false && isTop == false)
+	{
+		//pos_x += vx * t;
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isRight == true && isTop == true && isLeft == false && isBottom == false)
+	{		
+		pos_x += vx * t;
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isLeft == true && isBottom == false && isRight == false && isTop == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		if (this->GetState() == JUMP_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+
+		//pos_y += vy * t;
+	}
+	else if (isRight == true && isBottom == false && isLeft == false && isTop == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		if (this->GetState() == JUMP_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+
+		//pos_y += vy * t;
+	}
+	else if (isTop == true && isLeft == false && isRight == false && isBottom == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		pos_y += vy * t;
+		pos_x += vx * t;
+		if (vy > 50)
+			vy = 50;
+		if (isBottom == true)
+		{
+			this->setFall(false);
+			this->setJump(true);
+		}
+	}
+	else if (isBottom == true && isLeft == false && isRight == false && isTop == false) {
+		/*if (vx > 0)
+			this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+			this->SetState(STAND_LEFT);*/
+		if (this->GetState() == JUMP_LEFT || this->GetState() == MORPH_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT || this->GetState() == MORPH_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+
+		pos_x += vx * t;
+	}
+	
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 

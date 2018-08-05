@@ -7,7 +7,7 @@ class Brick :
 
 public:
 	Brick();
-	Brick(float x, float y, int width, int height, Grid * grid);
+	Brick(float x, float y, int width, int height);
 	~Brick();
 
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddev, LPDIRECT3DTEXTURE9 texture);

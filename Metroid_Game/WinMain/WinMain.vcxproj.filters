@@ -67,6 +67,21 @@
     <Filter Include="Source Files\Item">
       <UniqueIdentifier>{3a286a5a-2c87-4c65-ad2e-8e733602fe84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Effect">
+      <UniqueIdentifier>{d43792d3-0637-4636-b662-8114d64ef53d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Effect">
+      <UniqueIdentifier>{61f65c26-def6-4e01-b3e5-dd62031f5147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sprites\explode_effect">
+      <UniqueIdentifier>{96ff236f-b3db-4e5a-8967-2c94bd2a569e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sprites\gate">
+      <UniqueIdentifier>{4831c197-30a7-4d14-ba17-75ea20011322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\map">
+      <UniqueIdentifier>{e606ef4b-4500-4bd8-93bd-43fa6d0bcc7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -157,6 +172,24 @@
       <Filter>Source Files\FrameWork</Filter>
     </ClCompile>
     <ClCompile Include="Brick.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="BombWeapon.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplodeEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Gate.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GateBlock.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -251,6 +284,24 @@
     <ClInclude Include="Brick.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="BombWeapon.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Gate.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GateBlock.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplodeEffect.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick_16x16.png">
@@ -285,6 +336,18 @@
     </Image>
     <Image Include="sprites\item\items_sprite_sheet.png">
       <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="sprites\gate\GATE_32.png">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Image>
+    <Image Include="sprites\explode_effect\explosion.png">
+      <Filter>Resource Files\sprites\explode_effect</Filter>
+    </Image>
+    <Image Include="sprites\item\bomb.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="map\brick_32x32.png">
+      <Filter>Resource Files\map</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +461,39 @@
     </Text>
     <Text Include="Monster_Room1.txt">
       <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_BLOCK.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt">
+      <Filter>Resource Files\sprites\explode_effect</Filter>
+    </Text>
+    <Text Include="sprites\item\BOMB.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="map\fieldBossMB.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="map\fieldBossRidley.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="map\fieldRoom1.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="map\fieldStair.txt">
+      <Filter>Resource Files\map</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
