@@ -18,8 +18,9 @@ class GameObject;
 #define TIME_IN_GAME 7000
 
 #define JUMP_VELOCITY_BOOST 0.5f
-#define JUMP_VELOCITY_BOOST_FIRST 64.0f
-#define FALLDOWN_VELOCITY_DECREASE 0.3f
+#define JUMP_VELOCITY_BOOST_FIRST 65.0f
+#define FALLDOWN_VELOCITY_DECREASE 200.0f
+#define MAX_FALLING 200.0f
 #define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 30
 #define LIVE_TIME 3000
@@ -28,6 +29,17 @@ class GameObject;
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
 
+#define MAP_ROOM1 "map\\fieldRoom1.txt"
+#define MAP_ROOM2 "map\\fieldBossRidley.txt"
+#define MAP_ROOM3 "map\\fieldBossMB.txt"
+#define MAP_STAIR "map\\fieldStair.txt"
+
+enum ROOM_NUMBER {
+	ROOM1,
+	ROOM2,
+	ROOM3,
+	STAIR
+};
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
 #define GAME_SCREEN_RESOLUTION_800_600_24   1
@@ -310,6 +322,28 @@ enum ZOOMER_DIRECTION {
 #define BLOCK_RIGHT "sprites\\enemy\\BLOCK_RIGHT.txt"
 //================== END BLOCK =================
 
+//================ BOMB =====================
+#define BOMB_PATH L"sprites\\item\\BOMB.txt"
+#define BOMB_WIDTH 19
+#define BOMB_HEIGHT 18
+#define BOMB_SPRITE_COUNT 2
+#define BOMB_TEXTURE L"sprites\\item\\bomb.png"
+
+//================ END BOMB =================
+
+//================ EFFECT ===================
+#define EFFECT_TIME_SURVIVE 1
+#define EFFECT_SPRITE_PATH L"sprites\\explode_effect\\explosion.png"
+
+//========== EFFECT EXPLOSION
+#define EFFECT_EXPLOSION L"sprites\\explode_effect\\EFFECT_EXPLOSION.txt"
+#define EFFECT_EXPLOSION_WIDTH 64
+#define EFFECT_EXPLOSION_HEIGHT 64
+#define EFFECT_EXPLOSION_COUNT 3
+
+//================ END EFFECT ===============
+
+
 //================== BEE  =====================
 
 #define BEE_WIDTH 52
@@ -360,3 +394,4 @@ enum COLLISION_DIRECTION {
 #define ZOOMER_PINK_CASE 1
 #define SKREE_CASE 2
 #define RIO_CASE 3
+

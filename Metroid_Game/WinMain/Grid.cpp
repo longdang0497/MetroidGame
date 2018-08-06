@@ -167,9 +167,33 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 
 void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
 	Samus* samus = dynamic_cast<Samus*>(object);
-	object->pos_y += object->vy * collisionTime *this->getDeltaTime();
-	if (collisionDirection == LEFT) {
+	//object->pos_y += object->vy * collisionTime *this->getDeltaTime();
+
+	if (collisionDirection == LEFT)
+	{
+		samus->isLeft = true;
 		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
+	}
+
+	else if (collisionDirection == RIGHT)
+	{
+		samus->isRight = true;
+		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
+	}
+
+	else if (collisionDirection == TOP)
+	{
+		samus->isTop = true;
+		samus->setVelocityY(-samus->getVelocityY());
+	}
+
+	else if (collisionDirection == BOTTOM)
+	{
+		samus->isBottom = true;
+		object->setFall(false);
+		object->setJump(true);
+		samus->isOnGround = true;
+		object->pos_y += object->vy * collisionTime *this->getDeltaTime();
 	}
 }
 

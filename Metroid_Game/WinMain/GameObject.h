@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include <d3dx9.h>
 #include "Sprite.h"
 #include "Define.h"
@@ -36,6 +35,9 @@ public:
 	DWORD last_time; // this is to control the animate rate of object
 	RECT objBound;
 	D3DXVECTOR2 rigidBody;
+
+	bool isFalling;
+	bool canJump;
 public:
 	GameObject();
 	~GameObject();
@@ -46,6 +48,11 @@ public:
 
 	bool isActivated();
 	void setActive(bool value);
+
+	bool getJump();
+	void setJump(bool value);
+	bool getFall();
+	void setFall(bool value);
 
 	void setlastPosX(float posx);
 	void setlastPosY(float posy);

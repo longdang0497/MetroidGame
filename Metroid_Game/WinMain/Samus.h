@@ -36,6 +36,12 @@ public:
 	bool canMorph = true;
 	bool isMorphing = false;
 
+	bool isOnGround = false;
+	bool isTop = false;
+	bool isBottom = false;
+	bool isLeft = false;
+	bool isRight = false;
+
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus
 	Samus();

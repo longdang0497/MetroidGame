@@ -271,3 +271,23 @@ RECT GameObject::GetBound()
 
 	return objBound;
 }
+
+bool GameObject::getJump()
+{
+	return canJump;
+}
+
+void GameObject::setJump(bool value)
+{
+	canJump = value;
+}
+
+bool GameObject::getFall()
+{
+	return isFalling;
+}
+
+void GameObject::setFall(bool value)
+{
+	isFalling = value;
+}

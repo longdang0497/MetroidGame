@@ -13,6 +13,7 @@ void Samus::Render()
 		D3DXVECTOR3 position;
 		position.x = pos_x;
 		position.y = pos_y;
+		// Chỉnh lại pos_y để khi bắn lên không bị hụt sprite xuống
 		if (this->state == STAND_SHOOT_UP_LEFT || this->state == STAND_SHOOT_UP_RIGHT || this->state == RUN_SHOOT_UP_LEFT || this->state == RUN_SHOOT_UP_RIGHT) {
 			position.y -= 10;
 		}
@@ -112,9 +113,6 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 
 	//Set type
 	this->type = SAMUS;
-
-	/*width = 40;
-	height = 50;*/
 
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
@@ -230,7 +228,6 @@ bool Samus::GetStateActive()
 
 void Samus::Reset(float x, float y)
 {
-	//manager->maruMari->Init(704, 186);
 	// Cho samus active trở lại
 	this->isActive = true;
 
@@ -241,28 +238,134 @@ void Samus::Reset(float x, float y)
 
 bool Samus::isSamusDeath()
 {
-	if (isDeath == true)
-		return true;
+	return isDeath;
 }
 
 // Update samus status
 void Samus::Update(float t)
 {
-	this->grid->showAllObject();
+	/*float newPosX = pos_x + vx * t;
+	float newPosY = pos_y + vy * t;
+	pos_x = newPosX;
+	pos_y = newPosY;*/
+	
+	isTop = false;
+	isBottom = false;
+	isRight = false;
+	isLeft = false;
+	isOnGround = false;
+	if (this->isFalling != true)
+		vy = gravity;
+	else
+	{
+		vy += gravity * t;
+		isOnGround = false;
+		if (vy > MAX_FALLING)
+		{
+			vy = MAX_FALLING;
+		}
+	}
+
+
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
 
 	int row = (int)floor(this->pos_y / CELL_SIZE);
 	int column = (int)floor(this->pos_x / CELL_SIZE);
-	//if (!this->grid->handleCell(this, row, column)) {
-		pos_x = newPosX;
-		pos_y = newPosY;
-	//}
+	this->grid->handleCell(this, row, column);
+
+	if (isTop == false && isBottom == false && isLeft == false && isRight == false) {
+		/*if (vx > 0 && manager->metroid->getInput()->IsKeyDown(DIK_RIGHT))
+		this->SetState(MORPH_RIGHT);
+		else if (vx > 0)
+		this->SetState(JUMP_RIGHT);
+
+		if (vx < 0 && manager->metroid->getInput()->IsKeyDown(DIK_LEFT))
+		this->SetState(MORPH_LEFT);
+		else if (vx < 0)
+		this->SetState(JUMP_LEFT);*/
+		pos_x += vx * t;
+		pos_y += vy * t;
+	}
+	else if (isTop == true && isBottom == true && isLeft == false && isRight == false)
+	{
+		pos_x += vx * t;
+		pos_y += vy * t;
+		if (this->GetState() == JUMP_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+	}
+	else if (isLeft == true && isBottom == true && isRight == false && isTop == false)
+	{
+
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isLeft == true && isTop == true && isRight == false && isBottom == false)
+	{
+		pos_x += vx * t;
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isRight == true && isBottom == true && isLeft == false && isTop == false)
+	{
+		//pos_x += vx * t;
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isRight == true && isTop == true && isLeft == false && isBottom == false)
+	{
+		pos_x += vx * t;
+		//if (isFalling != true)
+		//pos_y += vy * t;
+	}
+	else if (isLeft == true && isBottom == false && isRight == false && isTop == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		if (this->GetState() == JUMP_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+
+		//pos_y += vy * t;
+	}
+	else if (isRight == true && isBottom == false && isLeft == false && isTop == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		if (this->GetState() == JUMP_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+
+		//pos_y += vy * t;
+	}
+	else if (isTop == true && isLeft == false && isRight == false && isBottom == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		pos_y += vy * t;
+		pos_x += vx * t;
+	}
+	else if (isBottom == true && isLeft == false && isRight == false && isTop == false) {
+		/*if (vx > 0)
+		this->SetState(RUNNIN_RIGHT);
+		else if (vx < 0)
+		this->SetState(STAND_LEFT);*/
+		if (this->GetState() == JUMP_LEFT || this->GetState() == MORPH_LEFT)
+			this->SetState(RUNNING_LEFT);
+		else if (this->GetState() == JUMP_RIGHT || this->GetState() == MORPH_RIGHT)
+			this->SetState(RUNNING_RIGHT);
+
+		pos_x += vx * t;
+	}
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
-
-	//pos_x = newPosX;
-	//pos_y = newPosY;
 
 	// Animate samus if he is running
 	DWORD now = GetTickCount();
