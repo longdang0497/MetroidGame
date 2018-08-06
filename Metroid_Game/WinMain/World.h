@@ -27,9 +27,9 @@ public:
 	Grid *grid;
 	Samus * samus;
 	MaruMari * maruMari;
-	/*Gate * gateRight;
+	Gate * gateRight;
 	Gate * gateLeft;
-	GateBlock * gateBlock;*/
+	GateBlock * gateBlock;
 	ExplodeEffect * explode;
 	Bomb * bomb;
 
