@@ -1,13 +1,13 @@
 ﻿#include "BombWeapon.h"
+#include "World.h"
 
-Bomb::Bomb()
+BombWeapon::BombWeapon()
 {
 	this->type = BOMB_WEAPON;
 	bomb = nullptr;
 }
 
-Bomb::Bomb(LPD3DXSPRITE spriteHandler, World * manager)
-{
+BombWeapon::BombWeapon(LPD3DXSPRITE spriteHandler, World * manager) {
 	this->type = BOMB_WEAPON;
 	this->spriteHandler = spriteHandler;
 	this->manager = manager;
@@ -15,17 +15,13 @@ Bomb::Bomb(LPD3DXSPRITE spriteHandler, World * manager)
 	isActive = false;
 	this->width = BOMB_WIDTH;
 	this->height = BOMB_HEIGHT;
-	//currentSprite = nullptr;
 }
 
-Bomb::~Bomb()
+BombWeapon::~BombWeapon()
 {
-	//currentSprite = nullptr; delete currentSprite;
-	delete bomb;
-	delete manager;
 }
 
-void Bomb::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
+void BombWeapon::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 {
 	if (d3ddv == NULL) return;
 	//Create sprite handler
@@ -35,14 +31,13 @@ void Bomb::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	bomb = new Sprite(spriteHandler, texture, BOMB_PATH, BOMB_WIDTH, BOMB_HEIGHT, BOMB_SPRITE_COUNT);
 }
 
-void Bomb::CreateBomb(float posX, float posY)
+void BombWeapon::CreateBomb(float posX, float posY)
 {
 	this->pos_x = posX;
 	this->pos_y = posY;
-	//currentSprite = bomb;
 }
 
-void Bomb::Update(float t)
+void BombWeapon::Update(float t)
 {
 	if (isActive == true && isExplode == false)
 	{
@@ -52,7 +47,7 @@ void Bomb::Update(float t)
 		{
 			bomb->updateSprite();
 			last_time = now;
-		}	
+		}
 
 		// Tính thời gian hiển thị
 		time_survive -= t;
@@ -60,16 +55,16 @@ void Bomb::Update(float t)
 		if (time_survive <= 0)
 		{
 			isActive = false;
-			manager->explode->setTimeSurvive(EFFECT_TIME_SURVIVE);
-			if (manager->explode->getTimeSurvive() > 0)
+			manager->explodeEffect->setTimeSurvive(EFFECT_TIME_SURVIVE);
+			if (manager->explodeEffect->getTimeSurvive() > 0)
 			{
 				Destroy();
-			}			
+			}
 		}
-	}	
+	}
 }
 
-void Bomb::Render()
+void BombWeapon::Render()
 {
 	D3DXVECTOR3 position;
 	position.x = pos_x;
@@ -79,32 +74,19 @@ void Bomb::Render()
 	if (isActive == true && isExplode == false)
 	{
 		bomb->drawSprite(BOMB_WIDTH, BOMB_HEIGHT, position);
-	}		
+	}
 }
 
-void Bomb::Destroy()
+void BombWeapon::Destroy()
 {
 	isExplode = true;
-	manager->explode->setActive(true);
-	manager->explode->setPosX(this->pos_x - 32);
-	manager->explode->setPosY(this->pos_y - 32);
-	/*float time = manager->explode->getTimeSurvive();
-	if (time < 0)
-		manager->explode->setActive(false);*/
+	manager->explodeEffect->setActive(true);
+	manager->explodeEffect->setPosX(this->pos_x - 32);
+	manager->explodeEffect->setPosY(this->pos_y - 32);
 }
 
-void Bomb::ResetBomb(float x, float y)
+void BombWeapon::ResetBomb(float x, float y)
 {
 	this->pos_x = x;
 	this->pos_y = y;
 }
-//
-//void Bomb::setBombNo(int value)
-//{
-//	countBomb = value;
-//}
-//
-//int Bomb::getBombNo()
-//{
-//	return countBomb;
-//}

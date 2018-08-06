@@ -10,8 +10,8 @@ MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager) :Item(spriteHand
 
 	this->previousUnit = NULL;
 	this->nextUnit = NULL;
-	this->width = MARU_MARI_WIDTH;
-	this->height = MARU_MARI_HEIGHT;
+	this->width = 32;
+	this->height = 32;
 }
 
 MaruMari::~MaruMari()
@@ -87,7 +87,9 @@ void MaruMari::Render()
 	if (!isActive)
 		return;
 
-	maruMari->drawSprite(MARU_MARI_WIDTH, MARU_MARI_HEIGHT, position);
+	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
+	maruMari->drawSprite(maruMari->getWidth(), maruMari->getHeight(), position);
+	spriteHandler->End();
 }
 
 void MaruMari::Destroy()

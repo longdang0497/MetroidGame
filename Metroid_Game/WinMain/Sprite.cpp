@@ -66,6 +66,9 @@ void Sprite::updateSprite() {
 */
 //draw 1 sprite
 void Sprite::drawSprite(int x, int y, int width, int height, D3DXVECTOR3 position) {
+	if (this->sprite == NULL || this->texture == NULL)
+		return;
+
 	RECT rect;
 	rect.left = x;
 	rect.top = y;
@@ -88,6 +91,8 @@ void Sprite::drawSprite(int x, int y, int width, int height, D3DXVECTOR3 positio
 
 //draw multi sprites
 void Sprite::drawSprite(int width, int height, D3DXVECTOR3 position) {
+	if (this->sprite == NULL || this->texture == NULL)
+		return;
 	RECT rect;
 	rect = ReadCoord();
 
@@ -171,22 +176,22 @@ RECT Sprite::ReadCoord()
 	return srect;
 }
 
-void Sprite::setSpriteWidth(int value)
+void Sprite::setWidth(int value)
 {
 	width = value;
 }
 
-int Sprite::getSpriteWidth()
+int Sprite::getWidth()
 {
 	return width;
 }
 
-void Sprite::setSpriteHeight(int value)
+void Sprite::setHeight(int value)
 {
 	height = value;
 }
 
-int Sprite::getSpriteHeight()
+int Sprite::getHeight()
 {
 	return height;
 }

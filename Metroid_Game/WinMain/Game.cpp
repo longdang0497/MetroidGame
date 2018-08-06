@@ -81,17 +81,7 @@ void Game::GameRun()
 	}
 }
 
-Input * Game::getInput()
-{
-	return this->_input;
-}
-
-Camera * Game::getCamera()
-{
-	return this->camera;
-}
-
-void Game::CheckKey()
+void Game::CheckKey() 
 {
 	// Collect all buffered events
 	DWORD dwElements = KEYBOARD_BUFFER_SIZE;

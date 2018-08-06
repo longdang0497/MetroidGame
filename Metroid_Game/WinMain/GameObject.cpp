@@ -186,26 +186,6 @@ void GameObject::setActive(bool value)
 	this->isActive = value;
 }
 
-bool GameObject::getJump()
-{
-	return canJump;
-}
-
-void GameObject::setJump(bool value)
-{
-	canJump = value;
-}
-
-bool GameObject::getFall()
-{
-	return isFalling;
-}
-
-void GameObject::setFall(bool value)
-{
-	isFalling = value;
-}
-
 void GameObject::setlastPosX(float posx)
 {
 	this->lastPosX = posx;
@@ -290,4 +270,24 @@ RECT GameObject::GetBound()
 	objBound.bottom = pos_y - rigidBody.y;
 
 	return objBound;
+}
+
+bool GameObject::getJump()
+{
+	return canJump;
+}
+
+void GameObject::setJump(bool value)
+{
+	canJump = value;
+}
+
+bool GameObject::getFall()
+{
+	return isFalling;
+}
+
+void GameObject::setFall(bool value)
+{
+	isFalling = value;
 }

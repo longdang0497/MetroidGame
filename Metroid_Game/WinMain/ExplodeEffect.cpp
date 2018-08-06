@@ -1,4 +1,8 @@
 ﻿#include "ExplodeEffect.h"
+#include "World.h"
+ExplodeEffect::ExplodeEffect()
+{
+}
 
 ExplodeEffect::ExplodeEffect(LPD3DXSPRITE spriteHandler, World *manager, Grid * grid) : Effect(spriteHandler, manager, grid)
 {
@@ -10,27 +14,27 @@ ExplodeEffect::ExplodeEffect(LPD3DXSPRITE spriteHandler, World *manager, Grid * 
 	isActive = false;
 	this->width = EFFECT_EXPLOSION_WIDTH;
 	this->height = EFFECT_EXPLOSION_HEIGHT;
-	//currentSprite = nullptr;
+	
 }
+
 
 ExplodeEffect::~ExplodeEffect()
 {
-	//currentSprite = nullptr; delete currentSprite;
-	delete explode;
-	delete manager;
-	delete grid;
+	//delete explode;
+	//delete manager;
+	//delete grid;
 }
+
 
 void ExplodeEffect::Update(float t)
 {
 
-	if (isActive == true && manager->bomb->getBombExplode() == true)
+	if (isActive == true && manager->bombWeapon->getBombExplode() == true)
 	{
 		//time_survive = EFFECT_TIME_SURVIVE;
 		DWORD now = GetTickCount();
 		if (now - last_time > 1000 / ANIMATE_RATE)
 		{
-			//if (isRendering == true)
 			explode->updateSprite();
 			last_time = now;
 		}
@@ -40,12 +44,12 @@ void ExplodeEffect::Update(float t)
 		{
 			isActive = false;
 		}
-			
+
 	}
 	else
 		return;
 
-	
+
 }
 
 void ExplodeEffect::Render()
@@ -58,12 +62,12 @@ void ExplodeEffect::Render()
 	position.y = pos_y;
 	position.z = 0;
 
-	if (isActive == true && manager->bomb->getBombExplode() == true && time_survive > 0)
+	if (isActive == true && manager->bombWeapon->getBombExplode() == true && time_survive > 0)
 	{
 		//isRendering == true;
 		explode->drawSprite(EFFECT_EXPLOSION_WIDTH, EFFECT_EXPLOSION_HEIGHT, position);
 	}
-		
+
 }
 
 void ExplodeEffect::CreateExplode(float x, float y)
@@ -82,3 +86,4 @@ void ExplodeEffect::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 text
 
 	explode = new Sprite(spriteHandler, texture, EFFECT_EXPLOSION, EFFECT_EXPLOSION_WIDTH, EFFECT_EXPLOSION_HEIGHT, EFFECT_EXPLOSION_COUNT);
 }
+

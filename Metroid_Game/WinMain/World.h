@@ -8,8 +8,6 @@
 #include "Texture.h"
 #include "Grid.h"
 #include "Bullet.h"
-#include "Gate.h"
-#include "GateBlock.h"
 #include "ExplodeEffect.h"
 #include "BombWeapon.h"
 
@@ -27,11 +25,8 @@ public:
 	Grid *grid;
 	Samus * samus;
 	MaruMari * maruMari;
-	Gate * gateRight;
-	Gate * gateLeft;
-	GateBlock * gateBlock;
-	ExplodeEffect * explode;
-	Bomb * bomb;
+	ExplodeEffect* explodeEffect;
+	BombWeapon* bombWeapon;
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;

@@ -1,4 +1,11 @@
-﻿#include "Effect.h"
+#include "Effect.h"
+
+
+
+Effect::Effect()
+{
+}
+
 
 Effect::Effect(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 {

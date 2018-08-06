@@ -26,33 +26,27 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int heigh
 	this->samusBullet.push_back(bullet3);
 
 	maruMari = new MaruMari(spriteHandler, this);
-	/*gateRight = new Gate(spriteHandler, this, grid);
-	gateLeft = new Gate(spriteHandler, this, grid);
-	gateBlock = new GateBlock(spriteHandler, this, grid);*/
-	explode = new ExplodeEffect(spriteHandler, this, grid);
-	bomb = new Bomb(spriteHandler, this);
+
+	explodeEffect = new ExplodeEffect(spriteHandler, this, grid);
+	bombWeapon = new BombWeapon(spriteHandler, this);
 
 	loadEnemyPositions("Monster_Room1.txt");
 }
 
 World::~World()
 {
-	delete(samus);
-	delete(maruMari);
-	/*delete(gateRight);
-	delete(gateLeft);
-	delete(gateBlock);*/
-	delete(grid);
-	delete(metroid);
-	delete(explode);
-	delete(bomb);
+	//delete(samus);
+	//delete(maruMari);
+	//delete(grid);
+	//delete(metroid);
+	//delete(explode);
+	//delete(bomb);
 }
 
 void World::Update(float t)
 {
 	this->grid->setDeltaTime(t);
 	this->samus->Update(t);
-	//this->samus->setFall(true);
 	int row = (int)floor(this->samus->getlastPosY() / CELL_SIZE);
 	int column = (int)floor(this->samus->getlastPosX() / CELL_SIZE);
 
@@ -79,11 +73,8 @@ void World::Update(float t)
 	}
 	/*END UPDATING ENEMY*/
 
-	bomb->Update(t);
-	explode->Update(t);
-	/*gateBlock->Update(t);
-	gateLeft->Update(t);
-	gateRight->Update(t);*/
+	bombWeapon->Update(t);
+	explodeEffect->Update(t);
 }
 
 void World::Render()
@@ -102,10 +93,8 @@ void World::Render()
 		}
 	}
 
-	bomb->Render();
-	explode->Render();
-	/*gateBlock->Render();
-	gateLeft->Render();*/
+	bombWeapon->Render();
+	explodeEffect->Render();
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -122,32 +111,6 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 		trace(L"Unable to load PlayerTexture");
 	maruMari->InitSprites(d3ddv, maru_texture);
 
-	Texture * textureGate = new Texture();
-	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
-	if (gate_texture == NULL)
-		trace(L"Unable to load Gate Texture");
-	/*gateRight->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
-	gateLeft->InitSprites(d3ddv, gate_texture, GATE_LEFT);
-	gateBlock->InitSprites(d3ddv, gate_texture);*/
-
-	Texture * textureExplode = new Texture();
-	LPDIRECT3DTEXTURE9 explode_texture = textureExplode->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
-	if (explode_texture == NULL)
-		trace(L"Unable to load Explode Texture");
-	explode->InitSprites(d3ddv, explode_texture);
-
-	/*Texture * textureItemBomb = new Texture();
-	LPDIRECT3DTEXTURE9 itemBomb_texture = textureItemBomb->loadTexture(d3ddv, ITEM_SPRITE_PATH);
-	if (itemBomb_texture == NULL)
-		trace(L"Unable to load item Bomb Texture");
-	itemBomb->InitSprites(d3ddv, itemBomb_texture);*/
-
-	Texture * textureBomb = new Texture();
-	LPDIRECT3DTEXTURE9 bomb_texture = textureBomb->loadTexture(d3ddv, BOMB_TEXTURE);
-	if (bomb_texture == NULL)
-		trace(L"Unable to load Bomb Texture");
-	bomb->InitSprites(d3ddv, bomb_texture);
-
 	// Bullet Texture
 	LPDIRECT3DTEXTURE9 bulletTexture = texture1->loadTexture(d3ddv, SAMUS_BULLET_PATH);
 	if (bulletTexture == NULL)
@@ -156,6 +119,19 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 		this->samusBullet[i]->InitSprites(d3ddv, bulletTexture);
 	}
 
+	// Explode Texture
+	Texture * textureExplode = new Texture();
+	LPDIRECT3DTEXTURE9 explode_texture = textureExplode->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
+	if (explode_texture == NULL)
+		trace(L"Unable to load Explode Texture");
+	explodeEffect->InitSprites(d3ddv, explode_texture);
+
+	// Bomb Texture
+	Texture * textureBomb = new Texture();
+	LPDIRECT3DTEXTURE9 bomb_texture = textureBomb->loadTexture(d3ddv, BOMB_TEXTURE);
+	if (bomb_texture == NULL)
+		trace(L"Unable to load Bomb Texture");
+	bombWeapon->InitSprites(d3ddv, bomb_texture);
 	
 	// Enemy Texture
 	LPDIRECT3DTEXTURE9 enemyTexture = texture1->loadTexture(d3ddv, ENEMY_SPRITE_PATH);

@@ -9,14 +9,6 @@ class Game;
 class Bullet;
 class Grid;
 class GameObject;
-class Bomb;
-class Item;
-class Enemy;
-class Zoomer;
-class Gate;
-class GateBlock;
-class Effect;
-class ExplodeEffect;
 
 #define KEYBOARD_BUFFER_SIZE	1024
 #define KEY_DOWN(code) ( IsKeyDown(code) )
@@ -127,7 +119,7 @@ enum OBJECT_TYPE
 
 //================ SPRITE SAMUS ================
 #define WIDTH_SAMUS_STAND 42
-#define HEIGHT_SAMUS_STAND 63
+#define HEIGHT_SAMUS_STAND 66
 #define COUNT_SAMUS_STAND 1
 #define STAND_RIGHT_PATH L"sprites\\STAND_RIGHT.txt"
 #define STAND_LEFT_PATH L"sprites\\STAND_LEFT.txt"
@@ -212,7 +204,7 @@ enum OBJECT_TYPE
 //================ END ROOM LIMITATION ==================================
 
 //================ BRICK SIZE =============================================
-#define BRICK_SIZE 32.0f
+#define BRICK_SIZE 32
 #define BRICK_TEXTURE L"brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
@@ -249,11 +241,6 @@ enum OBJECT_TYPE
 #define ITEM_MISSILE_COUNT 1
 
 #define ITEM_MISSILE_GAIN 3
-
-//========= ITEM BOMB
-#define ITEM_BOMB_PATH L"sprites\\item\\ITEM_BOMB.txt"
-#define ITEM_BOMB_WIDTH 32
-#define ITEM_BOMB_HEIGHT 37
 //================ END GAME ITEM ===================================
 
 //================== ENEMY =====================
@@ -310,18 +297,19 @@ enum ZOOMER_DIRECTION {
 #define ZOOMER_PINK_RIGHT L"enemy\\ZOOMER_PINK_RIGHT.txt"
 //================== END ZOOMER =================
 
-//================== SKREE  =====================
+//================== BIRD  =====================
 
-#define SKREE_WIDTH 36
-#define SKREE_HEIGHT 52
+#define BIRD_WIDTH 36
+#define BIRD_HEIGHT 52
 
-#define SKREE_COUNT 3
+#define BIRD_FLY_SPRITE_COUNT 3
 
-#define SKREE_PATH L"enemy\\SKREE.txt"
+#define BIRD_FLY "sprites\\enemy\\BIRD_FLY.txt"
 
-#define SKREE_STANDARD_ANIMATE_RATE 7
-#define SKREE_BOOST_ANIMATE_RATE 30
-//================== END SKREE =================
+#define BIRD_STANDARD_ANIMATE_RATE 7
+#define BIRD_BOOST_ANIMATE_RATE 30
+//================== END BIRD =================
+
 //================== BLOCK =====================
 
 #define BLOCK_WIDTH 36
@@ -334,37 +322,14 @@ enum ZOOMER_DIRECTION {
 #define BLOCK_RIGHT "sprites\\enemy\\BLOCK_RIGHT.txt"
 //================== END BLOCK =================
 
-//================== BEE  =====================
+//================ BOMB =====================
+#define BOMB_PATH L"sprites\\item\\BOMB.txt"
+#define BOMB_WIDTH 19
+#define BOMB_HEIGHT 18
+#define BOMB_SPRITE_COUNT 2
+#define BOMB_TEXTURE L"sprites\\item\\bomb.png"
 
-#define BEE_WIDTH 52
-#define BEE_HEIGHT 42
-
-#define BEE_FLY_SPRITE_COUNT 2
-
-#define BEE_FLY "sprites\\enemy\\BEE_FLY.txt"
-//================== END BEE =================
-
-//================== END ENEMY =================
-
-//================ GATE ===============
-#define GATE_SPRITES_PATH L"sprites\\gate\\GATE_32.png"
-#define GATE_LEFT_EXISTS L"sprites\\gate\\GATE_LEFT_EXISTS.txt"
-#define GATE_RIGHT_EXISTS L"sprites\\gate\\GATE_RIGHT_EXISTS.txt"
-#define GATE_EXISTS_COUNT 1
-
-#define GATE_LEFT_DESTROYING L"sprites\\gate\\GATE_LEFT_DESTROYING.txt"
-#define GATE_RIGHT_DESTROYING L"sprites\\gate\\GATE_RIGHT_DESTROYING.txt"
-#define GATE_DESTROYING_COUNT 3
-
-#define GATE_WIDTH 16
-#define GATE_HEIGHT 96
-
-#define GATE_BLOCK_PATH L"sprites\\gate\\GATE_BLOCK.txt"
-#define GATE_BLOCK_WIDTH 64
-#define GATE_BLOCK_HEIGHT 96
-
-#define GATE_TIME_SURVIVE 3
-//================= END GATE ===========
+//================ END BOMB =================
 
 //================ EFFECT ===================
 #define EFFECT_TIME_SURVIVE 1
@@ -378,14 +343,19 @@ enum ZOOMER_DIRECTION {
 
 //================ END EFFECT ===============
 
-//================ BOMB =====================
-#define BOMB_PATH L"sprites\\item\\BOMB.txt"
-#define BOMB_WIDTH 19
-#define BOMB_HEIGHT 18
-#define BOMB_SPRITE_COUNT 2
-#define BOMB_TEXTURE L"sprites\\item\\bomb.png"
 
-//================ END BOMB =================
+//================== BEE  =====================
+
+#define BEE_WIDTH 52
+#define BEE_HEIGHT 42
+
+#define BEE_FLY_SPRITE_COUNT 2
+
+#define BEE_FLY "sprites\\enemy\\BEE_FLY.txt"
+//================== END BEE =================
+
+//================== END ENEMY =================
+
 
 //================== Bullet ====================
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
@@ -424,3 +394,4 @@ enum COLLISION_DIRECTION {
 #define ZOOMER_PINK_CASE 1
 #define SKREE_CASE 2
 #define RIO_CASE 3
+

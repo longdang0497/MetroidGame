@@ -38,8 +38,6 @@ class Game
 		//======================= END VIRTUAL METHOD ======================
 	public:
 		Camera * camera;
-		Input * getInput();
-		Camera * getCamera();
 		//Doi tuong Direct Sound
 		//static SoundManager *gameSound;
 		Game();
