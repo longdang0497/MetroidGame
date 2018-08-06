@@ -204,7 +204,7 @@ enum OBJECT_TYPE
 //================ END ROOM LIMITATION ==================================
 
 //================ BRICK SIZE =============================================
-#define BRICK_SIZE 32
+#define BRICK_SIZE 32.0f
 #define BRICK_TEXTURE L"brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
