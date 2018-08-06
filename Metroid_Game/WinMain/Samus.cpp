@@ -177,7 +177,7 @@ void Samus::InitPostition()
 	this->pos_y = 352;
 	vx = 0;
 	vx_last = 1.0f;
-	vy = 0.0f;
+	vy = 45.0f;
 
 	//Init state of samus
 	state = STAND_RIGHT;
