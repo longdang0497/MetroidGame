@@ -1,0 +1,575 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\FrameWork">
+      <UniqueIdentifier>{678bb3a7-ca97-45cf-9bcd-3dee9c30b2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FrameWork">
+      <UniqueIdentifier>{2af07c6e-8845-4dd3-9c1c-f110be95e3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawable">
+      <UniqueIdentifier>{c1d04f91-a53a-4096-9137-7b2633b660c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Drawable">
+      <UniqueIdentifier>{ea31125d-b62e-4b17-8903-6e74bc990afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Character">
+      <UniqueIdentifier>{5030f85d-3c05-4b16-a8d2-ca338dbecf49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Character">
+      <UniqueIdentifier>{95f75cfd-e3da-418d-977c-5c37242881bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sprites">
+      <UniqueIdentifier>{368f882d-7d9b-4d40-a004-5b302023aea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sound">
+      <UniqueIdentifier>{b3b4d4c1-3ed0-4984-afd9-dee00e430122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sound\background">
+      <UniqueIdentifier>{4f8e5503-0ef4-4a12-9db7-c24892cf948b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SoundLibrary">
+      <UniqueIdentifier>{8599e4fb-43ae-4a88-afce-68b75b68095e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SoundLibrary">
+      <UniqueIdentifier>{0a83b4c0-153c-4ebd-809f-24bd31f30fb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\scene">
+      <UniqueIdentifier>{8c74e5bf-f862-4d4a-9c07-46156ee439e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Item">
+      <UniqueIdentifier>{9db79bf7-c169-4cac-b68f-c68ea48ce7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sprites\item">
+      <UniqueIdentifier>{fb1abdc0-0e80-45e5-8574-a60b549521f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Enemy">
+      <UniqueIdentifier>{779cf9dd-5114-461b-90fb-89cd3f0aae96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enemy">
+      <UniqueIdentifier>{b30fca7c-048a-4271-9914-f45089ec159b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\enemy">
+      <UniqueIdentifier>{fc10af0f-6843-41ef-a031-9203a5d2d817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Item">
+      <UniqueIdentifier>{3a286a5a-2c87-4c65-ad2e-8e733602fe84}</UniqueIdentifier>
+    </Filter>
+<<<<<<< HEAD
+=======
+    <Filter Include="Resource Files\sprites\gate">
+      <UniqueIdentifier>{2a2427c7-2897-45da-a5d6-30c524fc25a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sprites\explode_effect">
+      <UniqueIdentifier>{de3b0694-0d99-41a6-a93b-709d649f72c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\map">
+      <UniqueIdentifier>{bb93dfba-2720-4557-85d2-d8ca1980499a}</UniqueIdentifier>
+    </Filter>
+>>>>>>> HLong
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Metroid.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="trace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGraphics.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceManager.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Samus.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUT.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTenum.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTmisc.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKsound.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKwavefile.cpp">
+      <Filter>Source Files\SoundLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="BulletManager.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+>>>>>>> HLong
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Zoomer.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="MaruMari.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\FrameWork</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="Brick.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+=======
+    <ClCompile Include="Skree.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="TileObject.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Gate.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GateBlock.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplodeEffect.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="BombWeapon.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+>>>>>>> HLong
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Metroid.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGraphics.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceManager.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Samus.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUT.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTenum.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTmisc.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKsound.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKwavefile.h">
+      <Filter>Header Files\SoundLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="BulletManager.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+>>>>>>> HLong
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zoomer.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MaruMari.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="Brick.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+=======
+    <ClInclude Include="Skree.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="TileObject.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Gate.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GateBlock.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplodeEffect.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BombWeapon.h">
+      <Filter>Header Files\Character</Filter>
+    </ClInclude>
+>>>>>>> HLong
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="sprites\Player_32x16.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="scene\intro_background.png">
+      <Filter>Resource Files\scene</Filter>
+    </Image>
+    <Image Include="scene\gameover_background.png">
+      <Filter>Resource Files\scene</Filter>
+    </Image>
+    <Image Include="scene\start_background.png">
+      <Filter>Resource Files\scene</Filter>
+    </Image>
+    <Image Include="sprites\item\bullet.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="sprites\item\bulletx2.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+    <Image Include="enemy\explosion.png">
+      <Filter>Resource Files\enemy</Filter>
+    </Image>
+    <Image Include="enemy\metroid_enemies_sheet.png">
+      <Filter>Resource Files\enemy</Filter>
+    </Image>
+    <Image Include="sprites\item\items_sprite_sheet.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+<<<<<<< HEAD
+=======
+    <Image Include="sprites\gate\GATE_32.png">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Image>
+    <Image Include="map\brick_32x32.png">
+      <Filter>Resource Files\map</Filter>
+    </Image>
+    <Image Include="sprites\explode_effect\explosion.png">
+      <Filter>Resource Files\sprites\explode_effect</Filter>
+    </Image>
+    <Image Include="sprites\item\bomb.png">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Image>
+>>>>>>> HLong
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sprites\JUMP_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\JUMP_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\JUMPSHOOT_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\JUMPSHOOT_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\LEFTING.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\MORPH_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\MORPH_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\RIGHTING.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\RUNSHOOT_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\RUNSHOOT_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\STAND_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\STAND_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\STANDSHOOT_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\STANDSHOOT_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\TRANSFORM_BALL_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\TRANSFORM_BALL_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\RUN_SHOOTUP_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\RUN_SHOOTUP_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\item\BULLET.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="enemy\BEE_FLY.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\BIRD_FLY.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\BLOCK_LEFT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\BLOCK_RIGHT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ENEMY_DETROYED.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_BOTTOM.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_LEFT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_RIGHT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_PINK_TOP.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_BOTTOM.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_LEFT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="enemy\ZOOMER_YELLOW_TOP.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="sprites\item\ITEM_ENERGY.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="sprites\item\ITEM_MISSILE.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="sprites\item\MARU_MARI.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+<<<<<<< HEAD
+    <Text Include="Monster_Room1.txt">
+      <Filter>Resource Files</Filter>
+=======
+    <Text Include="enemy\SKREE.txt">
+      <Filter>Resource Files\enemy</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="sprites\gate\GATE_BLOCK.txt">
+      <Filter>Resource Files\sprites\gate</Filter>
+    </Text>
+    <Text Include="map\fieldBossMB.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="map\fieldBossRidley.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="map\fieldRoom1.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="map\fieldStair.txt">
+      <Filter>Resource Files\map</Filter>
+    </Text>
+    <Text Include="sprites\item\BOMB.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="sprites\item\ITEM_BOMB.txt">
+      <Filter>Resource Files\sprites\item</Filter>
+    </Text>
+    <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt">
+      <Filter>Resource Files\sprites\explode_effect</Filter>
+>>>>>>> HLong
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\bullet.wav">
+      <Filter>Resource Files\sound</Filter>
+    </Media>
+    <Media Include="sound\butllet_hit_enemy.wav">
+      <Filter>Resource Files\sound</Filter>
+    </Media>
+    <Media Include="sound\jump.wav">
+      <Filter>Resource Files\sound</Filter>
+    </Media>
+    <Media Include="sound\missile.wav">
+      <Filter>Resource Files\sound</Filter>
+    </Media>
+    <Media Include="sound\samus_hit_enemy.wav">
+      <Filter>Resource Files\sound</Filter>
+    </Media>
+    <Media Include="sound\samus_hit_life_point.wav">
+      <Filter>Resource Files\sound</Filter>
+    </Media>
+    <Media Include="sound\background\Appearance.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\Brain Mother.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\Intro.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\Item acquired.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\Kraid%27s Lair.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\Map.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\mother_brain_death.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\Ridley%27s Lair.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+    <Media Include="sound\background\samus_death.wav">
+      <Filter>Resource Files\sound\background</Filter>
+    </Media>
+  </ItemGroup>
+</Project>

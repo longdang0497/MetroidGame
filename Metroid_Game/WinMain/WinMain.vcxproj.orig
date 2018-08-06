@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{CA38E41F-B7BE-4340-8943-076243086825}</ProjectGuid>
+    <RootNamespace>WinMain</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;dsound.lib;d3dx9.lib;d3dcompiler.lib;avrt.lib;ole32.lib;winmm.lib;dinput8.lib;dxguid.lib;comctl32.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3dx9.lib;d3d9.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;d3dcompiler.lib;avrt.lib;winmm.lib;dinput8.lib;dxguid.lib;comctl32.lib;dxerr.lib;legacy_stdio_definitions.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+<<<<<<< HEAD
+    <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+=======
+    <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BombWeapon.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletManager.cpp" />
+>>>>>>> HLong
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DeviceManager.cpp" />
+    <ClCompile Include="DXGraphics.cpp" />
+    <ClCompile Include="DXUT.cpp" />
+    <ClCompile Include="DXUTenum.cpp" />
+    <ClCompile Include="DXUTmisc.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+=======
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ExplodeEffect.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Gate.cpp" />
+    <ClCompile Include="GateBlock.cpp" />
+>>>>>>> HLong
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MaruMari.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Metroid.cpp" />
+    <ClCompile Include="Samus.cpp" />
+    <ClCompile Include="SDKsound.cpp" />
+    <ClCompile Include="SDKwavefile.cpp" />
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Skree.cpp" />
+>>>>>>> HLong
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TileObject.cpp" />
+    <ClCompile Include="trace.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="Zoomer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<< HEAD
+    <ClInclude Include="Brick.h" />
+    <ClInclude Include="Bullet.h" />
+=======
+    <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BombWeapon.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletManager.h" />
+>>>>>>> HLong
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Define.h" />
+    <ClInclude Include="DeviceManager.h" />
+    <ClInclude Include="DXGraphics.h" />
+    <ClInclude Include="DXUT.h" />
+    <ClInclude Include="DXUTenum.h" />
+    <ClInclude Include="DXUTmisc.h" />
+<<<<<<< HEAD
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+=======
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ExplodeEffect.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Gate.h" />
+    <ClInclude Include="GateBlock.h" />
+>>>>>>> HLong
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="MaruMari.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Metroid.h" />
+    <ClInclude Include="Samus.h" />
+    <ClInclude Include="SDKsound.h" />
+    <ClInclude Include="SDKwavefile.h" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Skree.h" />
+>>>>>>> HLong
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TileObject.h" />
+    <ClInclude Include="trace.h" />
+    <ClInclude Include="utils.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="Zoomer.h" />
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<< HEAD
+    <Image Include="brick_16x16.png" />
+    <Image Include="brick_32x32.png" />
+    <Image Include="enemy\explosion.png" />
+    <Image Include="enemy\metroid_enemies_sheet.png" />
+    <Image Include="scene\gameover_background.png" />
+    <Image Include="scene\intro_background.png" />
+    <Image Include="scene\start_background.png" />
+=======
+    <Image Include="enemy\explosion.png" />
+    <Image Include="enemy\metroid_enemies_sheet.png" />
+    <Image Include="map\brick_32x32.png" />
+    <Image Include="scene\gameover_background.png" />
+    <Image Include="scene\intro_background.png" />
+    <Image Include="scene\start_background.png" />
+    <Image Include="sprites\explode_effect\explosion.png" />
+    <Image Include="sprites\gate\GATE_32.png" />
+    <Image Include="sprites\item\bomb.png" />
+>>>>>>> HLong
+    <Image Include="sprites\item\bullet.png" />
+    <Image Include="sprites\item\bulletx2.png" />
+    <Image Include="sprites\item\items_sprite_sheet.png" />
+    <Image Include="sprites\Player_32x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="enemy\BEE_FLY.txt" />
+    <Text Include="enemy\BIRD_FLY.txt" />
+    <Text Include="enemy\BLOCK_LEFT.txt" />
+    <Text Include="enemy\BLOCK_RIGHT.txt" />
+    <Text Include="enemy\ENEMY_DETROYED.txt" />
+<<<<<<< HEAD
+=======
+    <Text Include="enemy\SKREE.txt" />
+>>>>>>> HLong
+    <Text Include="enemy\ZOOMER_PINK_BOTTOM.txt" />
+    <Text Include="enemy\ZOOMER_PINK_LEFT.txt" />
+    <Text Include="enemy\ZOOMER_PINK_RIGHT.txt" />
+    <Text Include="enemy\ZOOMER_PINK_TOP.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_BOTTOM.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_LEFT.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_RIGHT.txt" />
+    <Text Include="enemy\ZOOMER_YELLOW_TOP.txt" />
+<<<<<<< HEAD
+    <Text Include="field1.txt" />
+    <Text Include="Monster_Room1.txt" />
+    <Text Include="sprites\item\BULLET.txt" />
+=======
+    <Text Include="map\fieldBossMB.txt" />
+    <Text Include="map\fieldBossRidley.txt" />
+    <Text Include="map\fieldRoom1.txt" />
+    <Text Include="map\fieldStair.txt" />
+    <Text Include="sprites\explode_effect\EFFECT_EXPLOSION.txt" />
+    <Text Include="sprites\gate\GATE_BLOCK.txt" />
+    <Text Include="sprites\gate\GATE_LEFT_DESTROYING.txt" />
+    <Text Include="sprites\gate\GATE_LEFT_EXISTS.txt" />
+    <Text Include="sprites\gate\GATE_RIGHT_DESTROYING.txt" />
+    <Text Include="sprites\gate\GATE_RIGHT_EXISTS.txt" />
+    <Text Include="sprites\item\BOMB.txt" />
+    <Text Include="sprites\item\BULLET.txt" />
+    <Text Include="sprites\item\ITEM_BOMB.txt" />
+>>>>>>> HLong
+    <Text Include="sprites\item\ITEM_ENERGY.txt" />
+    <Text Include="sprites\item\ITEM_MISSILE.txt" />
+    <Text Include="sprites\item\MARU_MARI.txt" />
+    <Text Include="sprites\JUMPSHOOT_LEFT.txt" />
+    <Text Include="sprites\JUMPSHOOT_RIGHT.txt" />
+    <Text Include="sprites\JUMP_LEFT.txt" />
+    <Text Include="sprites\JUMP_RIGHT.txt" />
+    <Text Include="sprites\LEFTING.txt" />
+    <Text Include="sprites\MORPH_LEFT.txt" />
+    <Text Include="sprites\MORPH_RIGHT.txt" />
+    <Text Include="sprites\RIGHTING.txt" />
+    <Text Include="sprites\RUNSHOOT_LEFT.txt" />
+    <Text Include="sprites\RUNSHOOT_RIGHT.txt" />
+    <Text Include="sprites\RUN_SHOOTUP_LEFT.txt" />
+    <Text Include="sprites\RUN_SHOOTUP_RIGHT.txt" />
+    <Text Include="sprites\STANDSHOOT_LEFT.txt" />
+    <Text Include="sprites\STANDSHOOT_RIGHT.txt" />
+    <Text Include="sprites\STAND_LEFT.txt" />
+    <Text Include="sprites\STAND_RIGHT.txt" />
+    <Text Include="sprites\TRANSFORM_BALL_LEFT.txt" />
+    <Text Include="sprites\TRANSFORM_BALL_RIGHT.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\background\Appearance.wav" />
+    <Media Include="sound\background\Brain Mother.wav" />
+    <Media Include="sound\background\Intro.wav" />
+    <Media Include="sound\background\Item acquired.wav" />
+    <Media Include="sound\background\Kraid%27s Lair.wav" />
+    <Media Include="sound\background\Map.wav" />
+    <Media Include="sound\background\mother_brain_death.wav" />
+    <Media Include="sound\background\Ridley%27s Lair.wav" />
+    <Media Include="sound\background\samus_death.wav" />
+    <Media Include="sound\bullet.wav" />
+    <Media Include="sound\butllet_hit_enemy.wav" />
+    <Media Include="sound\jump.wav" />
+    <Media Include="sound\missile.wav" />
+    <Media Include="sound\samus_hit_enemy.wav" />
+    <Media Include="sound\samus_hit_life_point.wav" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -255,7 +255,7 @@ void Samus::Update(float t)
 	isLeft = false;
 	isOnGround = false;
 	if (this->isFalling != true)
-		vy = gravity;
+		vy = 0;
 	else
 	{
 		vy += gravity * t;
