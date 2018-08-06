@@ -261,7 +261,7 @@ void Samus::Update(float t)
 		vy = gravity;
 	else
 	{
-		vy += gravity;
+		vy += gravity * t;
 		isOnGround = false;
 		if (vy > MAX_FALLING)
 		{
@@ -289,7 +289,7 @@ void Samus::Update(float t)
 			this->SetState(JUMP_LEFT);*/
 		pos_x += vx * t; 
 		pos_y += vy * t;
-	//}
+	}
 	else if (isTop == true && isBottom == true && isLeft == false && isRight == false)
 	{
 		pos_x += vx * t;
@@ -354,13 +354,6 @@ void Samus::Update(float t)
 		this->SetState(STAND_LEFT);*/
 		pos_y += vy * t;
 		pos_x += vx * t;
-		if (vy > 50)
-			vy = 50;
-		if (isBottom == true)
-		{
-			this->setFall(false);
-			this->setJump(true);
-		}
 	}
 	else if (isBottom == true && isLeft == false && isRight == false && isTop == false) {
 		/*if (vx > 0)
@@ -448,7 +441,8 @@ void Samus::Update(float t)
 }
 //----------------------------------------------------------
 
-void Samus::setIsBall(bool isBall) {
+void Samus::setIsBall(bool isBall)
+{
 	this->isBall = isBall;
 }
 

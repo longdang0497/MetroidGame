@@ -174,136 +174,136 @@ void Zoomer::Update(float t)
 	int column = (int)floor(this->pos_x / CELL_SIZE);
 
 	// Xet va cham va cap nhat vi tri
-	this->grid->handleCell(object, row, column);
-	if (!this->getIsCollisionHandled()) {
-		ZOOMER_STATE state = this->getState();
-		ZOOMER_DIRECTION direction = this->getDirection();
+	//this->grid->handleCell(object, row, column);
+	//if (!this->getIsCollisionHandled()) {
+	//	ZOOMER_STATE state = this->getState();
+	//	ZOOMER_DIRECTION direction = this->getDirection();
 
-		// Khi không va chạm gì hết sẽ bắt đầu chuyển hướng
-		if (!this->getIsTopCollided() && !this->getIsBottomCollided() 
-			&& !this->getIsLeftCollided() && !this->getIsRightCollided()) {
+	//	// Khi không va chạm gì hết sẽ bắt đầu chuyển hướng
+	//	if (!this->getIsTopCollided() && !this->getIsBottomCollided() 
+	//		&& !this->getIsLeftCollided() && !this->getIsRightCollided()) {
 
-			switch (state) {
-			case ON_ZOOMER_UP: {
-				if (direction == ZOOMER_RIGHT) {
-					this->setState(ON_ZOOMER_RIGHT);
-					this->pos_x = floor(this->pos_x / 32) * 32;			
-				}
-				else if (direction == ZOOMER_LEFT) {
-					this->setState(ON_ZOOMER_LEFT);
-					this->pos_x = floor(this->pos_x / 32) * 32 + 2;
-				}
+	//		switch (state) {
+	//		case ON_ZOOMER_UP: {
+	//			if (direction == ZOOMER_RIGHT) {
+	//				this->setState(ON_ZOOMER_RIGHT);
+	//				this->pos_x = floor(this->pos_x / 32) * 32;			
+	//			}
+	//			else if (direction == ZOOMER_LEFT) {
+	//				this->setState(ON_ZOOMER_LEFT);
+	//				this->pos_x = floor(this->pos_x / 32) * 32 + 2;
+	//			}
 
-				this->setDirection(ZOOMER_DOWN);
-				this->pos_y += 10;
+	//			this->setDirection(ZOOMER_DOWN);
+	//			this->pos_y += 10;
 
-				break;
-			}
-			case ON_ZOOMER_BOTTOM: {
-				this->pos_y -= 10;
-				this->setDirection(ZOOMER_UP);
+	//			break;
+	//		}
+	//		case ON_ZOOMER_BOTTOM: {
+	//			this->pos_y -= 10;
+	//			this->setDirection(ZOOMER_UP);
 
-				if (direction == ZOOMER_RIGHT) {
-					this->setState(ON_ZOOMER_RIGHT);
-					this->pos_x = floor(this->pos_x / 32) * 32;
-				}
-				else if (direction == ZOOMER_LEFT) {
-					this->setState(ON_ZOOMER_LEFT);
-					this->pos_x = floor(this->pos_x / 32) * 32 + 2;
-				}
-				break;
-			}
+	//			if (direction == ZOOMER_RIGHT) {
+	//				this->setState(ON_ZOOMER_RIGHT);
+	//				this->pos_x = floor(this->pos_x / 32) * 32;
+	//			}
+	//			else if (direction == ZOOMER_LEFT) {
+	//				this->setState(ON_ZOOMER_LEFT);
+	//				this->pos_x = floor(this->pos_x / 32) * 32 + 2;
+	//			}
+	//			break;
+	//		}
 
-			case ON_ZOOMER_LEFT: {
+	//		case ON_ZOOMER_LEFT: {
 
-				this->setDirection(ZOOMER_RIGHT);
-				this->pos_x += 10;
+	//			this->setDirection(ZOOMER_RIGHT);
+	//			this->pos_x += 10;
 
-				if (direction == ZOOMER_UP) {
-					this->setState(ON_ZOOMER_UP);
-					this->pos_y = floor(this->pos_y / 32) * 32 + 2;
-				}
-				else if (direction == ZOOMER_DOWN) {
-					this->setState(ON_ZOOMER_BOTTOM);
-					this->pos_y = floor(this->pos_y / 32) * 32;
-				}
+	//			if (direction == ZOOMER_UP) {
+	//				this->setState(ON_ZOOMER_UP);
+	//				this->pos_y = floor(this->pos_y / 32) * 32 + 2;
+	//			}
+	//			else if (direction == ZOOMER_DOWN) {
+	//				this->setState(ON_ZOOMER_BOTTOM);
+	//				this->pos_y = floor(this->pos_y / 32) * 32;
+	//			}
 
-				break;
-			}
+	//			break;
+	//		}
 
-			case ON_ZOOMER_RIGHT: {
-				this->setDirection(ZOOMER_LEFT);
-				this->pos_x -= 10;
+	//		case ON_ZOOMER_RIGHT: {
+	//			this->setDirection(ZOOMER_LEFT);
+	//			this->pos_x -= 10;
 
-				if (direction == ZOOMER_UP) {
-					this->setState(ON_ZOOMER_UP);
-					this->pos_y = floor(this->pos_y / 32) * 32 + 2;
-				}
-				else if (direction == ZOOMER_DOWN) {
-					this->setState(ON_ZOOMER_BOTTOM);
-					this->pos_y = floor(this->pos_y / 32) * 32;
-				}
-				break;
-			}
-			}
-			
-		}
-		
-		// Khi co 2 dieu kien va cham
-		else if (this->getIsLeftCollided() && this->getIsBottomCollided()) {
-			if (direction == ZOOMER_DOWN) {
-				this->setState(ON_ZOOMER_UP);
-				this->setDirection(ZOOMER_RIGHT);
-			}
-			else if (direction == ZOOMER_LEFT) {
-				this->setState(ON_ZOOMER_RIGHT);
-				this->setDirection(ZOOMER_UP);
-			}
-		}
-		else if (this->getIsTopCollided() && this->getIsLeftCollided()) {
-			if (direction == ZOOMER_LEFT) {
-				this->setDirection(ZOOMER_DOWN);
-				this->setState(ON_ZOOMER_RIGHT);
-			}
-			else if (direction == ZOOMER_UP) {
-				this->setState(ON_ZOOMER_BOTTOM);
-				this->setDirection(ZOOMER_RIGHT);
-			}
-		}
-		else if (this->getIsTopCollided() && this->getIsRightCollided()) {
-			if (direction == ZOOMER_RIGHT) {
-				this->setState(ON_ZOOMER_LEFT);
-				this->setDirection(ZOOMER_DOWN);
-			}
-			else if (direction == ZOOMER_UP) {
-				this->setState(ON_ZOOMER_BOTTOM);
-				this->setDirection(ZOOMER_LEFT);
-			}
-		}
-		else if (this->getIsRightCollided() && this->getIsBottomCollided()) {
-			if (direction == ZOOMER_RIGHT) {
-				this->setState(ON_ZOOMER_LEFT);
-				this->setDirection(ZOOMER_UP);
-			}
-			else if (direction == ZOOMER_DOWN) {
-				this->setState(ON_ZOOMER_UP);
-				this->setDirection(ZOOMER_LEFT);
-			}
-		}
-		else if (this->getIsTopCollided()) {
-			this->pos_x += vx * t;
-		}
-		else if (this->getIsBottomCollided()) {
-			pos_x += vx * t;
-		}
-		else if (this->getIsLeftCollided()) {
-			pos_y += vy * t;
-		}
-		else if (this->getIsRightCollided()) {
-			pos_y += vy * t;
-		}
-		
-	}
+	//			if (direction == ZOOMER_UP) {
+	//				this->setState(ON_ZOOMER_UP);
+	//				this->pos_y = floor(this->pos_y / 32) * 32 + 2;
+	//			}
+	//			else if (direction == ZOOMER_DOWN) {
+	//				this->setState(ON_ZOOMER_BOTTOM);
+	//				this->pos_y = floor(this->pos_y / 32) * 32;
+	//			}
+	//			break;
+	//		}
+	//		}
+	//		
+	//	}
+	//	
+	//	// Khi co 2 dieu kien va cham
+	//	else if (this->getIsLeftCollided() && this->getIsBottomCollided()) {
+	//		if (direction == ZOOMER_DOWN) {
+	//			this->setState(ON_ZOOMER_UP);
+	//			this->setDirection(ZOOMER_RIGHT);
+	//		}
+	//		else if (direction == ZOOMER_LEFT) {
+	//			this->setState(ON_ZOOMER_RIGHT);
+	//			this->setDirection(ZOOMER_UP);
+	//		}
+	//	}
+	//	else if (this->getIsTopCollided() && this->getIsLeftCollided()) {
+	//		if (direction == ZOOMER_LEFT) {
+	//			this->setDirection(ZOOMER_DOWN);
+	//			this->setState(ON_ZOOMER_RIGHT);
+	//		}
+	//		else if (direction == ZOOMER_UP) {
+	//			this->setState(ON_ZOOMER_BOTTOM);
+	//			this->setDirection(ZOOMER_RIGHT);
+	//		}
+	//	}
+	//	else if (this->getIsTopCollided() && this->getIsRightCollided()) {
+	//		if (direction == ZOOMER_RIGHT) {
+	//			this->setState(ON_ZOOMER_LEFT);
+	//			this->setDirection(ZOOMER_DOWN);
+	//		}
+	//		else if (direction == ZOOMER_UP) {
+	//			this->setState(ON_ZOOMER_BOTTOM);
+	//			this->setDirection(ZOOMER_LEFT);
+	//		}
+	//	}
+	//	else if (this->getIsRightCollided() && this->getIsBottomCollided()) {
+	//		if (direction == ZOOMER_RIGHT) {
+	//			this->setState(ON_ZOOMER_LEFT);
+	//			this->setDirection(ZOOMER_UP);
+	//		}
+	//		else if (direction == ZOOMER_DOWN) {
+	//			this->setState(ON_ZOOMER_UP);
+	//			this->setDirection(ZOOMER_LEFT);
+	//		}
+	//	}
+	//	else if (this->getIsTopCollided()) {
+	//		this->pos_x += vx * t;
+	//	}
+	//	else if (this->getIsBottomCollided()) {
+	//		pos_x += vx * t;
+	//	}
+	//	else if (this->getIsLeftCollided()) {
+	//		pos_y += vy * t;
+	//	}
+	//	else if (this->getIsRightCollided()) {
+	//		pos_y += vy * t;
+	//	}
+	//	
+	//}
 	
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
