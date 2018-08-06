@@ -16,8 +16,10 @@ void Metroid::_InitPositions()
 {
 	world->samus->InitPostition();
 	this->world->grid->add(this->world->samus);
+
 	world->maruMari->Init(420, 352);
 	this->world->grid->add(this->world->maruMari);
+
 	world->bombWeapon->CreateBomb(0, 0);
 	world->grid->add(world->bombWeapon);
 	world->bombWeapon->setActive(false);
@@ -474,10 +476,13 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 		
 	if (_input->IsKeyDown(DIK_X) && world->samus->getJump() == true)
 	{
+		world->samus->setlastPosY(world->samus->getPosY());
 		if (world->samus->getJump() == true)
 		{
 			world->samus->setFall(true);
 			world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST * Delta);
+			//if (world->samus->getPosY() == world->samus->getlastPosY() - 160)
+				//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST * Delta);
 			world->samus->setJump(false);
 
 			if (world->samus->getVelocityXLast() > 0)

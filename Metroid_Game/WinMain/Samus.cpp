@@ -14,13 +14,14 @@ void Samus::Render()
 		position.x = pos_x;
 		position.y = pos_y;
 		// Chỉnh lại pos_y để khi bắn lên không bị hụt sprite xuống
-		if (this->state == STAND_SHOOT_UP_LEFT || this->state == STAND_SHOOT_UP_RIGHT || this->state == RUN_SHOOT_UP_LEFT || this->state == RUN_SHOOT_UP_RIGHT) {
+		if (this->state == STAND_SHOOT_UP_LEFT 
+			|| this->state == STAND_SHOOT_UP_RIGHT 
+			|| this->state == RUN_SHOOT_UP_LEFT 
+			|| this->state == RUN_SHOOT_UP_RIGHT) {
 			position.y -= 10;
 		}
 
 		position.z = 0;
-
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND| D3DXSPRITE_OBJECTSPACE);
 
 		switch (state)
 		{
@@ -80,7 +81,6 @@ void Samus::Render()
 			break;
 		}
 
-		spriteHandler->End();
 	}	
 }
 
@@ -171,13 +171,13 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	/*pos_x = 992;	
-	pos_y = 320;*/	
-	this->pos_x = 1140;
-	this->pos_y = 352;
+	pos_x = 992;	
+	pos_y = 320;	
+	/*this->pos_x = 1140;
+	this->pos_y = 352;*/
 	vx = 0;
 	vx_last = 1.0f;
-	vy = 0.0f;
+	vy = JUMP_VELOCITY_BOOST_FIRST;
 
 	//Init state of samus
 	state = STAND_RIGHT;
@@ -255,7 +255,10 @@ void Samus::Update(float t)
 	isLeft = false;
 	isOnGround = false;
 	if (this->isFalling != true)
-		vy = 0;
+	{
+		vy = gravity;
+		canJump = true;
+	}
 	else
 	{
 		vy += gravity * t;
@@ -263,6 +266,27 @@ void Samus::Update(float t)
 		if (vy > MAX_FALLING)
 		{
 			vy = MAX_FALLING;
+		}
+
+		if (this->state == JUMP_LEFT || this->state == JUMP_RIGHT)
+		{
+			this->width = WIDTH_SAMUS_JUMP;
+			this->height = HEIGHT_SAMUS_JUMP;
+		}
+		else if (this->state == TRANSFORM_BALL_LEFT)
+		{
+			this->width = WIDTH_SAMUS_BALLLEFT;
+			this->height = HEIGHT_SAMUS_BALLLEFT;
+		}
+		else if (this->state == TRANSFORM_BALL_RIGHT)
+		{
+			this->width = WIDTH_SAMUS_BALLRIGHT;
+			this->height = HEIGHT_SAMUS_BALLRIGHT;
+		}
+		else
+		{
+			this->width = 32;
+			this->height = 64;
 		}
 	}
 
