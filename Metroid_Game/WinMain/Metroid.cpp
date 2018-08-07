@@ -476,25 +476,35 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 		
 	if (_input->IsKeyDown(DIK_X) && world->samus->getJump() == true)
 	{
-		world->samus->setlastPosY(world->samus->getPosY());
+		//world->samus->setlastPosY(world->samus->getPosY());
 		if (world->samus->getJump() == true)
 		{
-			world->samus->setFall(true);
-			world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST * Delta);
-			//if (world->samus->getPosY() == world->samus->getlastPosY() - 160)
-				//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST * Delta);
-			world->samus->setJump(false);
+			//world->samus->isJumping = true;
+			//world->samus->setFall(true);
+			////world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST_FIRST * Delta);
+			////if (world->samus->getPosY() == world->samus->getlastPosY() - 160)
+			//	//world->samus->setVelocityY(world->samus->getVelocityY() - JUMP_VELOCITY_BOOST * Delta);
+			//world->samus->setJump(false);
+
+			world->samus->isFalling = false;
+			world->samus->isHighJump = false;
+			world->samus->setLimitY(world->samus->getPosY() - SHORT_JUMP_HEIGHT);
+
+			if (world->samus->getVelocityXLast() < 0) {
+				world->samus->jumpLeftHandle(this->GetStart(), this->GetNow(), this->GetTickPerFrame());
+			}
+			else if (world->samus->getVelocityXLast() < 0) {
+				world->samus->jumpRightHandle(this->GetStart(), this->GetNow(), this->GetTickPerFrame());
+			}
 
 			if (world->samus->getVelocityXLast() > 0)
 				world->samus->SetState(JUMP_RIGHT);
 			else if (world->samus->getVelocityXLast() < 0)
 				world->samus->SetState(JUMP_LEFT);
-
 			if (world->samus->GetState() != MORPH_RIGHT && _input->IsKeyDown(DIK_RIGHT))
 				world->samus->SetState(MORPH_RIGHT);
 			if (world->samus->GetState() != MORPH_LEFT && _input->IsKeyDown(DIK_LEFT))
 				world->samus->SetState(MORPH_LEFT);
-
 			if (world->samus->getVelocityXLast() < 0)
 			{
 				if (world->samus->GetState() != JUMP_LEFT && world->samus->GetState() != MORPH_LEFT
@@ -660,6 +670,16 @@ void Metroid::OnKeyUp(int KeyCode)
 DWORD Metroid::GetTickPerFrame()
 {
 	return tick_per_frame;
+}
+
+DWORD Metroid::GetStart()
+{
+	return start_jump;
+}
+
+DWORD Metroid::GetNow()
+{
+	return this->now_jump;
 }
 
 LPD3DXSPRITE Metroid::getSpriteHandler() {

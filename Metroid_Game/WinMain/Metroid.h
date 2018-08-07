@@ -53,6 +53,8 @@ public:
 	virtual void OnKeyUp(int KeyCode);
 
 	DWORD GetTickPerFrame();
+	DWORD GetStart();
+	DWORD GetNow();
 
 	int screenMode;
 	bool isFreezing;

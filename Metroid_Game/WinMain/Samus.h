@@ -29,12 +29,14 @@ protected:
 
 	SAMUS_STATE state;	
 
-	int tempX;
+	float time = 0;
+	int limitY = 0;
 	bool isBall;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
 	bool isMorphing = false;
+	bool isHighJump = false;
 
 	bool isOnGround = false;
 	bool isTop = false;
@@ -70,6 +72,11 @@ public:
 	void Destroy();
 	//================= END OVERRIDE VIRTUAL METHOD =============
 
+	void setLimitY(int value);
+	int getLimitY();
+
+	void jumpLeftHandle(DWORD start_jump, DWORD now_jump, DWORD tick_per_frame);
+	void jumpRightHandle(DWORD start_jump, DWORD now_jump, DWORD tick_per_frame);
 };
 
 

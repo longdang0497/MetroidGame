@@ -100,6 +100,16 @@ void Samus::Destroy()
 	//--TO DO: Đưa Samus ra khỏi viewport
 }
 
+void Samus::setLimitY(int value)
+{
+	limitY = value;
+}
+
+int Samus::getLimitY()
+{
+	return limitY;
+}
+
 Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 {
 	this->grid = grid;
@@ -177,7 +187,8 @@ void Samus::InitPostition()
 	this->pos_y = 352;*/
 	vx = 0;
 	vx_last = 1.0f;
-	vy = JUMP_VELOCITY_BOOST_FIRST;
+	//vy = JUMP_VELOCITY_BOOST_FIRST;
+	vy = 0;
 
 	//Init state of samus
 	state = STAND_RIGHT;
@@ -244,6 +255,7 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
+	time = t;
 	/*float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
 	pos_x = newPosX;
@@ -254,7 +266,7 @@ void Samus::Update(float t)
 	isRight = false;
 	isLeft = false;
 	isOnGround = false;
-	if (this->isFalling != true)
+	/*if (this->isFalling != true)
 	{
 		vy = gravity;
 		canJump = true;
@@ -288,8 +300,62 @@ void Samus::Update(float t)
 			this->width = 32;
 			this->height = 64;
 		}
-	}
+	}*/
 
+	if (isJumping || isFalling || isMorphing) {
+		if (isJumping && !isFalling) {
+			if (getPosY() < limitY) {
+				isFalling = true;
+				isJumping = true;
+				isMorphing = false;
+			}
+			else
+				vy += -JUMP_VELOCITY_BOOST;
+		}
+		if (isJumping && isFalling) {
+			if (getPosY() < limitY + SHORT_JUMP_HEIGHT) {
+				vy += gravity * t;
+			}
+			else {
+				isJumping = false;
+				isMorphing = false;
+				isFalling = false;
+				limitY = 0;
+				if (vx > 0) SetState(STAND_RIGHT);
+				else SetState(STAND_LEFT);
+				vy = 0;
+			}
+		}
+		if (isMorphing && !isFalling) {
+			if (getPosY() < limitY) {
+				isFalling = true;
+				isJumping = false;
+				isMorphing = true;
+			}
+			else
+				vy += -JUMP_VELOCITY_BOOST * t;
+		}
+		if (isMorphing && isFalling) {
+			if (getPosY() < limitY + SHORT_JUMP_HEIGHT) {
+				vy = gravity;
+			}
+			else {
+				isJumping = false;
+				isMorphing = false;
+				isFalling = false;
+				limitY = 0;
+				if (vx > 0) SetState(STAND_RIGHT);
+				else SetState(STAND_LEFT);
+				vy = 0;
+			}
+		}
+
+	}
+	else if (this->isFalling != true)
+	{
+		vy = gravity;
+		canJump = true;
+	}
 
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
@@ -464,4 +530,80 @@ void Samus::setIsBall(bool isBall) {
 
 bool Samus::getIsBall() {
 	return this->isBall;
+}
+
+void Samus::jumpLeftHandle(DWORD start_jump, DWORD now_jump, DWORD tick_per_frame)
+{
+	switch (state) {
+	case TRANSFORM_BALL_LEFT: {
+		SetState(STAND_LEFT);
+		isMorphing = false;
+		Reset(getPosX(), getPosY() - 32.0f);
+	}break;
+	case STAND_LEFT: {
+		SetState(JUMP_LEFT);
+		isMorphing = false;
+		isJumping = true;
+		isFalling = false;
+		setVelocityY(vy - JUMP_VELOCITY_BOOST * time);
+	}break;
+	case STAND_SHOOT_UP_LEFT: {
+		SetState(JUMP_SHOOT_UP_LEFT);
+		isMorphing = false;
+		isJumping = true;
+		isFalling = false;
+		setVelocityY(vy - JUMP_VELOCITY_BOOST * time);
+	}break;
+	case RUNNING_LEFT: {
+
+	}break;
+	} 
+	isJumping = true;
+	isFalling = false;
+	isHighJump = false;
+
+	if (!isMorphing) {
+		if ((now_jump - start_jump) <= 10 * tick_per_frame)
+		{
+			setVelocityY(getVelocityY() - JUMP_VELOCITY_BOOST_FIRST * time);
+		}
+	}
+}
+
+void Samus::jumpRightHandle(DWORD start_jump, DWORD now_jump, DWORD tick_per_frame)
+{
+	switch (state) {
+	case TRANSFORM_BALL_RIGHT: {
+		SetState(STAND_LEFT);
+		isMorphing = false;
+		Reset(getPosX(), getPosY() - 32.0f);
+	}break;
+	case STAND_RIGHT: {
+		SetState(JUMP_RIGHT);
+		isMorphing = false;
+		isJumping = true;
+		isFalling = false;
+		setVelocityY(vy - JUMP_VELOCITY_BOOST * time);
+	}break;
+	case STAND_SHOOT_UP_RIGHT: {
+		SetState(JUMP_SHOOT_UP_RIGHT);
+		isMorphing = false;
+		isJumping = true;
+		isFalling = false;
+		setVelocityY(vy - JUMP_VELOCITY_BOOST * time);
+	}break;
+	case RUNNING_RIGHT: {
+
+	}break;
+	}
+	isJumping = true;
+	isFalling = false;
+	isHighJump = false;
+
+	if (!isMorphing) {
+		if ((now_jump - start_jump) <= 10 * tick_per_frame)
+		{
+			setVelocityY(getVelocityY() - JUMP_VELOCITY_BOOST_FIRST * time);
+		}
+	}
 }
