@@ -129,14 +129,14 @@ bool Grid::handleObject(GameObject *object, GameObject* otherObject) {
 	while (otherObject != NULL) {
 		if (object != otherObject && otherObject->isActive) {
 			// Mình phải tính va chạm là từ khoảng cách giữa 2 điểm từ tâm của nó
-			int x1 = (int)((object->pos_x + object->width/2));
-			int y1 = (int)((object->pos_y + object->height/2));
+			int x1 = (int)((object->pos_x + object->width)/2);
+			int y1 = (int)((object->pos_y + object->height)/2);
 			D3DXVECTOR2 objectPos(x1, y1);
 
-			int x2 = (int)((otherObject->pos_x + otherObject->width/2));
-			int y2 = (int)((otherObject->pos_y + otherObject->height/2));
+			int x2 = (int)((otherObject->pos_x + otherObject->width)/2);
+			int y2 = (int)((otherObject->pos_y + otherObject->height)/2);
 			D3DXVECTOR2 otherPos(x2, y2);
-			if (Math::distance(objectPos, otherPos) < 100) {
+			if (Math::distance(objectPos, otherPos) < 50) {
 				if (handleCollision(object, otherObject))
 					isCollision = true;
 			}
@@ -159,7 +159,7 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 			this->handleZoomer(object, otherObject, collisionDirection, collisionTime);
 		}
 		else if (object->getType() == BULLET) {
-			this->handleSamusBullet(object, otherObject, collisionDirection, collisionTime);
+				this->handleSamusBullet(object, otherObject, collisionDirection, collisionTime);
 		}
 		return true;
 	}
@@ -262,6 +262,26 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK)
+		{
+			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
+
+			zoomer->setHealth(zoomer->getHealth() - 20);
+
+			if (zoomer->getHealth() <= 50)
+			{
+				//zoomer->setVelocityX(0);
+				//zoomer->setVelocityY(0);
+			}
+
+			//zoomer->pos_y += zoomer->vy * collisionTime * this->getDeltaTime();
+
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+		}
 		break;
 	}
 
@@ -278,6 +298,25 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK)
+		{
+			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
+			zoomer->setHealth(zoomer->getHealth() - 20);
+			
+			//zoomer->pos_x += zoomer->vx * collisionTime * this->getDeltaTime();
+
+			if (zoomer->getHealth() <= 50)
+			{
+				//zoomer->setVelocityX(0);
+				//zoomer->setVelocityY(0);
+			}
+
+			if (zoomer->getHealth() <= 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+		}
 		break;
 	}
 
@@ -288,6 +327,25 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
+		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK)
+		{
+			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
+			zoomer->setHealth(zoomer->getHealth() - 20);
+
+			if (zoomer->getHealth() <= 50)
+			{
+				//zoomer->setVelocityX(0);
+				//zoomer->setVelocityY(0);
+			}
+
+			//zoomer->pos_x += zoomer->vx * collisionTime * this->getDeltaTime();
+
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
 		}
 		break;
 	}

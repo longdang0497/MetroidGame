@@ -14,7 +14,7 @@ protected:
 	float initPosY;
 public:
 	float time_freeze;	// thời gian dừng khi bị hit
-	float health;		// Máu của object
+	int health;		// Máu của object
 	float damage;		// Lượng sát thương gây ra của object
 	bool DeathByShoot;
 
@@ -45,5 +45,8 @@ public:
 	float getInitPosX();
 	void setInitPosY(float y);
 	float getInitPosY();
+
+	void setHealth(int value);
+	int getHealth();
 };
 

@@ -53,7 +53,7 @@ public:
 	virtual void setEnemyStatefromString(string _state);
 	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ===============
-	void Destroy();
+	void Destroy(float x, float y);
 
 
 };

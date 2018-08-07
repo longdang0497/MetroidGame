@@ -10,12 +10,15 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 {
 	this->setType(enemy_type);
 	this->isActive = false;
+	this->manager = manager;
 
 	//Set vận tốc
 	vx = 0.0f;
 	vy = 0.0f;
 	this->width = 30;
 	this->height = 30;
+
+	this->health = 100;
 
 	this->grid = manager->grid;
 }
@@ -163,8 +166,8 @@ void Zoomer::Update(float t)
 	this->setIsLeftCollided(false);
 	this->setIsCollisionHandled(false);
 
-	this->setVelocity();
-
+	if (getHealth() > 30)
+		this->setVelocity();
 
 	GameObject* object = static_cast<GameObject*>(this);
 	object->isActive = true;
@@ -179,14 +182,14 @@ void Zoomer::Update(float t)
 		ZOOMER_DIRECTION direction = this->getDirection();
 
 		// Khi không va chạm gì hết sẽ bắt đầu chuyển hướng
-		if (!this->getIsTopCollided() && !this->getIsBottomCollided() 
+		if (!this->getIsTopCollided() && !this->getIsBottomCollided()
 			&& !this->getIsLeftCollided() && !this->getIsRightCollided()) {
 
 			switch (state) {
 			case ON_ZOOMER_UP: {
 				if (direction == ZOOMER_RIGHT) {
 					this->setState(ON_ZOOMER_RIGHT);
-					this->pos_x = floor(this->pos_x / 32) * 32;			
+					this->pos_x = floor(this->pos_x / 32) * 32;
 				}
 				else if (direction == ZOOMER_LEFT) {
 					this->setState(ON_ZOOMER_LEFT);
@@ -245,9 +248,9 @@ void Zoomer::Update(float t)
 				break;
 			}
 			}
-			
+
 		}
-		
+
 		// Khi co 2 dieu kien va cham
 		else if (this->getIsLeftCollided() && this->getIsBottomCollided()) {
 			if (direction == ZOOMER_DOWN) {
@@ -301,9 +304,8 @@ void Zoomer::Update(float t)
 		else if (this->getIsRightCollided()) {
 			pos_y += vy * t;
 		}
-		
+
 	}
-	
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 
@@ -327,7 +329,6 @@ void Zoomer::Update(float t)
 		}
 		last_time = now;
 	}
-
 }
 
 void Zoomer::Render()
@@ -357,9 +358,18 @@ void Zoomer::Render()
 	}
 }
 
-void Zoomer::Destroy()
+void Zoomer::Destroy(float x, float y)
 {
-	this->isActive = false;
+	if (this->health == 0)
+	{
+		manager->explodeEffect->setTimeSurvive(EFFECT_TIME_SURVIVE);
+		if (manager->explodeEffect->getTimeSurvive() > 0)
+		{
+			manager->explodeEffect->setActive(true);
+			manager->explodeEffect->setPosX(x - 32);
+			manager->explodeEffect->setPosY(y - 32);
+		}		
+	}
 }
 
 void Zoomer::setDirection(ZOOMER_DIRECTION direction) {
