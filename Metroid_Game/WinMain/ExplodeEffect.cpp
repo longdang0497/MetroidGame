@@ -6,7 +6,6 @@ ExplodeEffect::ExplodeEffect()
 
 ExplodeEffect::ExplodeEffect(LPD3DXSPRITE spriteHandler, World *manager, Grid * grid) : Effect(spriteHandler, manager, grid)
 {
-	this->type = EXPLOSION;
 	this->spriteHandler = spriteHandler;
 	this->grid = grid;
 	this->manager = manager;

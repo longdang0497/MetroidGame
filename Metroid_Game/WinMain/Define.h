@@ -18,19 +18,12 @@ class GameObject;
 #define TIME_IN_GAME 7000
 
 #define JUMP_VELOCITY_BOOST 0.5f
-//#define JUMP_VELOCITY_BOOST_FIRST 28.0f
-//#define FALLDOWN_VELOCITY_DECREASE 295.0f
-//#define MAX_FALLING 600.0f
-//#define GRAVITY_VELOCITY 0.5f
-
-#define JUMP_VELOCITY_BOOST 0.5f
-#define JUMP_VELOCITY_BOOST_FIRST 64.0f
-#define FALLDOWN_VELOCITY_DECREASE 0.3f
+#define JUMP_VELOCITY_BOOST_FIRST 28.0f
+#define FALLDOWN_VELOCITY_DECREASE 295.0f
+#define MAX_FALLING 600.0f
 #define GRAVITY_VELOCITY 0.5f
 #define ANIMATE_RATE 30
 #define LIVE_TIME 3000
-#define SHORT_JUMP_HEIGHT 96.0f  
-#define HIGH_JUMP_HEIGHT 160.0f
 
 #define SAMUS_SPEED 200.0f
 #define FRICTION 1.0f
@@ -304,6 +297,44 @@ enum ZOOMER_DIRECTION {
 #define ZOOMER_PINK_RIGHT L"enemy\\ZOOMER_PINK_RIGHT.txt"
 //================== END ZOOMER =================
 
+
+//================== SKREE  =====================
+
+#define SKREE_WIDTH 36
+#define SKREE_HEIGHT 52
+
+#define SKREE_COUNT 3
+
+#define SKREE_PATH L"enemy\\SKREE.txt"
+
+#define SKREE_STANDARD_ANIMATE_RATE 7
+#define SKREE_BOOST_ANIMATE_RATE 30
+
+#define ZOOMER_YELLOW_CASE 0
+#define ZOOMER_PINK_CASE 1
+#define SKREE_CASE 2
+#define RIO_CASE 3
+
+#define SKREE_DISTANCE_TO_SAMUS  300.0f
+#define SKREE_SPEED 150.0f
+
+#define SKREE_BULLET_SPEED 125.0f
+#define SKREE_BULLET_DISTANCE 75.0f
+
+#define SKREE_LIVE_TIME 50.0f
+
+//================== END SKREE =================
+
+//================== EXPLOSION =================
+#define EXPLOSION L"enemy\\ENEMY_DETROYED.txt"
+#define EXPLOSION_PATH L"enemy\\explosion.png"
+#define EXPLOSION_COUNT 1
+#define EXPLOSION_WIDTH 48
+#define EXPLOSION_HEIGHT 48
+
+//================== END EXPLOSION =================
+
+
 //================== BIRD  =====================
 
 #define BIRD_WIDTH 36
@@ -366,8 +397,8 @@ enum ZOOMER_DIRECTION {
 
 //================== Bullet ====================
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
-#define X_VELOCITY_BULLET 12
-#define Y_VELOCITY_BULLET 12
+#define X_VELOCITY_BULLET 600.0f
+#define Y_VELOCITY_BULLET 600.0f
 #define BULLET_COUNT 8
 #define WIDTH_BULLET 12
 #define HEIGHT_BULLET 14

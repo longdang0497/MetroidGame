@@ -11,15 +11,21 @@ Bullet::Bullet() {
 // isActive: Dùng để xác định đạn có được khởi tạo rồi hay chưa.
 // isRendered: Dùng để xác định và tính toán khoản cách thời gian các viên đạn
 // được bắn ra theo trình tự (ở đây là 3 viên đạn).
-Bullet::Bullet(LPD3DXSPRITE spriteHandler) {
+Bullet::Bullet(LPD3DXSPRITE spriteHandler, Grid*grid) {
 	this->spriteHandler = spriteHandler;
 	this->isActive = false;
 	this->isRendered = false;
 	this->count = 0;
 	this->direction = OFF;
-	pos_x =	-100.0f;
-	pos_y = -100.0f;
+	pos_x =	0.0f;
+	pos_y = 0.0f;
 	this->setType(BULLET);
+	this->grid = grid;
+	this->startX = 0.0f;
+	this->startY = 0.0f;
+	this->endX = 0.0f;
+	this->endY = 0.0f;
+	this->grid->add(this);
 }
 
 Bullet::~Bullet() {
@@ -27,6 +33,7 @@ Bullet::~Bullet() {
 }
 
 void Bullet::initBullet(float posX, float posY) {
+	
 	if (this->direction == SHOOT_RIGHT) {
 		this->pos_x = posX + 32 + 12;
 		this->pos_y = posY + 13;
@@ -47,11 +54,17 @@ void Bullet::initBullet(float posX, float posY) {
 		this->pos_x = posX;
 		this->pos_y = posY;
 	}
+	this->startX = this->pos_x;
+	this->startY = this->pos_y;
+	this->endX = this->pos_x;
+	this->endY = this->pos_y;
 }
 
-void Bullet::Reset(float posX, float posY) {
-	this->initBullet(posX, posY);
-	this->count = 0;
+void Bullet::Reset() {
+	this->startX = 0.0f;
+	this->startY = 0.0f;
+	this->endX = 0.0f;
+	this->endY = 0.0f;
 	this->isRendered = false;
 	this->setActive(false);
 }
@@ -67,15 +80,16 @@ void Bullet::Update(float t, float posX, float posY) {
 	{
 		return;
 	}
-	else if (this->direction == OFF && this->tempDirection != OFF || this->direction != this->tempDirection && this->count == 0) {
+	else if (this->direction == OFF && this->tempDirection != OFF
+		|| this->direction != this->tempDirection && (this->endX - this->startX == 0) && (this->endY - this->startY == 0)) {
 		this->direction = this->tempDirection;
 	}
 
-	if (this->count == BULLET_COUNT) {
-		this->Reset(posX, posY);
+	if (fabs(this->endX - this->startX) >= 96 || fabs(this->endY - this->startY) >= 96) {
+		this->Reset();
 	}
 
-	if (this->isActive == true && this->count == 0) {
+	if (this->isActive == true && (this->endX - this->startX == 0) && (this->endY - this->startY == 0)) {
 		if (this->direction == OFF)
 			this->isActive = false;
 		if (this->isActive) {
@@ -84,23 +98,49 @@ void Bullet::Update(float t, float posX, float posY) {
 		}
 	}
 
-	if (this->isActive == false && this->count == 0 || this->direction == OFF)
+	if (this->isActive == false && (this->endX - this->startX == 0) && (this->endY - this->startY == 0) || this->direction == OFF)
 		return;
 
 	if (this->direction == SHOOT_RIGHT) {
-		this->pos_x += X_VELOCITY_BULLET;
+		this->vx = X_VELOCITY_BULLET;
+		this->vy = 0.0f;
 	}
 	else if (this->direction == SHOOT_LEFT) {
-		this->pos_x -= X_VELOCITY_BULLET;
+		this->vx = -X_VELOCITY_BULLET;
+		this->vy = 0.0f;
 	}
 	else if (this->direction == SHOOT_UP_RIGHT || this->direction == SHOOT_UP_LEFT) {
-		this->pos_y -= Y_VELOCITY_BULLET;
+		this->vy = -Y_VELOCITY_BULLET;
+		this->vx = 0.0f;
 	}
-	count++;
 
+	this->pos_x = endX;
+	this->pos_y = endY;
 
+	int row = (int)floor(this->pos_y / CELL_SIZE);
+	int column = (int)floor(this->pos_x / CELL_SIZE);
+
+	this->isRight = false;
+	this->isLeft = false;
+	this->isTop = false;
+	this->isBottom = false;
+	this->isHandled = false;
+
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
+
+	// Xet va cham va cap nhat vi tri
+	this->grid->handleCell(this, row, column);
+	if (!isHandled) {
+		if (!isRight && !isTop && !isBottom && !isLeft) {
+			this->pos_x += this->vx * t;
+			this->pos_y += this->vy *t;
+
+			this->endX = this->pos_x;
+			this->endY = this->pos_y;
+		}
+	}
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 }
-
 
 void Bullet::Render() {
 	if (this->isActive == false && this->count == 0|| this->direction == OFF)
