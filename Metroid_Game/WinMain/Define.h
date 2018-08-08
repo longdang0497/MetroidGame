@@ -29,16 +29,17 @@ class GameObject;
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
 
-#define MAP_ROOM1 "map\\fieldRoom1.txt"
-#define MAP_ROOM2 "map\\fieldBossRidley.txt"
-#define MAP_ROOM3 "map\\fieldBossMB.txt"
-#define MAP_STAIR "map\\fieldStair.txt"
+#define MAP_FULL_ROOM "map\\fieldFullRoom.txt"
+#define WIDTH_ROOM1 2272
+#define WIDTH_ROOM2 2048
+#define WIDTH_ROOM_BOSS 512
+#define HEIGHT_ROOM	480
 
 enum ROOM_NUMBER {
 	ROOM1,
 	ROOM2,
-	ROOM3,
-	STAIR
+	BOSS1,
+	BOSS2
 };
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
@@ -94,7 +95,7 @@ enum OBJECT_TYPE
 	GATE_BLOCK,
 	RIDLEY,
 	MOTHER_BRAIN,
-	EXPLOSION,
+	EXPLOSION_BOMB,
 	MARU_MARI,
 	ENERGY_ITEM,
 	MISSILE_ITEM,
@@ -205,7 +206,7 @@ enum OBJECT_TYPE
 
 //================ BRICK SIZE =============================================
 #define BRICK_SIZE 32.0f
-#define BRICK_TEXTURE L"brick_32x32.png"
+#define BRICK_TEXTURE L"map\\brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
 //================ GAME SOUND =============================================

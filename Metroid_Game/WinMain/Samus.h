@@ -29,6 +29,11 @@ protected:
 
 	SAMUS_STATE state;	
 
+	bool isInRoom1 = true;
+	bool isInRoom2 = false;
+	bool isInBoss1 = false;
+	bool isInBoss2 = false;
+
 	int tempX;
 	bool isBall;
 public:

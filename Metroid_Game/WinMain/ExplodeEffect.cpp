@@ -30,6 +30,19 @@ void ExplodeEffect::Update(float t)
 
 	if (isActive == true && manager->bombWeapon->getBombExplode() == true)
 	{
+		int row = (int)floor(this->pos_y / CELL_SIZE);
+		int column = (int)floor(this->pos_x / CELL_SIZE);
+
+		this->isRight = false;
+		this->isLeft = false;
+		this->isTop = false;
+		this->isBottom = false;
+
+		this->grid->updateGrid(this, this->pos_x, this->pos_y);
+
+		// Xet va cham va cap nhat vi tri
+		this->grid->handleCell(this, row, column);
+
 		//time_survive = EFFECT_TIME_SURVIVE;
 		DWORD now = GetTickCount();
 		if (now - last_time > 1000 / ANIMATE_RATE)

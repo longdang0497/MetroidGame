@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef _METROID_H_
-#define _METROID_H_
 
 #include "Define.h"
 #include "Game.h"
@@ -30,7 +28,7 @@ private:
 	DWORD tick_per_frame;
 
 	Map *map;
-	ROOM_NUMBER roomNum;
+	
 	Texture texture;
 public:
 	Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate);
@@ -65,9 +63,4 @@ public:
 
 	LPD3DXSPRITE getSpriteHandler();
 	Map *getMap();
-
-	ROOM_NUMBER getRoomNum();
-	void setRoomNum(ROOM_NUMBER value);
 };
-
-#endif // !_METROID_

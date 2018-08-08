@@ -161,6 +161,9 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		else if (object->getType() == BULLET) {
 				this->handleSamusBullet(object, otherObject, collisionDirection, collisionTime);
 		}
+		else if (object->getType() == EXPLOSION_BOMB && object->isActive == true) {
+			this->handleExplode(object, otherObject, collisionDirection, collisionTime);
+		}
 		return true;
 	}
 	else {
@@ -233,6 +236,10 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			object->pos_x += object->vx * deltaTime;
 			zoomer->setIsLeftCollided(false);
 		}
+		else if (type == EXPLOSION_BOMB) {
+			zoomer->isActive == false;
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+		}
 		break;
 	}
 
@@ -240,6 +247,10 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 		zoomer->setIsRightCollided(true);
 		if (type != SAMUS && type != BULLET) {
 			object->pos_x += object->vx * collisionTime *deltaTime;
+		}
+		else if (type == EXPLOSION_BOMB) {
+			zoomer->isActive == false;
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
 		}
 		break;
 	}
@@ -256,7 +267,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 	switch (collisionDirection) {
 	case TOP: {
 		bullet->setIsTop(true);
-		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT 
+		if (type == BRICK || type == BULLET || type == ITEM || type == EXPLOSION_BOMB 
 			|| type == BOMB_ITEM || type == MARU_MARI
 			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
@@ -293,7 +304,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 
 	case LEFT: {
 		bullet->setIsLeft(true);
-		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
+		if (type == BRICK || type == BULLET || type == ITEM || type == EXPLOSION_BOMB
 			|| type == BOMB_ITEM || type == MARU_MARI || type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
@@ -322,7 +333,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 
 	case RIGHT: {
 		bullet->setIsRight(true);
-		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
+		if (type == BRICK || type == BULLET || type == ITEM || type == EXPLOSION_BOMB
 			|| type == BOMB_ITEM || type == MARU_MARI
 			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
@@ -358,6 +369,46 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsRight(false);
 	}
 }
+
+void Grid::handleExplode(GameObject * object, GameObject * otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	if (!object->isActive)
+		return;
+
+	ExplodeEffect * explode = static_cast<ExplodeEffect*>(object);
+	OBJECT_TYPE type = otherObject->getType();
+
+	switch (collisionDirection) {
+	case TOP:
+
+		break;
+	case BOTTOM:
+
+		break;
+	case LEFT:
+		explode->setIsLeft(true);
+		if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE)
+		{
+			otherObject->setActive(false);
+		}
+		break;
+	case RIGHT:
+		explode->setIsRight(true);
+		if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE)
+		{
+			otherObject->setActive(false);
+		}
+		break;
+	}
+
+	if (type == SAMUS) {
+		/*bullet->setIsTop(false);
+		bullet->setIsLeft(false);
+		bullet->setIsBottom(false);
+		bullet->setIsRight(false);*/
+	}
+}
+
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 
 	// Kiểm tra xem nó có thay đổi cell hay không

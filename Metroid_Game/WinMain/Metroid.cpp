@@ -74,7 +74,7 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 		trace(L"Unable to load BrickTexture");
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), _texture, "field1.txt", this->_device, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), _texture, MAP_FULL_ROOM, this->_device, 0, 0);
 
 	int height = this->map->getRow();
 	int width = this->map->getColumn();
@@ -668,14 +668,4 @@ LPD3DXSPRITE Metroid::getSpriteHandler() {
 
 Map * Metroid::getMap() {
 	return this->map;
-}
-
-ROOM_NUMBER Metroid::getRoomNum()
-{
-	return roomNum;
-}
-
-void Metroid::setRoomNum(ROOM_NUMBER value)
-{
-	roomNum = value;
 }

@@ -245,6 +245,17 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
+	this->currentTime = t;
+
+	if (this->pos_x > 0 && this->pos_x <= WIDTH_ROOM1)
+		setRoomNum(ROOM1);
+	else if (this->pos_x > WIDTH_ROOM1 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2)
+		setRoomNum(ROOM2);
+	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS)
+		setRoomNum(BOSS1);
+	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS)
+		setRoomNum(BOSS2);
+
 	//this->vy = 0;
 	//float newPosX = pos_x + vx * t;
 	//float newPosY = pos_y + vy * t;
