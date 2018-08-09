@@ -332,14 +332,16 @@ void Zoomer::Update(float t)
 
 void Zoomer::Render()
 {
+	if (!isActive)
+		return;
+
 	D3DXVECTOR3 position;
 	position.x = pos_x;
 	position.y = pos_y;
 	position.z = 0;
 
 	// Nếu không active thì không render
-	if (!isActive)
-		return;
+
 	switch (state)
 	{
 	case ON_ZOOMER_UP:

@@ -18,9 +18,9 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int heigh
 	samus = new Samus(spriteHandler, this, this->grid);
 	
 	// Khởi tạo đạn (3 viên)
-	Bullet *bullet1 = new Bullet(spriteHandler);
-	Bullet *bullet2 = new Bullet(spriteHandler);
-	Bullet *bullet3 = new Bullet(spriteHandler);
+	Bullet *bullet1 = new Bullet(spriteHandler, grid);
+	Bullet *bullet2 = new Bullet(spriteHandler, grid);
+	Bullet *bullet3 = new Bullet(spriteHandler, grid);
 	this->samusBullet.push_back(bullet1);
 	this->samusBullet.push_back(bullet2);
 	this->samusBullet.push_back(bullet3);

@@ -28,27 +28,28 @@ protected:
 	Sprite * jumpShootR;
 
 	SAMUS_STATE state;	
+<<<<<<< HEAD
 
 	int tempX;
 	bool isBall;
-	float startPosJump;
-	float endPosJump;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
+=======
+public:
+	bool isJumping;	// Trạng thái đang nhảy của Samus
+	bool canMorph = false;
+>>>>>>> HLong
 	bool isMorphing = false;
-
-	bool isOnGround = false;
-	bool isTop = false;
-	bool isBottom = false;
-	bool isLeft = false;
-	bool isRight = false;
-	bool isColisionHandled = false;
 
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus
 	Samus();
+<<<<<<< HEAD
 	Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid);
+=======
+	Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid);
+>>>>>>> HLong
 	~Samus();
 
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
@@ -56,10 +57,12 @@ public:
 
 	SAMUS_STATE GetState();
 	void SetState(SAMUS_STATE value);
+
 	bool isSamusJumping();
 	//bool isSamusCrouch();
 	bool isSamusDeath();
 
+	void updateState();
 	void ResetAllSprites();
 	bool GetStateActive();
 
@@ -73,12 +76,6 @@ public:
 	void Destroy();
 	//================= END OVERRIDE VIRTUAL METHOD =============
 
-	void setStartPosJump(float posY) { this->startPosJump = posY; }
-	float getStartPosJump() { return this->startPosJump; }
-	void setEndPosJump(float currentPosY) { this->endPosJump = currentPosY; }
-	float getEndPosJump() { return this->endPosJump; }
-
-	void setDimension();
 };
 
 
