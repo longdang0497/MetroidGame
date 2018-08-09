@@ -1,6 +1,5 @@
 ﻿#include "Grid.h"
-#include "Samus.h"
-#include "MaruMari.h"
+
 // Lưu vào mảng 2 chiều
 // Height khi quy đổi ra sẽ là row -> pos_y tương ứng với row
 // Width khi quy đổi ra sẽ là column -> pos_x tương ứng column
@@ -164,6 +163,9 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		else if (object->getType() == EXPLOSION_BOMB && object->isActive == true) {
 			this->handleExplode(object, otherObject, collisionDirection, collisionTime);
 		}
+		else if (object->getType() == GATE && object->isActive == true) {
+			this->handleGate(object, otherObject, collisionDirection, collisionTime);
+		}
 		return true;
 	}
 	else {
@@ -174,16 +176,27 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
 	Samus* samus = dynamic_cast<Samus*>(object);
 	//object->pos_y += object->vy * collisionTime *this->getDeltaTime();
+	OBJECT_TYPE type = otherObject->getType();
 
 	if (collisionDirection == LEFT)
 	{
 		samus->isLeft = true;
+		if (type == GATE_BLOCK)
+		{
+			collisionDirection = NONE;
+			samus->pos_x += samus->vx * this->getDeltaTime();
+		}
 		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 	}
 
 	else if (collisionDirection == RIGHT)
 	{
 		samus->isRight = true;
+		if (type == GATE_BLOCK)
+		{
+			collisionDirection = NONE;
+			samus->pos_x += samus->vx * this->getDeltaTime();
+		}
 		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 	}
 
@@ -202,7 +215,6 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		object->pos_y += object->vy * collisionTime *this->getDeltaTime();
 	}
 }
-
 
 // Xử lý zoomer khi va chạm với các thể loại object
 void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
@@ -261,7 +273,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 	if (!object->isActive)
 		return;
 
-	Bullet* bullet = static_cast<Bullet*>(object);
+	Bullet* bullet = dynamic_cast<Bullet*>(object);
 	OBJECT_TYPE type = otherObject->getType();
 
 	switch (collisionDirection) {
@@ -328,6 +340,16 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
 			}
 		}
+		else if (type == GATE)
+		{
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_LEFT || gate->GetGateType() == GATE_RIGHT)
+			{
+				gate->setIsRight(true);
+				gate->setGateState(DESTROYING);
+				gate->setActive(false);
+			}
+		}
 		break;
 	}
 
@@ -358,6 +380,16 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
 			}
 		}
+		else if (type == GATE)
+		{
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_LEFT || gate->GetGateType() == GATE_LEFT)
+			{
+				gate->setIsLeft(true);
+				gate->setGateState(DESTROYING);
+				gate->setActive(false);
+			}
+		}
 		break;
 	}
 	}
@@ -380,7 +412,11 @@ void Grid::handleExplode(GameObject * object, GameObject * otherObject, COLLISIO
 
 	switch (collisionDirection) {
 	case TOP:
-
+		explode->setIsTop(true);
+		if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE)
+		{
+			otherObject->setActive(false);
+		}
 		break;
 	case BOTTOM:
 
@@ -406,6 +442,88 @@ void Grid::handleExplode(GameObject * object, GameObject * otherObject, COLLISIO
 		bullet->setIsLeft(false);
 		bullet->setIsBottom(false);
 		bullet->setIsRight(false);*/
+	}
+}
+
+void Grid::handleGate(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	if (!object->isActive)
+		return;
+
+	Gate * gate = static_cast<Gate*>(object);
+	OBJECT_TYPE type = otherObject->getType();
+
+	if (collisionDirection == LEFT)
+	{
+		if (type == BULLET)
+		{
+			if (gate->GetGateType() == GATE_LEFT || gate->GetGateType() == GATE_RIGHT)
+			{
+				gate->setIsLeft(true);
+				gate->setGateState(DESTROYING);
+				gate->setActive(false);
+			}
+		}
+		else if (type == SAMUS)
+		{
+			if (gate->getGateState() == GATE_RIGHT)
+			{
+				gate->setIsLeft(true);
+				gate->setGateState(DESTROYING);
+			}
+			else if (gate->GetGateType() == GATE_LEFT)
+			{
+				if (gate->isActive == true && gate->getGateState() == CLOSE)
+				{
+					gate->setIsLeft(true);
+					otherObject->pos_y += otherObject->vy * collisionTime * this->getDeltaTime();
+				}
+				else if (gate->getGateState() == DESTROYING || gate->getGateState() == OPEN)
+				{
+					gate->setActive(false);
+					//gate->setIsLeft(true);
+					//otherObject->pos_y += otherObject->vy * collisionTime * this->getDeltaTime();
+				}
+				
+			}
+		}
+	}
+
+	else if (collisionDirection == RIGHT)
+	{
+		if (type == BULLET)
+		{
+			if (gate->GetGateType() == GATE_LEFT || gate->GetGateType() == GATE_RIGHT)
+			{
+				gate->setIsRight(true);
+				gate->setGateState(DESTROYING);
+				gate->setActive(false);
+			}
+		}
+		else if (type == SAMUS)
+		{
+			if (gate->getGateState() == GATE_LEFT)
+			{
+				gate->setIsRight(true);
+				gate->setGateState(DESTROYING);
+			}
+			else if (gate->GetGateType() == GATE_RIGHT)
+			{
+				if (gate->isActive == true && gate->getGateState() == CLOSE)
+				{
+					gate->setIsRight(true);
+					otherObject->pos_y += otherObject->vy * collisionTime * this->getDeltaTime();
+				}
+				else if (gate->getGateState() == DESTROYING || gate->getGateState() == OPEN)
+				{
+					gate->setActive(false);
+					//gate->setIsLeft(true);
+					//otherObject->pos_y += otherObject->vy * collisionTime * this->getDeltaTime();
+				}
+
+			}
+		}
+		
 	}
 }
 

@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <d3dx9.h>
 #include "Sprite.h"
 #include "Define.h"
 
@@ -107,4 +106,5 @@ public:
 	
 	ROOM_NUMBER getRoomNum();
 	void setRoomNum(ROOM_NUMBER value);
+	Grid * getGrid();
 };

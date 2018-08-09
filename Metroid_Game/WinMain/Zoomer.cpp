@@ -20,7 +20,7 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 
 	this->health = 100;
 
-	this->grid = manager->grid;
+	this->grid = manager->getMetroid()->getGrid();
 }
 
 

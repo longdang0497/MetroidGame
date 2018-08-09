@@ -14,19 +14,45 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 
 void Metroid::_InitPositions()
 {
+	//this->map->inputBrickToGrid(this);
+	
+	for (int i = 0; i < this->map->getStringMap().size(); i++) {
+		for (int j = 0; j < this->map->getStringMap()[i].size(); j++) {
+			if (this->map->getStringMap()[i][j] != '0'
+				&& this->map->getStringMap()[i][j] != 'V'
+				&& this->map->getStringMap()[i][j] != 'W') {
+				float x = (float)j * 32;
+				float y = (float)i * 32;
+				Brick * brick = new Brick(x, y, BRICK_SIZE, BRICK_SIZE);
+				brick->setIndexX(j);
+				brick->setIndexY(i);
+				grid->add(brick);
+				brick = nullptr;
+				delete brick;
+			}
+		}
+	}
+
 	world->samus->InitPostition();
-	this->world->grid->add(this->world->samus);
+	this->grid->add(this->world->samus);
 
 	world->maruMari->Init(420, 352);
-	this->world->grid->add(this->world->maruMari);
+	this->grid->add(this->world->maruMari);
 
 	world->bombWeapon->CreateBomb(0, 0);
-	world->grid->add(world->bombWeapon);
+	grid->add(world->bombWeapon);
 	world->bombWeapon->setActive(false);
 
 	world->explodeEffect->CreateExplode(360, 360);
-	world->grid->add(world->explodeEffect);
+	grid->add(world->explodeEffect);
 	world->explodeEffect->setActive(false);
+
+	world->gateLeft->Init(2224, 160);
+	grid->add(world->gateLeft);
+	//world->gateRight->Init(2304, 160);
+	//grid->add(world->gateRight);
+	world->gateBlock->Init(2240, 160);
+	grid->add(world->gateBlock);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -74,15 +100,16 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 		trace(L"Unable to load BrickTexture");
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), _texture, MAP_FULL_ROOM, this->_device, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), _texture, MAP_FULL_ROOM, 0, 0);
 
 	int height = this->map->getRow();
 	int width = this->map->getColumn();
-	world = new World(spriteHandler, this, width, height);
+	grid = new Grid(height, width);
 
-	this->map->setGrid(world->grid);
-	this->map->inputBrickToGrid();
+	world = new World(spriteHandler, this);
 
+	//this->map->setGrid(this->grid);
+	
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
 	this->_InitPositions();
@@ -109,8 +136,9 @@ void Metroid::Update(float Delta)
 		break;
 		// game running
 	case GAMEMODE_GAMERUN:
-		this->camera->Update();
+		this->camera->Update(Delta);
 		map->UpdateMap(this->camera->getBoundary());
+		grid->setDeltaTime(Delta);
 		UpdateFrame(Delta);
 		break;
 		// game over
@@ -667,5 +695,10 @@ LPD3DXSPRITE Metroid::getSpriteHandler() {
 }
 
 Map * Metroid::getMap() {
-	return this->map;
+	return map;
+}
+
+Grid * Metroid::getGrid()
+{
+	return this->grid;
 }

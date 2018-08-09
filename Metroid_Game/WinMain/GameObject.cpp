@@ -49,6 +49,11 @@ void GameObject::setRoomNum(ROOM_NUMBER value)
 	roomNum = value;
 }
 
+Grid * GameObject::getGrid()
+{
+	return this->grid;
+}
+
 float GameObject::sweptAABB(GameObject* object, COLLISION_DIRECTION& collisionDirection, float deltaTime) {
 	float xInvEntry, yInvEntry;
 	float xInvExit, yInvExit;

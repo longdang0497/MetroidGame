@@ -1,15 +1,15 @@
 ﻿#pragma once
 #include "MaruMari.h"
-#include <d3dx9.h>
 #include "Define.h"
 #include "Samus.h"
 #include "Zoomer.h"
 #include <vector>
 #include "Texture.h"
-#include "Grid.h"
 #include "Bullet.h"
 #include "ExplodeEffect.h"
 #include "BombWeapon.h"
+#include "Gate.h"
+#include "GateBlock.h"
 
 using namespace std;
 
@@ -22,18 +22,20 @@ class World
 {
 public:
 	Metroid * metroid;
-	Grid *grid;
 	Samus * samus;
 	MaruMari * maruMari;
 	ExplodeEffect* explodeEffect;
 	BombWeapon* bombWeapon;
+	Gate * gateLeft;
+	//Gate * gateRight;
+	GateBlock * gateBlock;
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;
 	LPD3DXSPRITE spriteHandler;
 
 	World();
-	World(LPD3DXSPRITE spriteHandler, Metroid * metroid, int width, int height);
+	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);
 	~World();
 
 	void Update(float t);
@@ -42,6 +44,7 @@ public:
 
 	void loadEnemyPositions(string filePath);
 	vector<string> World::split(string s, string c);
+	Metroid * getMetroid();
 
 	void setDirectionForZoomer(Enemy*, string str);
 };

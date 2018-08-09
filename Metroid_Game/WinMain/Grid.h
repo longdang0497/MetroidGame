@@ -1,11 +1,12 @@
 #pragma once
-#include "GameObject.h"
 #include <cmath>
 #include "Math.h"
 #include "Define.h"
 #include "Collision.h"
+#include "Samus.h"
 
-class Grid {
+class Grid
+{
 private:
 	int numOfRow;
 	int numOfColumn;
@@ -32,6 +33,7 @@ public:
 	void handleZoomer(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 	void handleSamusBullet(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 	void handleExplode(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
+	void handleGate(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 
 	void showAllObject();
 };

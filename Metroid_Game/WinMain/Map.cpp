@@ -1,10 +1,9 @@
 #include "Map.h"
 
 
-Map::Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture, string filePath, DeviceManager *deviceManager, int left, int top) {
-	this->grid = nullptr;
+Map::Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture, string filePath, int left, int top) {
+	//this->metroid = metroid;
 	this->filePath = filePath;
-	this->deviceManager = deviceManager;
 	
 	this->texture = texture;
 	if (this->texture == NULL)
@@ -20,7 +19,7 @@ Map::Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture, string filePath
 
 Map::~Map() {
 	delete sprite;
-	delete grid;
+	//delete metroid;
 }
 
 void Map::setLimitation(int x, int y, int width, int height) {
@@ -35,10 +34,6 @@ void Map::setLimitation(int x, int y, int width, int height) {
 RECT Map::getBoundary()
 {
 	return m_boundary;
-}
-
-LPDIRECT3DDEVICE9 Map::getDevice() {
-	return this->deviceManager->getdevice();
 }
 
 LPDIRECT3DTEXTURE9 Map::getTexture() {
@@ -372,6 +367,7 @@ void Map::UpdateMap(RECT cameraBound) {
 	RECT bound = cameraBound;
 	bound.left -=  2 * BRICK_SIZE;
 	bound.top -= 2 * BRICK_SIZE;
+	bound.right += 10 * BRICK_SIZE;
 	vector<string> strBrick = this->getStringMap();
 
 	//may phai kiem tra neu cai brick do nam ben trong cai bound
@@ -401,34 +397,27 @@ int Map::getColumn() {
 	return this->m_max_Column;
 }
 
-void Map::setGrid(Grid * grid) {
-	if (grid == NULL)
-		trace(L"Grid is NULL");
-	else {
-		this->grid = grid;
-	}
-}
+//Metroid * Map::getMetroid()
+//{
+//	return this->metroid;
+//}
 
-Grid* Map::getGrid() {
-	if (this->grid == NULL)
-		return NULL;
-	return this->grid;
-}
-
-void Map::inputBrickToGrid() {
-	if (this->getStringMap().size() <= 0) {
-		return;
-	}
-	for (int i = 0; i < this->stringMap.size(); i++) {
-		for (int j = 0; j < this->stringMap[i].size(); j++) {
-			if (this->stringMap[i][j] != '0') {
-				float x = (float)j * 32;
-				float y = (float)i * 32;
-				Brick * brick = new Brick(x, y, BRICK_SIZE, BRICK_SIZE);
-				brick->setIndexX(j);
-				brick->setIndexY(i);
-				this->grid->add(brick);
-			}
-		}
-	}
-}
+//void Map::inputBrickToGrid(Metroid * metroid) {
+//	if (this->getStringMap().size() <= 0) {
+//		return;
+//	}
+//	for (int i = 0; i < this->stringMap.size(); i++) {
+//		for (int j = 0; j < this->stringMap[i].size(); j++) {
+//			if (this->stringMap[i][j] != '0') {
+//				float x = (float)j * 32;
+//				float y = (float)i * 32;
+//				Brick * brick = new Brick(x, y, BRICK_SIZE, BRICK_SIZE);
+//				brick->setIndexX(j);
+//				brick->setIndexY(i);
+//				getMetroid->getGrid()->add(brick);
+//				brick = nullptr;
+//				delete brick;
+//			}
+//		}
+//	}
+//}

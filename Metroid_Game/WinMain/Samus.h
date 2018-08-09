@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "trace.h"
 #include "World.h"
-
+#include <vector>
 
 class Samus : public GameObject
 {

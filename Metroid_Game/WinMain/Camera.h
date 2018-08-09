@@ -5,7 +5,6 @@
 #include <d3dx9.h>
 #include "DeviceManager.h"
 #include "GameObject.h"
-#include "Map.h"
 
 class Camera
 {
@@ -15,12 +14,11 @@ public:
 	~Camera();
 
 	//Game Functions
-	void Update();
+	void Update(float t);
 	void SetTransform(DeviceManager *device) const;
 	void SetMapBoundary(RECT rect);
 	RECT getBoundary();
 	void Follow(GameObject * object);
-
 private:
 	float angle;
 	DirectX::XMFLOAT3 scaleFactors;

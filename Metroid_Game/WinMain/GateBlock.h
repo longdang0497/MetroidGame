@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Define.h"
 
 class GateBlock : public GameObject
 {

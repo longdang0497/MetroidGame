@@ -25,7 +25,7 @@ void GateBlock::Init(int x, int y)
 {
 	this->pos_x = x;
 	this->pos_y = y;
-	currentSprite = gateBlock;
+	//currentSprite = gateBlock;
 }
 
 void GateBlock::Update(float t)
@@ -39,5 +39,5 @@ void GateBlock::Render()
 	posBlock.y = pos_y;
 	posBlock.z = 0;
 
-	currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), posBlock);
+	gateBlock->drawSprite(gateBlock->getWidth(), gateBlock->getHeight(), posBlock);
 }

@@ -6,8 +6,6 @@
 #include "Input.h"
 #include "DeviceManager.h"
 #include "DXGraphics.h"
-#include "Texture.h"
-#include "Sprite.h"
 #include "Camera.h"
 #include "Sound.h"
 #include "utils.h"

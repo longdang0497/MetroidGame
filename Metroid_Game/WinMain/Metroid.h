@@ -2,9 +2,9 @@
 
 #include "Define.h"
 #include "Game.h"
-#include "Sprite.h"
 #include "Map.h"
 #include "World.h"
+#include "Grid.h"
 
 class Metroid : public Game
 {
@@ -18,6 +18,7 @@ protected:
 	CSound * intro;
 	CSound * appear;
 	GameSound *sound;
+	Grid * grid;
 private:
 	void _InitBackground();
 	void _InitSprites(LPDIRECT3DDEVICE9 d3ddv);
@@ -27,7 +28,7 @@ private:
 	DWORD now_jump;
 	DWORD tick_per_frame;
 
-	Map *map;
+	Map * map = nullptr;
 	
 	Texture texture;
 public:
@@ -62,5 +63,6 @@ public:
 	float time_in_game;
 
 	LPD3DXSPRITE getSpriteHandler();
-	Map *getMap();
+	Map * getMap();
+	Grid * getGrid();
 };

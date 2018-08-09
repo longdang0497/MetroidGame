@@ -1,8 +1,4 @@
 ﻿#include "Samus.h"
-#include "Game.h"
-#include <vector>
-#include "trace.h"
-#include "Metroid.h"
 
 void Samus::Render()
 {
@@ -248,13 +244,25 @@ void Samus::Update(float t)
 	this->currentTime = t;
 
 	if (this->pos_x > 0 && this->pos_x <= WIDTH_ROOM1)
+	{
 		setRoomNum(ROOM1);
-	else if (this->pos_x > WIDTH_ROOM1 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2)
+		isInRoom1 = true;
+	}
+	else if (this->pos_x > WIDTH_ROOM1 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 && isActive == true)
+	{
 		setRoomNum(ROOM2);
-	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS)
+		isInRoom2 = true;
+	}
+	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && isActive == true)
+	{
 		setRoomNum(BOSS1);
-	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS)
+		isInBoss1 = true;
+	}
+	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS && isActive == true)
+	{
 		setRoomNum(BOSS2);
+		isInBoss2 = true;
+	}
 
 	//this->vy = 0;
 	//float newPosX = pos_x + vx * t;
