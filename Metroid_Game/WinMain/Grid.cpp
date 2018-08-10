@@ -253,7 +253,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 	switch (collisionDirection) {
 	case BOTTOM: {
 		zoomer->setIsBottomCollided(true);
-		if (type != SAMUS && type != BULLET) {
+		if (type != SAMUS && type != BULLET && type!=EXPLOSION_BOMB) {
 			object->pos_y += object->vy * collisionTime * deltaTime;
 		}
 		else if (type == BULLET) {
@@ -270,13 +270,17 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 			bullet->Reset();
 		}
+		else if (type == EXPLOSION_BOMB) {
+			object->pos_y += object->vy * deltaTime;
+			zoomer->setIsBottomCollided(false);
+		}
 		break;
 
 	}
 
 	case TOP: {
 		zoomer->setIsTopCollided(true);
-		if (type != SAMUS && type != BULLET) {
+		if (type != SAMUS && type != BULLET && type != EXPLOSION_BOMB) {
 			object->pos_y += object->vy * collisionTime * deltaTime;
 		}
 		else if (type == BULLET) {
@@ -294,12 +298,16 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 			bullet->Reset();
 		}
+		else if (type == EXPLOSION_BOMB) {
+			object->pos_y += object->vy * deltaTime;
+			zoomer->setIsTopCollided(false);
+		}
 		break;
 	}
 
 	case LEFT: {
 		zoomer->setIsLeftCollided(true);
-		if (type != SAMUS && type != BULLET) {
+		if (type != SAMUS && type != BULLET && type != EXPLOSION_BOMB) {
 			object->pos_x += object->vx * collisionTime *deltaTime;
 		}
 		else if (type == SAMUS) {
@@ -321,12 +329,16 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 			bullet->Reset();
 		}
+		else if (type == EXPLOSION_BOMB) {
+			object->pos_y += object->vy * deltaTime;
+			zoomer->setIsLeftCollided(false);
+		}
 		break;
 	}
 
 	case RIGHT: {
 		zoomer->setIsRightCollided(true);
-		if (type != SAMUS && type != BULLET) {
+		if (type != SAMUS && type != BULLET && type != EXPLOSION_BOMB) {
 			object->pos_x += object->vx * collisionTime *deltaTime;
 		}
 		else if (type == BULLET) {
@@ -343,6 +355,10 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			}
 			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 			bullet->Reset();
+		}
+		else if (type == EXPLOSION_BOMB) {
+			object->pos_y += object->vy * deltaTime;
+			zoomer->setIsRightCollided(false);
 		}
 		break;
 	}
