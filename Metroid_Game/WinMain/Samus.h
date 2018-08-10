@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "trace.h"
 #include "World.h"
-
+#include <vector>
 
 class Samus : public GameObject
 {
@@ -33,6 +33,8 @@ protected:
 	bool isBall;
 	float startPosJump;
 	float endPosJump;
+private:
+	vector<string> stringMapSamus;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
@@ -79,6 +81,8 @@ public:
 	float getEndPosJump() { return this->endPosJump; }
 
 	void setDimension();
+	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
+	vector<string> getStringMap() { return this->stringMapSamus; }
 };
 
 

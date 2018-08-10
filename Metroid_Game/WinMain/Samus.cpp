@@ -111,21 +111,26 @@ void Samus::setDimension()
 	case RUN_SHOOTING_LEFT: case RUN_SHOOTING_RIGHT: case RUN_SHOOT_UP_LEFT: case RUN_SHOOT_UP_RIGHT: {
 		this->setWidth(32);
 		this->setHeight(64);
+		this->setIsBall(false);
 		break;
 	}
 	case MORPH_LEFT: case MORPH_RIGHT: {
 		this->setWidth(40);
 		this->setHeight(48.0f);
+		this->setIsBall(false);
 		break;
 	}
 	case JUMP_LEFT: case JUMP_RIGHT: case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: {
 		this->setWidth(32);
 		this->setHeight(50);
+		this->setIsBall(false);
 		break;
 	}
 	case TRANSFORM_BALL_LEFT: case TRANSFORM_BALL_RIGHT: {
 		this->setWidth(32);
 		this->setHeight(32);
+		this->setIsBall(true);
+		break;
 	}
 	}
 }
@@ -283,12 +288,6 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	//this->vy = 0;
-	//float newPosX = pos_x + vx * t;
-	//float newPosY = pos_y + vy * t;
-	//pos_x = newPosX;
-	//pos_y = newPosY;
-	
 	isTop = false;
 	isBottom = false;
 	isRight = false;
@@ -310,23 +309,15 @@ void Samus::Update(float t)
 			if (!this->isMorphing) {
 				if (this->state == RUNNING_LEFT || this->state == STAND_LEFT || this->state == RUN_SHOOTING_LEFT || state == STAND_SHOOT_UP_LEFT) {
 					this->state = JUMP_LEFT;
-					this->setWidth(32);
-					this->setHeight(50);
 				}
 				else if (this->state == RUNNING_RIGHT || this->state == STAND_RIGHT || this->state == RUN_SHOOTING_RIGHT || state == STAND_SHOOT_UP_RIGHT) {
 					this->state = JUMP_RIGHT;
-					this->setWidth(32);
-					this->setHeight(50);
 				}
 				else if (this->state == STAND_SHOOT_UP_LEFT || this->state == RUN_SHOOT_UP_LEFT) {
 					this->state = JUMP_SHOOT_UP_LEFT;
-					this->setWidth(32);
-					this->setHeight(50);
 				}
 				else if (this->state == STAND_SHOOT_UP_RIGHT || this->state == RUN_SHOOT_UP_RIGHT) {
 					this->state = JUMP_SHOOT_UP_RIGHT;
-					this->setWidth(32);
-					this->setHeight(50);
 				}
 			}
 
@@ -339,10 +330,10 @@ void Samus::Update(float t)
 				}
 				else if (this->startPosJump - this->endPosJump >= SAMUS_MAX_JUMP - 50 && this->canJump && !this->isOnGround) {
 					if (vy < 0) {
-						this->vy = -80.0f;
+						this->vy = -100.0f;
 					}
 					else {
-						this->vy = 80.0f;
+						this->vy = 100.0f;
 					}
 				}
 				else if (this->startPosJump - this->endPosJump < SAMUS_MIN_JUMP && !this->canJump) {
@@ -363,8 +354,8 @@ void Samus::Update(float t)
 					this->vy = GRAVITY_VELOCITY;
 				}
 			}
-			this->pos_y += this->vy *t;
 			this->pos_x += vx * t;
+			this->pos_y += vy * t;
 		}
 		else if (isLeft && isBottom) {
 			this->pos_x += 1;
@@ -384,7 +375,7 @@ void Samus::Update(float t)
 			this->pos_x -= 1;
 			this->canJump = false;
 			this->vy = GRAVITY_VELOCITY;
-			this->pos_y += vy * t;
+			this->pos_y += 10;
 		}
 		else if (isLeft) {
 			this->pos_x += 1;
@@ -443,15 +434,11 @@ void Samus::Update(float t)
 			if (this->isJumping) {
 				this->canJump = false;
 				this->vy = GRAVITY_VELOCITY;
-				this->pos_y += vy * t;
+				this->pos_y += 10;
 			}
 			this->pos_x += vx * t;
 		}
 	}
-
-
-	
-
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 
 	// Animate samus if he is running

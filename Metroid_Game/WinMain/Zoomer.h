@@ -7,6 +7,7 @@ class Zoomer : public Enemy
 {
 protected:
 	ZOOMER_STATE state;
+	ZOOMER_STATE initState;
 	ZOOMER_DIRECTION direction;
 	ZOOMER_DIRECTION initDirection;
 
@@ -21,6 +22,8 @@ private:
 	bool isTopCollided;
 	bool isBottomCollided;
 	bool isCollisionHandled;
+
+	bool isInCameraAfterDestroyed;
 public:
 	Zoomer();
 	Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type);
@@ -36,6 +39,7 @@ public:
 	ZOOMER_DIRECTION getInitDirection();
 
 	void setVelocity();
+	void reset();
 
 	void setIsLeftCollided(bool isLeft);
 	bool getIsLeftCollided();
@@ -53,7 +57,11 @@ public:
 	virtual void setEnemyStatefromString(string _state);
 	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ===============
-	void Destroy();
+	void Destroy(float x, float y);
 
+	void setInitState(ZOOMER_STATE init) { this->initState = init; }
+	ZOOMER_STATE getInitState() { return this->initState; }
 
+	void setIsInCameraAfterDestroyed(bool value) { this->isInCameraAfterDestroyed = value; }
+	bool getIsInCameraAfterDestroyed() { return this->isInCameraAfterDestroyed; }
 };

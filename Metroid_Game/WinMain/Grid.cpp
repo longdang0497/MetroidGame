@@ -179,34 +179,36 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		case BRICK: {
 
 			object->pos_y += object->vy * collisionTime *this->getDeltaTime();
-
 			if (samus->isJumping) {
 				samus->isJumping = false;
 				samus->isOnGround = true;
 				samus->isFalling = false;
-				samus->pos_y -= (64 - samus->getHeight());
-				samus->setWidth(32);
-				samus->setHeight(64);
-				switch (samus->GetState()) {
-				case JUMP_RIGHT: case MORPH_RIGHT: {
-					samus->SetState(STAND_RIGHT);
-					samus->isMorphing = false;
-					break;
-				}
-				case JUMP_LEFT: case MORPH_LEFT: {
-					samus->SetState(STAND_LEFT);
-					samus->isMorphing = false;
-					break;
-				}
-				case JUMP_SHOOT_UP_LEFT: {
-					samus->SetState(STAND_SHOOT_UP_LEFT);
-					break;
-				}
+				if (!samus->getIsBall()) {
+					samus->pos_y -= (64 - samus->getHeight());
+					samus->setWidth(32);
+					samus->setHeight(64);
+					switch (samus->GetState()) {
+					case JUMP_RIGHT: case MORPH_RIGHT: {
+						samus->SetState(STAND_RIGHT);
+						samus->isMorphing = false;
+						break;
+					}
+					case JUMP_LEFT: case MORPH_LEFT: {
+						samus->SetState(STAND_LEFT);
+						samus->isMorphing = false;
+						break;
+					}
+					case JUMP_SHOOT_UP_LEFT: {
+						samus->SetState(STAND_SHOOT_UP_LEFT);
+						break;
+					}
 
-				case JUMP_SHOOT_UP_RIGHT: {
-					samus->SetState(STAND_SHOOT_UP_RIGHT);
-					break;
+					case JUMP_SHOOT_UP_RIGHT: {
+						samus->SetState(STAND_SHOOT_UP_RIGHT);
+						break;
+					}
 				}
+				
 				}
 			}
 		}
@@ -254,7 +256,22 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 		if (type != SAMUS && type != BULLET) {
 			object->pos_y += object->vy * collisionTime * deltaTime;
 		}
+		else if (type == BULLET) {
+			zoomer->setHealth(zoomer->getHealth() - 20);
+			zoomer->setIsBottomCollided(false);
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
+			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
+			bullet->Reset();
+		}
 		break;
+
 	}
 
 	case TOP: {
@@ -262,7 +279,21 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 		if (type != SAMUS && type != BULLET) {
 			object->pos_y += object->vy * collisionTime * deltaTime;
 		}
+		else if (type == BULLET) {
 
+			zoomer->setHealth(zoomer->getHealth() - 20);
+			zoomer->setIsTopCollided(false);
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
+			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
+			bullet->Reset();
+		}
 		break;
 	}
 
@@ -275,6 +306,21 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			object->pos_x += object->vx * deltaTime;
 			zoomer->setIsLeftCollided(false);
 		}
+		else if (type == BULLET) {
+
+			zoomer->setHealth(zoomer->getHealth() - 20);
+			zoomer->setIsLeftCollided(false);
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
+			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
+			bullet->Reset();
+		}
 		break;
 	}
 
@@ -283,16 +329,32 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 		if (type != SAMUS && type != BULLET) {
 			object->pos_x += object->vx * collisionTime *deltaTime;
 		}
+		else if (type == BULLET) {
+
+			zoomer->setHealth(zoomer->getHealth() - 20);
+			zoomer->setIsRightCollided(false);
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
+			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
+			bullet->Reset();
+		}
 		break;
 	}
 	}
 }
 
+
 void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
 	if (!object->isActive)
 		return;
 
-	Bullet* bullet = static_cast<Bullet*>(object);
+	Bullet* bullet = dynamic_cast<Bullet*>(object);
 	OBJECT_TYPE type = otherObject->getType();
 
 	switch (collisionDirection) {
@@ -302,6 +364,22 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			|| type == BOMB_ITEM || type == MARU_MARI
 			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
+			bullet->Reset();
+		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK)
+		{
+			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
+
+			zoomer->setHealth(zoomer->getHealth() - 20);
+
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
 			bullet->Reset();
 		}
 		break;
@@ -320,6 +398,21 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK)
+		{
+			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
+
+			zoomer->setHealth(zoomer->getHealth() - 20);
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
+			bullet->Reset();
+		}
 		break;
 	}
 
@@ -329,6 +422,22 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			|| type == BOMB_ITEM || type == MARU_MARI
 			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
+			bullet->Reset();
+		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK)
+		{
+			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
+
+			zoomer->setHealth(zoomer->getHealth() - 20);
+
+			if (zoomer->getHealth() == 0)
+			{
+				zoomer->isActive = false;
+				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			}
+			else {
+				zoomer->setIsEnemyFreezed(true);
+			}
 			bullet->Reset();
 		}
 		break;
@@ -342,6 +451,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsRight(false);
 	}
 }
+
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 
 	// Kiểm tra xem nó có thay đổi cell hay không

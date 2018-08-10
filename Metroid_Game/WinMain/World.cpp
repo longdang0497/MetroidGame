@@ -59,16 +59,21 @@ void World::Update(float t)
 	/*START UPDATING ENEMY*/
 	for (int i = 0; i < this->enemy.size(); i++) {
 		if (this->enemy[i]->isInsideMapBound(this->metroid->camera->getBoundary())) {
-			if (!this->enemy[i]->isActive && !this->enemy[i]->isDeath) {
-				enemy[i]->isActive = true;
-				enemy[i]->startMoving();
+			if (!this->enemy[i]->isActive) {
+				if (this->enemy[i]->isDeath) {
+				}
+				else {
+					enemy[i]->isActive = true;
+				}
+
 			}
 			else if (this->enemy[i]->isActive && !this->enemy[i]->isDeath) {
 				enemy[i]->Update(t);
 			}
-			else {
-				//khong lam gi het
-			}
+		}
+		else {
+			this->enemy[i]->isDeath = false;
+			this->enemy[i]->health = 100.0f;
 		}
 	}
 	/*END UPDATING ENEMY*/
@@ -155,6 +160,7 @@ void World::loadEnemyPositions(string filePath) {
 			monster = new Zoomer(spriteHandler, this, ZOOMER_YELLOW);
 			this->setDirectionForZoomer(monster, v[5]);
 			monster->setEnemyStatefromString(v[6]);
+			
 			break;
 		}
 		case ZOOMER_PINK_CASE: {
@@ -174,6 +180,7 @@ void World::loadEnemyPositions(string filePath) {
 		default:
 			break;
 		}
+
 		monster->setPosX(stoi(v[3]));
 		monster->setInitPosX(stoi(v[3]));
 		monster->setPosY(stoi(v[4]));
@@ -208,15 +215,16 @@ vector<string> World::split(string s, string c) {
 void World::setDirectionForZoomer(Enemy* enemy, string str) {
 	Zoomer* zoomer = dynamic_cast<Zoomer*>(enemy);
 	if (str == "RIGHT") {
-		zoomer->setInitDirection(ZOOMER_RIGHT);
+		zoomer->setDirection(ZOOMER_RIGHT);
 	}
 	else if (str == "LEFT") {
-		zoomer->setInitDirection(ZOOMER_LEFT);
+		zoomer->setDirection(ZOOMER_LEFT);
 	}
 	else if (str == "UP") {
-		zoomer->setInitDirection(ZOOMER_UP);
+		zoomer->setDirection(ZOOMER_UP);
 	}
 	else if (str == "DOWN") {
-		zoomer->setInitDirection(ZOOMER_DOWN);
+		zoomer->setDirection(ZOOMER_DOWN);
 	}
+	zoomer->setInitDirection(zoomer->getDirection());
 }
