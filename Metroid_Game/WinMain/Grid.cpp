@@ -175,44 +175,114 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 
 void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
 	Samus* samus = dynamic_cast<Samus*>(object);
-	//object->pos_y += object->vy * collisionTime *this->getDeltaTime();
 	OBJECT_TYPE type = otherObject->getType();
 
 	if (collisionDirection == LEFT)
 	{
 		samus->isLeft = true;
-		if (type == GATE_BLOCK)
-		{
+		switch (type) {
+		case BRICK: {
+			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+			break;
+		}
+		case GATE_BLOCK:
 			collisionDirection = NONE;
 			samus->pos_x += samus->vx * this->getDeltaTime();
+			break;
+		case GATE:
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == CLOSE)
+			{
+				gate->setIsLeft(true);
+				gate->setGateState(DESTROYING);
+			}
+			else if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == OPEN)
+			{
+				collisionDirection = NONE;
+				samus->pos_x += samus->vx * this->getDeltaTime();
+			}
+			break;
 		}
-		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 	}
 
 	else if (collisionDirection == RIGHT)
 	{
 		samus->isRight = true;
-		if (type == GATE_BLOCK)
-		{
+		switch (type) {
+		case BRICK: {
+			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+			break;
+		}
+		case GATE_BLOCK:
 			collisionDirection = NONE;
 			samus->pos_x += samus->vx * this->getDeltaTime();
+			break;
+		case GATE:
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == CLOSE)
+			{
+				gate->setIsLeft(true);
+				gate->setGateState(OPEN);
+			}
+			else if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == OPEN)
+			{
+				collisionDirection = NONE;
+				samus->pos_x += samus->vx * this->getDeltaTime();
+			}
+			break;
 		}
-		object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 	}
 
 	else if (collisionDirection == TOP)
 	{
 		samus->isTop = true;
-		samus->setVelocityY(-samus->getVelocityY());
+		switch (type) {
+		case BRICK: {
+			object->pos_y += object->vy * collisionTime*this->getDeltaTime();
+			break;
+		}
+		}
 	}
 
 	else if (collisionDirection == BOTTOM)
 	{
 		samus->isBottom = true;
-		object->setFall(false);
-		object->setJump(true);
-		samus->isOnGround = true;
-		object->pos_y += object->vy * collisionTime *this->getDeltaTime();
+		switch (type) {
+		case BRICK: {
+
+			object->pos_y += object->vy * collisionTime *this->getDeltaTime();
+
+			if (samus->isJumping) {
+				samus->isJumping = false;
+				samus->isOnGround = true;
+				samus->isFalling = false;
+				samus->pos_y -= (64 - samus->getHeight());
+				samus->setWidth(32);
+				samus->setHeight(64);
+				switch (samus->GetState()) {
+				case JUMP_RIGHT: case MORPH_RIGHT: {
+					samus->SetState(STAND_RIGHT);
+					samus->isMorphing = false;
+					break;
+				}
+				case JUMP_LEFT: case MORPH_LEFT: {
+					samus->SetState(STAND_LEFT);
+					samus->isMorphing = false;
+					break;
+				}
+				case JUMP_SHOOT_UP_LEFT: {
+					samus->SetState(STAND_SHOOT_UP_LEFT);
+					break;
+				}
+
+				case JUMP_SHOOT_UP_RIGHT: {
+					samus->SetState(STAND_SHOOT_UP_RIGHT);
+					break;
+				}
+				}
+			}
+		}
+		}
 	}
 }
 

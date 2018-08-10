@@ -36,6 +36,11 @@ protected:
 
 	int tempX;
 	bool isBall;
+
+	float startPosJump;
+	float endPosJump;
+private:
+	vector<string> stringMapSamus;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
@@ -46,6 +51,7 @@ public:
 	bool isBottom = false;
 	bool isLeft = false;
 	bool isRight = false;
+	bool isColisionHandled = false;
 
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus
@@ -75,6 +81,14 @@ public:
 	void Destroy();
 	//================= END OVERRIDE VIRTUAL METHOD =============
 
+	void setStartPosJump(float posY) { this->startPosJump = posY; }
+	float getStartPosJump() { return this->startPosJump; }
+	void setEndPosJump(float currentPosY) { this->endPosJump = currentPosY; }
+	float getEndPosJump() { return this->endPosJump; }
+
+	void setDimension();
+	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
+	vector<string> getStringMap() { return this->stringMapSamus; }
 };
 
 

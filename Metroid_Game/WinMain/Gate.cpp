@@ -87,6 +87,14 @@ void Gate::Update(float t)
 	// Xet va cham va cap nhat vi tri
 	manager->getMetroid()->getGrid()->handleCell(this, row, column);
 
+	if (this->getGateState() == OPEN && (isLeft == true || isRight == true))
+	{
+		float time = 0.3f;
+		time -= t;
+		if (time <= 0.0f)
+			this->setGateState(CLOSE);
+	}
+
 	manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
 
 	DWORD now = GetTickCount();

@@ -65,4 +65,6 @@ public:
 	LPD3DXSPRITE getSpriteHandler();
 	Map * getMap();
 	Grid * getGrid();
+
+	void setSamusBulletDirection(Bullet*);
 };

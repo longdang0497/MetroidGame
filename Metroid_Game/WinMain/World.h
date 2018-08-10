@@ -27,7 +27,7 @@ public:
 	ExplodeEffect* explodeEffect;
 	BombWeapon* bombWeapon;
 	Gate * gateLeft;
-	//Gate * gateRight;
+	Gate * gateRight;
 	GateBlock * gateBlock;
 
 	vector<Bullet*> samusBullet;

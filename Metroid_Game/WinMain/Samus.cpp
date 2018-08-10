@@ -16,6 +16,9 @@ void Samus::Render()
 			|| this->state == RUN_SHOOT_UP_RIGHT) {
 			position.y -= 10;
 		}
+		else if (this->isBall) {
+			position.y += 5;
+		}
 
 		position.z = 0;
 
@@ -84,7 +87,7 @@ Samus::Samus()
 {
 	this->isActive = true;
 	this->isBall = false;
-
+	this->isMorphing = false;
 	this->setType(SAMUS);
 }
 
@@ -94,6 +97,34 @@ void Samus::Destroy()
 	this->isActive = false;
 
 	//--TO DO: Đưa Samus ra khỏi viewport
+}
+
+// Chieu dai va chieu rong cua bounding box
+void Samus::setDimension()
+{
+	switch (this->state) {
+	case STAND_LEFT: case STAND_RIGHT: case RUNNING_LEFT: case RUNNING_RIGHT: case STAND_SHOOT_UP_LEFT: case STAND_SHOOT_UP_RIGHT:
+	case RUN_SHOOTING_LEFT: case RUN_SHOOTING_RIGHT: case RUN_SHOOT_UP_LEFT: case RUN_SHOOT_UP_RIGHT: {
+		this->setWidth(32);
+		this->setHeight(64);
+		break;
+	}
+	case MORPH_LEFT: case MORPH_RIGHT: {
+		this->setWidth(40);
+		this->setHeight(48.0f);
+		break;
+	}
+	case JUMP_LEFT: case JUMP_RIGHT: case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: {
+		this->setWidth(32);
+		this->setHeight(50);
+		break;
+	}
+	case TRANSFORM_BALL_LEFT: case TRANSFORM_BALL_RIGHT: {
+		this->setWidth(32);
+		this->setHeight(32);
+		break;
+	}
+	}
 }
 
 Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
@@ -112,9 +143,17 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 
 	gravity = FALLDOWN_VELOCITY_DECREASE;
 	this->isBall = false;
+	this->isMorphing = false;
+	this->isJumping = false;
+	this->canJump = false;
+	this->isOnGround = true;
+	this->isFalling = false;
 
 	this->height = 64;
 	this->width = 32;
+
+	this->startPosJump = 0.0f;
+	this->endPosJump = 0.0f;
 }
 
 Samus::~Samus()
@@ -167,14 +206,14 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	/*pos_x = 992;	
-	pos_y = 320;*/	
-	this->pos_x = 1140;
+	pos_x = 992;	
+	pos_y = 320;	
+	//this->pos_x = 1140;
 	//this->pos_y = 352;
-	pos_y = 200;
+	//pos_y = 200;
 	vx = 0;
 	vx_last = 1.0f;
-	vy = JUMP_VELOCITY_BOOST_FIRST;
+	vy = GRAVITY_VELOCITY;
 
 	//Init state of samus
 	state = STAND_RIGHT;
@@ -274,140 +313,191 @@ void Samus::Update(float t)
 	isBottom = false;
 	isRight = false;
 	isLeft = false;
-	isOnGround = false;
-	if (this->isFalling != true)
-	{
-		vy = gravity;
-		canJump = true;
-	}
-	else
-	{
-		vy += gravity * t;
-		isOnGround = false;
-		if (vy > MAX_FALLING)
-		{
-			vy = MAX_FALLING;
-		}
-
-		if (this->state == JUMP_LEFT || this->state == JUMP_RIGHT)
-		{
-			this->width = WIDTH_SAMUS_JUMP;
-			this->height = HEIGHT_SAMUS_JUMP;
-		}
-		else if (this->state == TRANSFORM_BALL_LEFT)
-		{
-			this->width = WIDTH_SAMUS_BALLLEFT;
-			this->height = HEIGHT_SAMUS_BALLLEFT;
-		}
-		else if (this->state == TRANSFORM_BALL_RIGHT)
-		{
-			this->width = WIDTH_SAMUS_BALLRIGHT;
-			this->height = HEIGHT_SAMUS_BALLRIGHT;
-		}
-		else
-		{
-			this->width = 32;
-			this->height = 64;
-		}
-	}
-
+	isColisionHandled = false;
 
 	float newPosX = pos_x + vx * t;
 	float newPosY = pos_y + vy * t;
 
 	int row = (int)floor(this->pos_y / CELL_SIZE);
 	int column = (int)floor(this->pos_x / CELL_SIZE);
+
+	this->setDimension();
+
 	this->grid->handleCell(this, row, column);
 
-	if (isTop == false && isBottom == false && isLeft == false && isRight == false) {
-		/*if (vx > 0 && manager->metroid->getInput()->IsKeyDown(DIK_RIGHT))
-		this->SetState(MORPH_RIGHT);
-		else if (vx > 0)
-		this->SetState(JUMP_RIGHT);
+	if (!isColisionHandled) {
 
-		if (vx < 0 && manager->metroid->getInput()->IsKeyDown(DIK_LEFT))
-		this->SetState(MORPH_LEFT);
-		else if (vx < 0)
-		this->SetState(JUMP_LEFT);*/
-		pos_x += vx * t;
-		pos_y += vy * t;
-	}
-	else if (isTop == true && isBottom == true && isLeft == false && isRight == false)
-	{
-		pos_x += vx * t;
-		pos_y += vy * t;
-		if (this->GetState() == JUMP_LEFT)
-			this->SetState(RUNNING_LEFT);
-		else if (this->GetState() == JUMP_RIGHT)
-			this->SetState(RUNNING_RIGHT);
-	}
-	else if (isLeft == true && isBottom == true && isRight == false && isTop == false)
-	{
+		if (isTop == false && isBottom == false && isLeft == false && isRight == false) {
+			this->isJumping = true;
+			this->isOnGround = false;
+			if (!this->isMorphing) {
+				if (this->state == RUNNING_LEFT || this->state == STAND_LEFT 
+					|| this->state == RUN_SHOOTING_LEFT || state == STAND_SHOOT_UP_LEFT) {
+					this->state = JUMP_LEFT;
+					this->setWidth(32);
+					this->setHeight(50);
+				}
+				else if (this->state == RUNNING_RIGHT || this->state == STAND_RIGHT 
+					|| this->state == RUN_SHOOTING_RIGHT || state == STAND_SHOOT_UP_RIGHT) {
+					this->state = JUMP_RIGHT;
+					this->setWidth(32);
+					this->setHeight(50);
+				}
+				else if (this->state == STAND_SHOOT_UP_LEFT || this->state == RUN_SHOOT_UP_LEFT) {
+					this->state = JUMP_SHOOT_UP_LEFT;
+					this->setWidth(32);
+					this->setHeight(50);
+				}
+				else if (this->state == STAND_SHOOT_UP_RIGHT || this->state == RUN_SHOOT_UP_RIGHT) {
+					this->state = JUMP_SHOOT_UP_RIGHT;
+					this->setWidth(32);
+					this->setHeight(50);
+				}
+			}
 
-		//if (isFalling != true)
-		//pos_y += vy * t;
-	}
-	else if (isLeft == true && isTop == true && isRight == false && isBottom == false)
-	{
-		pos_x += vx * t;
-		//if (isFalling != true)
-		//pos_y += vy * t;
-	}
-	else if (isRight == true && isBottom == true && isLeft == false && isTop == false)
-	{
-		//pos_x += vx * t;
-		//if (isFalling != true)
-		//pos_y += vy * t;
-	}
-	else if (isRight == true && isTop == true && isLeft == false && isBottom == false)
-	{
-		pos_x += vx * t;
-		//if (isFalling != true)
-		//pos_y += vy * t;
-	}
-	else if (isLeft == true && isBottom == false && isRight == false && isTop == false) {
-		/*if (vx > 0)
-		this->SetState(RUNNIN_RIGHT);
-		else if (vx < 0)
-		this->SetState(STAND_LEFT);*/
-		if (this->GetState() == JUMP_LEFT)
-			this->SetState(RUNNING_LEFT);
-		else if (this->GetState() == JUMP_RIGHT)
-			this->SetState(RUNNING_RIGHT);
+			this->endPosJump = this->pos_y;
 
-		//pos_y += vy * t;
-	}
-	else if (isRight == true && isBottom == false && isLeft == false && isTop == false) {
-		/*if (vx > 0)
-		this->SetState(RUNNIN_RIGHT);
-		else if (vx < 0)
-		this->SetState(STAND_LEFT);*/
-		if (this->GetState() == JUMP_LEFT)
-			this->SetState(RUNNING_LEFT);
-		else if (this->GetState() == JUMP_RIGHT)
-			this->SetState(RUNNING_RIGHT);
+			if (vy < 0) {
+				if (this->startPosJump - this->endPosJump >= SAMUS_MAX_JUMP 
+					&& this->canJump && !this->isOnGround) {
+					this->canJump = false;
+					this->vy = GRAVITY_VELOCITY;
+				}
+				else if (this->startPosJump - this->endPosJump >= SAMUS_MAX_JUMP - 50 
+					&& this->canJump && !this->isOnGround) {
+					if (vy < 0) {
+						this->vy = -80.0f;
+					}
+					else {
+						this->vy = 80.0f;
+					}
+				}
+				else if (this->startPosJump - this->endPosJump < SAMUS_MIN_JUMP && !this->canJump) {
 
-		//pos_y += vy * t;
-	}
-	else if (isTop == true && isLeft == false && isRight == false && isBottom == false) {
-		/*if (vx > 0)
-		this->SetState(RUNNIN_RIGHT);
-		else if (vx < 0)
-		this->SetState(STAND_LEFT);*/
-		pos_y += vy * t;
-		pos_x += vx * t;
-	}
-	else if (isBottom == true && isLeft == false && isRight == false && isTop == false) {
-		/*if (vx > 0)
-		this->SetState(RUNNIN_RIGHT);
-		else if (vx < 0)
-		this->SetState(STAND_LEFT);*/
-		if (this->GetState() == JUMP_LEFT || this->GetState() == MORPH_LEFT)
-			this->SetState(RUNNING_LEFT);
-		else if (this->GetState() == JUMP_RIGHT || this->GetState() == MORPH_RIGHT)
-			this->SetState(RUNNING_RIGHT);
+					if (this->startPosJump - this->endPosJump < 32) {
+						this->vy = 50.0f;
+					}
+					else {
+						this->vy = -GRAVITY_VELOCITY;
+					}
+				}
+				else if (this->startPosJump - this->endPosJump >= SAMUS_MIN_JUMP 
+					&& this->startPosJump - this->endPosJump <= SAMUS_MAX_JUMP && !this->canJump) {
+					this->vy = GRAVITY_VELOCITY;
+				}
+			}
+			else {
+				if (!this->canJump && this->isOnGround) {
+					this->vy = GRAVITY_VELOCITY;
+				}
+			}
+			//float temPosY = this->pos_y + this->vy*t;
+			this->pos_x += vx * t;
+			this->pos_y += vy * t;
+			/*	if (this->vy > 0) {
+			this->pos_y = temPosY;
+			}
+			else {
+			int row = (int)floor(temPosY / 32.0f);
+			int column1 = (int)floor(this->pos_x / 32.0f);
+			int column2 = (int)ceil(this->pos_x / 32.0f);
+			if (this->stringMapSamus[row][column1] == '0' && this->stringMapSamus[row][column2] == '0') {
+			this->pos_y = temPosY;
+			}
+			else {
+			if (temPosY < (row) * 32) {
+			this->pos_y = (row) * 32;
+			this->canJump = false;
+			this->vy = GRAVITY_VELOCITY;
+			}
+			}
+			}*/
+		}
+		else if (isLeft && isBottom) {
+			this->pos_x += 1;
+			pos_y += 0;
+		}
+		else if (isRight && isBottom) {
+			this->pos_x -= 1;
+			pos_y += 0;
+		}
+		else if (isLeft && isTop) {
+			this->pos_x += 1;
+			this->canJump = false;
+			this->vy = GRAVITY_VELOCITY;
+			this->pos_y += vy * t;
+		}
+		else if (isRight && isTop) {
+			this->pos_x -= 1;
+			this->canJump = false;
+			this->vy = GRAVITY_VELOCITY;
+			this->pos_y += 10;
+		}
+		else if (isLeft) {
+			this->pos_x += 1;
 
-		pos_x += vx * t;
+			if (this->isJumping) {
+				this->endPosJump = this->pos_y;
+				if (vy < 0) {
+					if (this->startPosJump - this->endPosJump >= SAMUS_MAX_JUMP && this->canJump && !this->isOnGround) {
+						this->canJump = false;
+						this->vy = GRAVITY_VELOCITY;
+					}
+					else if (this->startPosJump - this->endPosJump < SAMUS_MIN_JUMP && !this->canJump) {
+						this->vy = -GRAVITY_VELOCITY;
+					}
+					else if (this->startPosJump - this->endPosJump >= SAMUS_MIN_JUMP && this->startPosJump - this->endPosJump <= SAMUS_MAX_JUMP && !this->canJump) {
+						this->vy = GRAVITY_VELOCITY;
+					}
+				}
+				else {
+					if (!this->canJump && this->isOnGround) {
+						this->vy = GRAVITY_VELOCITY;
+					}
+				}
+			}
+			this->pos_y += this->vy * t;
+		}
+		else if (isRight) {
+			this->pos_x -= 1;
+
+			if (this->isJumping) {
+				this->endPosJump = this->pos_y;
+				if (vy < 0) {
+					if (this->startPosJump - this->endPosJump >= SAMUS_MAX_JUMP 
+						&& this->canJump && !this->isOnGround) {
+						this->canJump = false;
+						this->vy = GRAVITY_VELOCITY;
+					}
+					else if (this->startPosJump - this->endPosJump < SAMUS_MIN_JUMP 
+						&& !this->canJump) {
+						this->vy = -GRAVITY_VELOCITY;
+					}
+					else if (this->startPosJump - this->endPosJump >= SAMUS_MIN_JUMP 
+						&& this->startPosJump - this->endPosJump <= SAMUS_MAX_JUMP 
+						&& !this->canJump) {
+						this->vy = GRAVITY_VELOCITY;
+					}
+				}
+				else {
+					if (!this->canJump && this->isOnGround) {
+						this->vy = GRAVITY_VELOCITY;
+					}
+				}
+			}
+			this->pos_y += this->vy * t;
+		}
+		else if (isBottom) {
+			this->pos_x += vx * t;
+		}
+		else if (isTop) {
+			if (this->isJumping) {
+				this->canJump = false;
+				this->vy = GRAVITY_VELOCITY;
+				this->pos_y += 10;
+			}
+			this->pos_x += vx * t;
+		}
 	}
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
