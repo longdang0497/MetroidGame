@@ -10,6 +10,8 @@
 #include "BombWeapon.h"
 #include "Gate.h"
 #include "GateBlock.h"
+#include "Ridley.h"
+#include "Kraid.h"
 
 using namespace std;
 
@@ -29,6 +31,8 @@ public:
 	Gate * gateLeft;
 	Gate * gateRight;
 	GateBlock * gateBlock;
+	Kraid * kraid;
+	Ridley * ridley;
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;

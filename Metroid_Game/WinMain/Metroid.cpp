@@ -53,6 +53,11 @@ void Metroid::_InitPositions()
 	grid->add(world->gateRight);
 	world->gateBlock->Init(2240, 160);
 	grid->add(world->gateBlock);
+
+	world->kraid->Init(5088, 320);
+	grid->add(world->kraid);
+	world->ridley->Init(4576, 320);
+	grid->add(world->ridley);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 

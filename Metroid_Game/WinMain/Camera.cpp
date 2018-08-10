@@ -96,7 +96,6 @@ void Camera::Update(float t)
 		//	//	
 		//	//	//m_following->isActive = true;
 		//	//}
-
 		//	if (m_following->pos_x >= WIDTH_ROOM1 - GATE_BLOCK_WIDTH / 2
 		//		&& Camera_bound.left <= WIDTH_ROOM1)
 		//	{
@@ -118,11 +117,13 @@ void Camera::Update(float t)
 
 		if (m_following->pos_x > WIDTH_ROOM1 && Camera_bound.left < WIDTH_ROOM1)
 		{
+			m_following->isActive = false;
 			//int leftCamera = eye.x - CAMERA_FOLLOW_POINT_LEFT_RATIO * width;
 			//if (leftCamera < WIDTH_ROOM1)
 			Camera_bound.left += 128;
 			if (Camera_bound.left >= WIDTH_ROOM1 - CAMERA_FOLLOW_POINT_LEFT_RATIO * width)
 				Camera_bound.left = WIDTH_ROOM1 - CAMERA_FOLLOW_POINT_LEFT_RATIO * width;
+			m_following->isActive = true;
 
 			Camera_bound.top = eye.y - CAMERA_FOLLOW_POINT_TOP_RATIO * height;
 			Camera_bound.bottom = eye.y + CAMERA_FOLLOW_POINT_BOTTOM_RATIO * height;

@@ -32,6 +32,9 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	gateLeft = new Gate(spriteHandler, this);
 	gateBlock = new GateBlock(spriteHandler, this, metroid->getGrid());
 
+	kraid = new Kraid(spriteHandler, this);
+	ridley = new Ridley(spriteHandler, this);
+
 	loadEnemyPositions("Monster_Room1.txt");
 }
 
@@ -45,6 +48,8 @@ World::~World()
 	delete(gateLeft);
 	delete(gateRight);
 	delete(gateBlock);
+	delete(ridley);
+	delete(kraid);
 }
 
 void World::Update(float t)
@@ -82,6 +87,9 @@ void World::Update(float t)
 	gateLeft->Update(t);
 	gateRight->Update(t);
 
+	kraid->Update(t);
+	ridley->Update(t);
+
 	//if (gateLeft->getGateState() == DESTROYING)
 		//gateRight->setGateState(OPEN);
 	/*else if(gateRight->getGateState() == DESTROYING)
@@ -109,6 +117,9 @@ void World::Render()
 	gateBlock->Render();
 	gateRight->Render();
 	gateLeft->Render();
+
+	kraid->Render();
+	ridley->Render();
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -162,6 +173,14 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	gateRight->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
 	gateLeft->InitSprites(d3ddv, gate_texture, GATE_LEFT);
 	gateBlock->InitSprites(d3ddv, gate_texture);
+
+	// Boss Texture
+	Texture * textureBoss = new Texture();
+	LPDIRECT3DTEXTURE9 boss_texture = textureBoss->loadTexture(d3ddv, BOSS_TEXTURE);
+	if (boss_texture == NULL)
+		trace(L"Unable to load Boss Texture");
+	kraid->InitSprites(d3ddv, boss_texture);
+	ridley->InitSprites(d3ddv, boss_texture);
 }
 
 void World::loadEnemyPositions(string filePath) {

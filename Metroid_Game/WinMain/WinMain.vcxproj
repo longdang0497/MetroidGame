@@ -150,11 +150,13 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Kraid.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MaruMari.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Metroid.cpp" />
+    <ClCompile Include="Ridley.cpp" />
     <ClCompile Include="Samus.cpp" />
     <ClCompile Include="SDKsound.cpp" />
     <ClCompile Include="SDKwavefile.cpp" />
@@ -188,11 +190,13 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Kraid.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MaruMari.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Metroid.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Ridley.h" />
     <ClInclude Include="Samus.h" />
     <ClInclude Include="SDKsound.h" />
     <ClInclude Include="SDKwavefile.h" />
@@ -207,6 +211,7 @@
   <ItemGroup>
     <Image Include="brick_16x16.png" />
     <Image Include="brick_32x32.png" />
+    <Image Include="enemy\boss_sheet.png" />
     <Image Include="enemy\explosion.png" />
     <Image Include="enemy\metroid_enemies_sheet.png" />
     <Image Include="map\brick_32x32.png" />
@@ -226,6 +231,15 @@
     <Text Include="enemy\BLOCK_LEFT.txt" />
     <Text Include="enemy\BLOCK_RIGHT.txt" />
     <Text Include="enemy\ENEMY_DETROYED.txt" />
+    <Text Include="enemy\KRAID_BOMERANG.txt" />
+    <Text Include="enemy\KRAID_BULLET.txt" />
+    <Text Include="enemy\KRAID_LEFT.txt" />
+    <Text Include="enemy\KRAID_RIGHT.txt" />
+    <Text Include="enemy\RIDLEY_BULLET.txt" />
+    <Text Include="enemy\RIDLEY_FLY_LEFT.txt" />
+    <Text Include="enemy\RIDLEY_FLY_RIGHT.txt" />
+    <Text Include="enemy\RIDLEY_SIT_LEFT.txt" />
+    <Text Include="enemy\RIDLEY_SIT_RIGHT.txt" />
     <Text Include="enemy\ZOOMER_PINK_BOTTOM.txt" />
     <Text Include="enemy\ZOOMER_PINK_LEFT.txt" />
     <Text Include="enemy\ZOOMER_PINK_RIGHT.txt" />
