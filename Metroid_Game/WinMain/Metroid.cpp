@@ -49,8 +49,8 @@ void Metroid::_InitPositions()
 
 	world->gateLeft->Init(2224, 160);
 	grid->add(world->gateLeft);
-	world->gateRight->Init(2304, 160);
-	grid->add(world->gateRight);
+	//world->gateRight->Init(2304, 160);
+	//grid->add(world->gateRight);
 	world->gateBlock->Init(2240, 160);
 	grid->add(world->gateBlock);
 

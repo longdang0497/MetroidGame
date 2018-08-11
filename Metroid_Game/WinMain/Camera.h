@@ -19,6 +19,13 @@ public:
 	void SetMapBoundary(RECT rect);
 	RECT getBoundary();
 	void Follow(GameObject * object);
+
+	void setIsChanging(bool value) { this->isChangingRoom = value; }
+	bool getIsChanging() { return this->isChangingRoom; }
+	void setStartPosX(float value) { this->startPosX = value; }
+	float getStartPosX() { return this->startPosX; }
+	void setEndPosX(float value) { this->endPosX = value; }
+	float getEndPosX() { return this->endPosX; }
 private:
 	float angle;
 	DirectX::XMFLOAT3 scaleFactors;
@@ -28,8 +35,12 @@ private:
 
 	int width;
 	int height;
-	RECT m_map_bound = RECT();
+	RECT m_map_bound;
 	GameObject* m_following = nullptr;
 	RECT Camera_bound;
+
+	bool isChangingRoom;
+	float startPosX;	//vi tri bat dau luot camera (co dinh)
+	float endPosX;	//
 
 };

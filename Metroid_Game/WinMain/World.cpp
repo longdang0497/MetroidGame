@@ -28,7 +28,7 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	explodeEffect = new ExplodeEffect(spriteHandler, this, metroid->getGrid());
 	bombWeapon = new BombWeapon(spriteHandler, this);
 
-	gateRight = new Gate(spriteHandler, this);
+	//gateRight = new Gate(spriteHandler, this);
 	gateLeft = new Gate(spriteHandler, this);
 	gateBlock = new GateBlock(spriteHandler, this, metroid->getGrid());
 
@@ -46,7 +46,7 @@ World::~World()
 	delete(explodeEffect);
 	delete(bombWeapon);
 	delete(gateLeft);
-	delete(gateRight);
+	//delete(gateRight);
 	delete(gateBlock);
 	delete(ridley);
 	delete(kraid);
@@ -85,7 +85,7 @@ void World::Update(float t)
 	explodeEffect->Update(t);
 	gateBlock->Update(t);
 	gateLeft->Update(t);
-	gateRight->Update(t);
+	//gateRight->Update(t);
 
 	kraid->Update(t);
 	ridley->Update(t);
@@ -115,7 +115,7 @@ void World::Render()
 	bombWeapon->Render();
 	explodeEffect->Render();
 	gateBlock->Render();
-	gateRight->Render();
+	//gateRight->Render();
 	gateLeft->Render();
 
 	kraid->Render();
@@ -170,7 +170,7 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
 	if (gate_texture == NULL)
 		trace(L"Unable to load Gate Texture");
-	gateRight->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
+	//gateRight->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
 	gateLeft->InitSprites(d3ddv, gate_texture, GATE_LEFT);
 	gateBlock->InitSprites(d3ddv, gate_texture);
 

@@ -194,7 +194,7 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == CLOSE)
 			{
 				gate->setIsLeft(true);
-				gate->setGateState(DESTROYING);
+				gate->setGateState(OPEN);
 			}
 			else if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == OPEN)
 			{

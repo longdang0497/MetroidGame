@@ -41,6 +41,9 @@ protected:
 	float endPosJump;
 private:
 	vector<string> stringMapSamus;
+	bool isChangingRoom;
+	float posX_StartChangingRoom;
+	float posX_EndChangingRoom;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
@@ -89,6 +92,14 @@ public:
 	void setDimension();
 	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
 	vector<string> getStringMap() { return this->stringMapSamus; }
+
+	void setIsChangingRoom(bool value) { this->isChangingRoom = value; }
+	bool getIsChangingRoom() { return this->isChangingRoom; }
+
+	void setPosX_StartChangingRoom(float value) { this->posX_StartChangingRoom = value; }
+	float getPosX_StartChangingRoom() { return this->posX_StartChangingRoom; }
+	void  setPosX_EndChangingRoom(float value) { this->posX_EndChangingRoom = value; }
+	float getPosX_EndChangingRoom() { return this->posX_EndChangingRoom; }
 };
 
 
