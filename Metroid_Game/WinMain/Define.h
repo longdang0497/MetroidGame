@@ -13,6 +13,9 @@ class CSound;
 class GameSound;
 class Map;
 class Gate;
+class KraidBomerang;
+class KraidBullet;
+class RidleyBullet;
 
 #define KEYBOARD_BUFFER_SIZE	1024
 #define KEY_DOWN(code) ( IsKeyDown(code) )
@@ -39,7 +42,7 @@ class Gate;
 #define MAP_FULL_ROOM "map\\fieldFullRoom.txt"
 #define WIDTH_ROOM1 2272
 #define WIDTH_ROOM2 2048
-#define WIDTH_ROOM_BOSS 512
+#define WIDTH_ROOM_BOSS 640
 #define HEIGHT_ROOM	480
 
 enum ROOM_NUMBER {

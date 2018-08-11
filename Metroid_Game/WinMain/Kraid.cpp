@@ -7,6 +7,8 @@ Kraid::Kraid(LPD3DXSPRITE spriteHandler, World * manager)
 	this->manager = manager;
 	this->isActive = true;
 
+	this->width = WIDTH_KRAID;
+	this->height = HEIGHT_KRAID;
 	//health = HEALTH_RIDLEY;
 }
 
@@ -28,7 +30,7 @@ void Kraid::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 
 void Kraid::Init(float x, float y)
 {
-	this->setPosX(x);
+	this->pos_x = x;
 	this->pos_y = y;
 }
 

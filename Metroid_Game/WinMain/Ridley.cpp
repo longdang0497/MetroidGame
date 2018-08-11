@@ -7,6 +7,8 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 	this->manager = manager;
 	this->isActive = true;
 
+	this->width = WIDTH_RIDLEY;
+	this->height = HEIGHT_RIDLEY_FLY;
 	//health = HEALTH_RIDLEY;
 }
 
@@ -40,7 +42,7 @@ void Ridley::Update(float t)
 {
 	if (!isActive) return;
 	
-	time_push -= t;
+	/*time_push -= t;
 	if (time_push <= 0)
 	{
 		vy -= 0.007f;
@@ -48,7 +50,7 @@ void Ridley::Update(float t)
 	else
 	{
 		vy += 0.011f;
-	}
+	}*/
 
 	pos_x += vx * t;
 	pos_y += vy * t;
