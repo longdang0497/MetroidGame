@@ -109,6 +109,9 @@ void Gate::Update(float t)
 	// Xet va cham va cap nhat vi tri
 	manager->getMetroid()->getGrid()->handleCell(this, row, column);
 
+	if (isLeft == true)
+		setGateState(OPEN);
+
 	if (this->getGateState() == OPEN && (isLeft == true || isRight == true))
 	{
 		float time = 0.3f;

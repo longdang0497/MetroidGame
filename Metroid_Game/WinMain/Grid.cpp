@@ -128,14 +128,14 @@ bool Grid::handleObject(GameObject *object, GameObject* otherObject) {
 	while (otherObject != NULL) {
 		if (object != otherObject && otherObject->isActive) {
 			// Mình phải tính va chạm là từ khoảng cách giữa 2 điểm từ tâm của nó
-			int x1 = (int)((object->pos_x + object->width)/2);
-			int y1 = (int)((object->pos_y + object->height)/2);
+			int x1 = (int)(object->pos_x + object->width / 2);
+			int y1 = (int)(object->pos_y + object->height / 2);
 			D3DXVECTOR2 objectPos(x1, y1);
 
-			int x2 = (int)((otherObject->pos_x + otherObject->width)/2);
-			int y2 = (int)((otherObject->pos_y + otherObject->height)/2);
+			int x2 = (int)(otherObject->pos_x + otherObject->width/2);
+			int y2 = (int)(otherObject->pos_y + otherObject->height/2);
 			D3DXVECTOR2 otherPos(x2, y2);
-			if (Math::distance(objectPos, otherPos) < 50) {
+			if (Math::distance(objectPos, otherPos) < 64) {
 				if (handleCollision(object, otherObject))
 					isCollision = true;
 			}
@@ -201,6 +201,11 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 				collisionDirection = NONE;
 				samus->pos_x += samus->vx * this->getDeltaTime();
 			}
+			if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == CLOSE)
+			{
+				if (samus->vx > 0)
+					gate->setGateState(OPEN);
+			}
 			break;
 		}
 	}
@@ -228,6 +233,13 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			{
 				collisionDirection = NONE;
 				samus->pos_x += samus->vx * this->getDeltaTime();
+				if (samus->pos_x == gate->pos_x + gate->width)
+					gate->setGateState(CLOSE);
+			}
+			if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == CLOSE)
+			{
+				if (samus->vx < 0)
+					gate->setGateState(OPEN);
 			}
 			break;
 		}

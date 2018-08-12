@@ -28,9 +28,16 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	explodeEffect = new ExplodeEffect(spriteHandler, this, metroid->getGrid());
 	bombWeapon = new BombWeapon(spriteHandler, this);
 
-	//gateRight = new Gate(spriteHandler, this);
-	gateLeft = new Gate(spriteHandler, this);
-	gateBlock = new GateBlock(spriteHandler, this, metroid->getGrid());
+	gateRightRoom1 = new Gate(spriteHandler, this);
+	gateLeftRoom1 = new Gate(spriteHandler, this);
+	gateRightRoom2 = new Gate(spriteHandler, this);
+	gateLeftRoom2 = new Gate(spriteHandler, this);
+	gateRightBoss1 = new Gate(spriteHandler, this);
+	gateLeftBoss1 = new Gate(spriteHandler, this);
+
+	gateBlockRoom1 = new GateBlock(spriteHandler, this, metroid->getGrid());
+	gateBlockRoom2 = new GateBlock(spriteHandler, this, metroid->getGrid());
+	gateBlockBoss1 = new GateBlock(spriteHandler, this, metroid->getGrid());
 
 	kraid = new Kraid(spriteHandler, this);
 	ridley = new Ridley(spriteHandler, this);
@@ -45,9 +52,15 @@ World::~World()
 	delete(metroid);
 	delete(explodeEffect);
 	delete(bombWeapon);
-	delete(gateLeft);
-	//delete(gateRight);
-	delete(gateBlock);
+	delete(gateLeftRoom1);
+	delete(gateRightRoom1);
+	delete(gateLeftRoom2);
+	delete(gateRightRoom2);
+	delete(gateLeftBoss1);
+	delete(gateRightBoss1);
+	delete(gateBlockRoom1);
+	delete(gateBlockRoom2);
+	delete(gateBlockBoss1);
 	delete(ridley);
 	delete(kraid);
 }
@@ -83,15 +96,40 @@ void World::Update(float t)
 
 	bombWeapon->Update(t);
 	explodeEffect->Update(t);
-	gateBlock->Update(t);
-	gateLeft->Update(t);
-	//gateRight->Update(t);
+	gateBlockRoom1->Update(t);
+	gateBlockRoom2->Update(t);
+	gateBlockBoss1->Update(t);
+
+	gateLeftRoom1->Update(t);
+	gateRightRoom1->Update(t);
+	gateLeftRoom2->Update(t);
+	gateRightRoom2->Update(t);
+	gateLeftBoss1->Update(t);
+	gateRightBoss1->Update(t);
 
 	kraid->Update(t);
 	ridley->Update(t);
 
-	//if (gateLeft->getGateState() == DESTROYING)
-		//gateRight->setGateState(OPEN);
+	if (samus->pos_x < gateLeftRoom1->pos_x + gateLeftRoom1->width || samus->pos_x > gateLeftRoom1->pos_x + gateLeftRoom1->width)
+	{
+		//float time = 0.2;
+		if (gateLeftRoom1->getGateState() == OPEN)
+		{			
+			//time -= t;
+			//if (time <= 0)
+				gateLeftRoom1->setGateState(CLOSE);
+		}
+	}
+	if (samus->pos_x > gateRightRoom1->pos_x + gateRightRoom1->width || samus->pos_x < gateRightRoom1->pos_x + gateRightRoom1->width)
+	{
+		//float time = 0.2;
+		if (gateRightRoom1->getGateState() == OPEN)
+		{
+			//time -= t;
+			//if (time <= 0)
+				gateRightRoom1->setGateState(CLOSE);
+		}
+	}
 	/*else if(gateRight->getGateState() == DESTROYING)
 		gateLeft->setGateState(DESTROYING);*/
 }
@@ -114,9 +152,16 @@ void World::Render()
 
 	bombWeapon->Render();
 	explodeEffect->Render();
-	gateBlock->Render();
-	//gateRight->Render();
-	gateLeft->Render();
+	gateBlockRoom1->Render();
+	gateBlockRoom2->Render();
+	gateBlockBoss1->Render();
+
+	gateRightRoom1->Render();
+	gateLeftRoom1->Render();
+	gateRightRoom2->Render();
+	gateLeftRoom2->Render();
+	gateRightBoss1->Render();
+	gateLeftBoss1->Render();
 
 	kraid->Render();
 	ridley->Render();
@@ -170,9 +215,16 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
 	if (gate_texture == NULL)
 		trace(L"Unable to load Gate Texture");
-	//gateRight->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
-	gateLeft->InitSprites(d3ddv, gate_texture, GATE_LEFT);
-	gateBlock->InitSprites(d3ddv, gate_texture);
+	gateRightRoom1->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
+	gateLeftRoom1->InitSprites(d3ddv, gate_texture, GATE_LEFT);
+	gateRightRoom2->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
+	gateLeftRoom2->InitSprites(d3ddv, gate_texture, GATE_LEFT);
+	gateRightBoss1->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
+	gateLeftBoss1->InitSprites(d3ddv, gate_texture, GATE_LEFT);
+	
+	gateBlockRoom1->InitSprites(d3ddv, gate_texture);
+	gateBlockRoom2->InitSprites(d3ddv, gate_texture);
+	gateBlockBoss1->InitSprites(d3ddv, gate_texture);
 
 	// Boss Texture
 	Texture * textureBoss = new Texture();

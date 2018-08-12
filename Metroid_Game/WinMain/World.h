@@ -28,9 +28,15 @@ public:
 	MaruMari * maruMari;
 	ExplodeEffect* explodeEffect;
 	BombWeapon* bombWeapon;
-	Gate * gateLeft;
-	Gate * gateRight;
-	GateBlock * gateBlock;
+	Gate * gateLeftRoom1;
+	Gate * gateRightRoom1;
+	Gate * gateLeftRoom2;
+	Gate * gateRightRoom2;
+	Gate * gateLeftBoss1;
+	Gate * gateRightBoss1;
+	GateBlock * gateBlockRoom1;
+	GateBlock * gateBlockRoom2;
+	GateBlock * gateBlockBoss1;
 	Kraid * kraid;
 	Ridley * ridley;
 

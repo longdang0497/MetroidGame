@@ -2,8 +2,11 @@
 
 GateBlock::GateBlock(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 {
+	this->type = GATE_BLOCK;
 	gateBlock = nullptr;
 	this->grid = grid;
+	this->width = GATE_BLOCK_WIDTH;
+	this->height = GATE_BLOCK_HEIGHT;
 }
 
 GateBlock::~GateBlock()

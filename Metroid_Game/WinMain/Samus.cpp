@@ -287,33 +287,11 @@ void Samus::Update(float t)
 {
 	this->currentTime = t;
 
-	/*if (this->pos_x > 0 && this->pos_x <= WIDTH_ROOM1)
-	{
-		
-		isInRoom1 = true;
-	}
-	else if (this->pos_x > WIDTH_ROOM1 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 && isActive == true)
-	{
-		
-		isInRoom2 = true;
-	}
-	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && isActive == true)
-	{
-		
-		isInBoss1 = true;
-	}
-	else if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && this->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS && isActive == true)
-	{
-		setRoomNum(BOSS2);
-		isInBoss2 = true;
-	}*/
-
 	int row = 0, column = 0;
 
 	// di chuyển camera từ room1 qua room2
 	if (WIDTH_ROOM1 >= this->pos_x 
 		&& WIDTH_ROOM1 <= this->pos_x + this->width) {
-		//&& isChangingRoom == true
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
@@ -321,21 +299,20 @@ void Samus::Update(float t)
 		this->isChangingRoom = true;
 		setRoomNum(ROOM1);
 
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 32) {
-			//posX_EndChangingRoom = 0;
-			//posX_StartChangingRoom = 0;
-			this->pos_x += this->vx * t;
+		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
+			//this->pos_x += this->vx * t;
+			this->isActive = false;
 		}
 	}
-	if (this->pos_x > WIDTH_ROOM1 + 32 && this->pos_x < WIDTH_ROOM1 + WIDTH_ROOM2)
+	if (this->pos_x >= WIDTH_ROOM1 - 10 && this->pos_x < WIDTH_ROOM1 + WIDTH_ROOM2)
 	{
 		isChangingRoom = false;
+		this->isActive = true;
 	}
 
 	//di chuyển camera từ room2 qua room Boss đầu tiên
 	if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x
 		&& WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width) {
-		//&& isChangingRoom == true
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
@@ -344,12 +321,10 @@ void Samus::Update(float t)
 		setRoomNum(ROOM2);
 
 		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
-			//posX_EndChangingRoom = 0;
-			//posX_StartChangingRoom = 0;
 			this->pos_x += this->vx * t;
 		}
 	}
-	if (this->pos_x > WIDTH_ROOM1 + WIDTH_ROOM2 + 32 
+	if (this->pos_x >= WIDTH_ROOM1 + WIDTH_ROOM2 + 32 
 		&& this->pos_x < WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS)
 	{
 		isChangingRoom = false;
@@ -358,7 +333,6 @@ void Samus::Update(float t)
 	//di chuyển camera từ room Boss đầu tiên qua room Boss thứ hai (end map)
 	if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x
 		&& WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width) {
-		//&& isChangingRoom == true
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
@@ -367,8 +341,6 @@ void Samus::Update(float t)
 		setRoomNum(BOSS1);
 
 		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
-			//posX_EndChangingRoom = 0;
-			//posX_StartChangingRoom = 0;
 			this->pos_x += this->vx * t;
 		}
 	}
@@ -378,39 +350,6 @@ void Samus::Update(float t)
 		isChangingRoom = false;
 	}
 
-
-	/*else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width || this->isChangingRoom) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->posX_EndChangingRoom = this->pos_x;
-		this->isChangingRoom = true;
-		setRoomNum(ROOM2);
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
-			this->pos_x += this->vx * t;
-		}
-	}
-	else if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width || this->isChangingRoom) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->posX_EndChangingRoom = this->pos_x;
-		this->isChangingRoom = true;
-		setRoomNum(BOSS1);
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
-			this->pos_x += this->vx * t;
-		}
-	}
-	else if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width || this->isChangingRoom) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->posX_EndChangingRoom = this->pos_x;
-		this->isChangingRoom = true;
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
-			this->pos_x += this->vx * t;
-		}
-	}*/
 	if (isChangingRoom == false){
 		this->posX_StartChangingRoom = 0.0f;
 		this->posX_EndChangingRoom = 0.0f;

@@ -47,12 +47,26 @@ void Metroid::_InitPositions()
 	grid->add(world->explodeEffect);
 	world->explodeEffect->setActive(false);
 
-	world->gateLeft->Init(2224, 160);
-	grid->add(world->gateLeft);
-	//world->gateRight->Init(2304, 160);
-	//grid->add(world->gateRight);
-	world->gateBlock->Init(2240, 160);
-	grid->add(world->gateBlock);
+	world->gateLeftRoom1->Init(2224, 160);
+	grid->add(world->gateLeftRoom1);
+	world->gateRightRoom1->Init(2304, 160);
+	grid->add(world->gateRightRoom1);
+	world->gateBlockRoom1->Init(2240, 160);
+	grid->add(world->gateBlockRoom1);
+
+	world->gateLeftRoom2->Init(4272, 160);
+	grid->add(world->gateLeftRoom2);
+	world->gateRightRoom2->Init(4352, 160);
+	grid->add(world->gateRightRoom2);
+	world->gateBlockRoom2->Init(4288, 160);
+	grid->add(world->gateBlockRoom2);
+
+	world->gateLeftBoss1->Init(4912, 160);
+	grid->add(world->gateLeftBoss1);
+	world->gateRightBoss1->Init(4992, 160);
+	grid->add(world->gateRightBoss1);
+	world->gateBlockBoss1->Init(4928, 160);
+	grid->add(world->gateBlockBoss1);
 
 	world->kraid->Init(5088, 320);
 	grid->add(world->kraid);
