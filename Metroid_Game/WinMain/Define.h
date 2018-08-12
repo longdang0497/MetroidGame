@@ -16,6 +16,8 @@ class Gate;
 class KraidBomerang;
 class KraidBullet;
 class RidleyBullet;
+class Kraid;
+class Ridley;
 
 #define KEYBOARD_BUFFER_SIZE	1024
 #define KEY_DOWN(code) ( IsKeyDown(code) )
@@ -470,39 +472,41 @@ enum COLLISION_DIRECTION {
 //================== BOSS ====================
 #define BOSS_TEXTURE L"enemy\\boss_sheet.png"
 //---------RIDLEY------------
-#define WIDTH_RIDLEY 31
-#define HEIGHT_RIDLEY_SIT 40
-#define HEIGHT_RIDLEY_FLY 46
+#define WIDTH_RIDLEY 96
+#define HEIGHT_RIDLEY_SIT 120
+#define HEIGHT_RIDLEY_FLY 139
 #define RIDLEY_COUNT 2
 #define RIDLEY_SIT_LEFT_PATH L"enemy\\RIDLEY_SIT_LEFT.txt"
 #define RIDLEY_SIT_RIGHT_PATH L"enemy\\RIDLEY_SIT_RIGHT.txt"
 #define RIDLEY_FLY_LEFT_PATH L"enemy\\RIDLEY_FLY_RIGHT.txt"
 #define RIDLEY_FLY_RIGHT_PATH L"enemy\\RIDLEY_FLY_RIGHT.txt"
 
-#define WIDTH_RIDLEY_BULLET 7
-#define HEIGHT_RIDLEY_BULLET 8
+#define WIDTH_RIDLEY_BULLET 23
+#define HEIGHT_RIDLEY_BULLET 24
 #define RIDLEY_BULLET_COUNT 4
 #define RIDLEY_BULLET_PATH L"enemy\\RIDLEY_BULLET.txt"
 
 enum RIDLEY_STATE {
-	SITTING,
-	FLYING
+	SIT_LEFT,
+	FLY_LEFT,
+	SIT_RIGHT,
+	FLY_RIGHT
 };
 //---------END RIDLEY--------
 
 //---------KRAID-------------
-#define WIDTH_KRAID 24
-#define HEIGHT_KRAID 32
+#define WIDTH_KRAID 70
+#define HEIGHT_KRAID 96
 #define KRAID_COUNT 2
 #define KRAID_RIGHT_PATH L"enemy\\KRAID_RIGHT.txt"
 #define KRAID_LEFT_PATH L"enemy\\KRAID_LEFT.txt"
 
-#define SIZE_KRAID_BOMERANG 8
+#define SIZE_KRAID_BOMERANG 25
 #define COUNT_KRAID_BOMERANG 4
 #define KRAID_BOMERANG_PATH L"enemy\\KRAID_BOMERANG.txt"
 
-#define WIDTH_KRAID_BULLET 8
-#define HEIGHT_KRAID_BULLET 3
+#define WIDTH_KRAID_BULLET 26
+#define HEIGHT_KRAID_BULLET 11
 #define COUNT_KRAID_BULLET 1
 #define KRAID_BULLET_PATH L"enemy\\KRAID_BULLET.txt"
 //---------END KRAID---------

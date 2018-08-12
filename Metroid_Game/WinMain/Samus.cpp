@@ -300,14 +300,14 @@ void Samus::Update(float t)
 		setRoomNum(ROOM1);
 
 		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 128) {
-			//this->pos_x += this->vx * t;
-			this->isActive = false;
+			this->pos_x += this->vx * t;
+			//this->isActive = false;
 		}
 	}
 	if (this->pos_x >= WIDTH_ROOM1 - 10 && this->pos_x < WIDTH_ROOM1 + WIDTH_ROOM2)
 	{
 		isChangingRoom = false;
-		this->isActive = true;
+		//this->isActive = true;
 	}
 
 	//di chuyển camera từ room2 qua room Boss đầu tiên

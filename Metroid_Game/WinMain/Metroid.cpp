@@ -64,13 +64,14 @@ void Metroid::_InitPositions()
 	world->gateLeftBoss1->Init(4912, 160);
 	grid->add(world->gateLeftBoss1);
 	world->gateRightBoss1->Init(4992, 160);
+	world->gateRightBoss1->setGateState(OPEN);
 	grid->add(world->gateRightBoss1);
 	world->gateBlockBoss1->Init(4928, 160);
 	grid->add(world->gateBlockBoss1);
 
-	world->kraid->Init(5088, 320);
+	world->kraid->Init(4704, 256);
 	grid->add(world->kraid);
-	world->ridley->Init(4576, 320);
+	world->ridley->Init(5408, 192);
 	grid->add(world->ridley);
 }
 

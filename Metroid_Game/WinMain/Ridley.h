@@ -1,10 +1,11 @@
 ﻿#pragma once
-#include "Enemy.h"
+#include "GameObject.h"
 #include "Define.h"
+#include "World.h"
 
 #define RIDLEY_ANIMATE_RATE 2
 
-class Ridley : public Enemy
+class Ridley : public GameObject
 {
 private:
 	bool isLeftCollided;
@@ -13,11 +14,12 @@ private:
 	bool isBottomCollided;
 protected:
 	//LPDIRECT3DTEXTURE9 textureRidley;
+	RIDLEY_STATE state;
 	World * manager;
-	//Sprite * sit_left;
-	//Sprite * sit_right;
+	Sprite * sit_left;
+	Sprite * sit_right;
 	Sprite * fly_left;
-	//Sprite * fly_right;
+	Sprite * fly_right;
 	float time_push; //thời gian push lực y cho Ridley bay lên
 public:
 	Ridley(LPD3DXSPRITE spriteHandler, World * manager);
@@ -30,6 +32,9 @@ public:
 	void Render();
 	//============= END OVERRIDE VIRTUAL METHOD ==============
 	void Destroy(float x, float y);
+
+	void setRidleyState(RIDLEY_STATE value);
+	RIDLEY_STATE getRidleyState();
 
 	void setIsLeftCollided(bool isLeft);
 	bool getIsLeftCollided();
