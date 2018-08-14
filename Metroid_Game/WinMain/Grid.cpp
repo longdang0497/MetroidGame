@@ -235,6 +235,10 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
 			break;
 		}
+		case GATE: case GATE_BLOCK: {
+			samus->isRight = false;
+			break;
+		}
 		}
 	}
 	else if (collisionDirection == LEFT) {
@@ -515,6 +519,7 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 		}
 	}
 }
+
 
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 

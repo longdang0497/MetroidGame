@@ -34,4 +34,6 @@ private:
 	GameObject* m_following = nullptr;
 	RECT Camera_bound;
 
+	float startPosX;
+	float endPosX;
 };

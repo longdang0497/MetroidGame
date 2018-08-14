@@ -164,7 +164,11 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	this->endPosJump = 0.0f;
 
 	this->isCollideWithEnemy = false;
-	this->animate_rate = ANIMATE_RATE;
+
+	this->isChangingRoom = false;
+	this->posX_EndChangingRoom = 0.0f;
+	this->posX_StartChangingRoom = 0.0f;
+	this->startMovingAfterRoomChanged = false;
 }
 
 Samus::~Samus()
@@ -291,18 +295,44 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	isTop = false;
-	isBottom = false;
-	isRight = false;
-	isLeft = false;
-	isColisionHandled = false;
+	if (!this->isActive || this->isChangingRoom) return;
 
-	int row = (int)floor(this->pos_y / CELL_SIZE);
-	int column = (int)floor(this->pos_x / CELL_SIZE);
+	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width && !this->startMovingAfterRoomChanged) {
+		if (this->posX_StartChangingRoom == 0.0f) {
+			this->posX_StartChangingRoom = this->pos_x;
+		}
+		this->isChangingRoom = true;
+		return;
+	}
 
-	this->setDimension();
+	if (this->startMovingAfterRoomChanged) {
+		this->posX_EndChangingRoom = this->pos_x;
+		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 160) {
+			this->pos_x += this->vx *t;
+		}
+		else {
+			this->startMovingAfterRoomChanged = false;
+		}
+	}
+	else {
 
-	this->grid->handleCell(this, row, column);
+		if (!this->isJumping) {
+			this->vy = GRAVITY_VELOCITY;
+		}
+		posX_EndChangingRoom = 0.0f;
+		posX_StartChangingRoom = 0.0f;
+		isTop = false;
+		isBottom = false;
+		isRight = false;
+		isLeft = false;
+		isColisionHandled = false;
+
+		int row = (int)floor(this->pos_y / CELL_SIZE);
+		int column = (int)floor(this->pos_x / CELL_SIZE);
+
+		this->setDimension();
+
+		this->grid->handleCell(this, row, column);
 		if (!isColisionHandled) {
 
 			if (isTop == false && isBottom == false && isLeft == false && isRight == false) {
@@ -450,12 +480,15 @@ void Samus::Update(float t)
 				this->pos_x += vx * t;
 			}
 		}
+	}
+
+
 	
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 
 	// Animate samus if he is running
 	DWORD now = GetTickCount();
-	if (now - last_time > 1000 / this->animate_rate)
+	if (now - last_time > 1000 / ANIMATE_RATE)
 	{
 		switch (state)
 		{

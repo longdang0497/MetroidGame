@@ -263,7 +263,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 	Samus* samus = this->world->samus;
 	// Nếu đang va chạm vs enemy thì không điều khiển đc
 
-	if (samus->isCollideWithEnemy) {
+	if (samus->isCollideWithEnemy || samus->getIsChangingRoom() || samus->getStartMovingAfterRoomChanged()) {
 		return;
 	}
 	SAMUS_STATE state = samus->GetState();
@@ -492,6 +492,12 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 // Xử lý nhấn phím 1 lần
 void Metroid::OnKeyDown(int KeyCode)
 {
+	Samus* samus = this->world->samus;
+	// Nếu đang va chạm vs enemy thì không điều khiển đc
+
+	if (samus->isCollideWithEnemy || samus->getIsChangingRoom() || samus->getStartMovingAfterRoomChanged()) {
+		return;
+	}
 	switch (screenMode)
 	{
 		// intro
@@ -634,6 +640,12 @@ void Metroid::OnKeyDown(int KeyCode)
 
 void Metroid::OnKeyUp(int KeyCode)
 {
+	Samus* samus = this->world->samus;
+	// Nếu đang va chạm vs enemy thì không điều khiển đc
+
+	if (samus->isCollideWithEnemy || samus->getIsChangingRoom() || samus->getStartMovingAfterRoomChanged()) {
+		return;
+	}
 	switch (KeyCode)
 	{
 	case DIK_Z:

@@ -29,5 +29,4 @@ public:
 	void handleZoomer(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 	void handleSamusBullet(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 	void handleSkree(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
-
 };
