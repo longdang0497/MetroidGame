@@ -38,6 +38,9 @@ void Camera::Update()
 
 	if (m_following != nullptr)
 	{
+		/*m_map_bound.right = 2272 + 64;
+		m_map_bound.left = 128;*/
+
 		//camera follow object
 		eye.x = m_following->pos_x;
 		eye.y = m_following->pos_y;
@@ -50,7 +53,7 @@ void Camera::Update()
 
 		//check camera vs map bound
 		if (Camera_bound.left < m_map_bound.left)
-			eye.x = m_map_bound.left  + CAMERA_FOLLOW_POINT_LEFT_RATIO * width;
+			eye.x = m_map_bound.left + CAMERA_FOLLOW_POINT_LEFT_RATIO * width;
 		else if (Camera_bound.right > m_map_bound.right)
 			eye.x = m_map_bound.right - CAMERA_FOLLOW_POINT_RIGHT_RATIO * width;
 		if (Camera_bound.top < m_map_bound.top)
@@ -71,7 +74,6 @@ void Camera::Update()
 void Camera::SetTransform(DeviceManager* device) const
 {
 	device->getdevice()->SetTransform(D3DTS_PROJECTION, &orthographicMatrix);
-	//device->getdevice()->SetTransform(D3DTS_WORLD, &identityMatrix);
 	device->getdevice()->SetTransform(D3DTS_VIEW, &viewMatrix);
 }
 

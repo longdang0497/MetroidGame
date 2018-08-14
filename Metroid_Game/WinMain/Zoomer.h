@@ -32,6 +32,8 @@ public:
 	void setState(ZOOMER_STATE _state);
 	ZOOMER_STATE getState();
 
+	void setSamusLocation(float posX, float posY);
+
 	void setDirection(ZOOMER_DIRECTION direction);
 	ZOOMER_DIRECTION getDirection();
 	

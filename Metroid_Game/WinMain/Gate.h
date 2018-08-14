@@ -1,8 +1,8 @@
 #pragma once
 #include "Sprite.h"
-#include "Define.h"
 #include "GameObject.h"
 #include "trace.h"
+#include "World.h"
 
 enum GATE_STATE {  //State of Gate
 	OPEN,
@@ -26,8 +26,12 @@ protected:
 	float time_survive;
 	GATE_STATE state;
 	GATE_TYPE gate_type;
+
+	bool isRight = false;
+	bool isLeft = false;
 public:
-	Gate(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid);
+	Gate();
+	Gate(LPD3DXSPRITE spriteHandler, World * manager);
 	~Gate();
 
 	GATE_TYPE GetGateType();
@@ -41,4 +45,7 @@ public:
 	void Update(float t);
 	void Render();
 	void DestroyGate();
+
+	void setIsRight(bool value);
+	void setIsLeft(bool value);
 };

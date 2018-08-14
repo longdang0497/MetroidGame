@@ -19,7 +19,7 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 
 	this->health = 100;
 
-	this->grid = manager->grid;
+	this->grid = manager->getMetroid()->getGrid();
 
 	this->isDeath = false;
 	this->setIsEnemyFreezed(false);
@@ -100,6 +100,10 @@ void Zoomer::setState(ZOOMER_STATE _state) {
 
 ZOOMER_STATE Zoomer::getState() {
 	return state;
+}
+
+void Zoomer::setSamusLocation(float posX, float posY)
+{
 }
 
 
@@ -386,7 +390,7 @@ void Zoomer::Destroy(float x, float y)
 		this->reset();
 		GameObject* object = static_cast<GameObject*>(this);
 		object->setActive(false);
-		this->manager->grid->updateGrid(object, this->getPosX(), this->getPosY());
+		this->grid->updateGrid(object, this->getPosX(), this->getPosY());
 	}
 }
 

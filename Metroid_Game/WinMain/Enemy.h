@@ -36,6 +36,8 @@ public:
 	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ============
 
+	virtual void setSamusLocation(float posX, float posY);
+
 	bool isInsideMapBound(RECT cameraBound);
 
 	void setTexture(LPDIRECT3DTEXTURE9 texture);

@@ -1,20 +1,15 @@
 ﻿#pragma once
-#include "Sprite.h"
-#include "Texture.h"
 #include "Define.h"
 #include "trace.h"
-#include<vector>
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
 #include <string>
 #include <string.h>
 #include <stdio.h>
 #include <vector>
 #include "Math.h"
-#include <d3dx9.h>
-#include "Grid.h"
 #include "Brick.h"
-class Camera;
+#include "Grid.h"
 
 using namespace std;
 
@@ -25,7 +20,7 @@ class Map {
 		int y_pixel;
 	};
 public:
-	Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture,string filePath, DeviceManager *deviceManager, int left, int top);
+	Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture,string filePath, int left, int top);
 
 	~Map();
 
@@ -51,19 +46,13 @@ public:
 	int getRow();
 	int getColumn();
 
-	void setGrid(Grid*);
-	Grid* getGrid();
-
-	void inputBrickToGrid();
+	void inputBrickToGrid(Grid *grid);
 private:
-	Grid * grid;
 	std::string filePath;
 	vector<string> stringMap;
 	vector<brick> drawBrickArray = vector<brick> ();
 	int roomID;
 	Sprite *sprite;
-
-	DeviceManager *deviceManager;
 
 	//Start coordinate of the camera
 	RECT m_boundary = RECT();

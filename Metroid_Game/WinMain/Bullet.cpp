@@ -26,6 +26,7 @@ Bullet::Bullet(LPD3DXSPRITE spriteHandler, Grid*grid) {
 	this->endX = 0.0f;
 	this->endY = 0.0f;
 	this->grid->add(this);
+	
 	this->width = 12;
 	this->height = 14;
 }
@@ -37,19 +38,19 @@ Bullet::~Bullet() {
 void Bullet::initBullet(float posX, float posY) {
 	
 	if (this->direction == SHOOT_RIGHT) {
-		this->pos_x = posX + 32 + 12;
+		this->pos_x = posX + 32;
 		this->pos_y = posY + 13;
 	}
 	else if (this->direction == SHOOT_UP_RIGHT) {
-		this->pos_x = posX + 16;
-		this->pos_y = posY - 22;
+		this->pos_x = posX + 14;
+		this->pos_y = posY - 12;
 	}
 	else if (this->direction == SHOOT_UP_LEFT) {
 		this->pos_x = posX + 6;
-		this->pos_y = posY - 22;
+		this->pos_y = posY - 12;
 	}
 	else if (this->direction == SHOOT_LEFT) {
-		this->pos_x = posX - 12;
+		this->pos_x = posX ;
 		this->pos_y = posY + 13;
 	}
 	else {

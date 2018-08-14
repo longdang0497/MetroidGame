@@ -51,6 +51,10 @@ void Enemy::startMoving()
 {
 }
 
+void Enemy::setSamusLocation(float posX, float posY)
+{
+}
+
 bool Enemy::isInsideMapBound(RECT cameraBound)
 {
 	RECT bound = cameraBound;

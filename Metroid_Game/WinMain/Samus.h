@@ -47,6 +47,10 @@ public:
 	bool isRight = false;
 	bool isColisionHandled = false;
 
+	bool isCollideWithEnemy = false;
+	// Khi va cham thi animate_rate thay doi
+	int animate_rate;
+
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus
 	Samus();
@@ -71,6 +75,7 @@ public:
 	//================ OVERRIDE VIRTUAL METHOD ==================
 	void Reset(float  x, float y);
 	void Update(float t);
+	void collideEnemy();
 	void Render();
 	void Destroy();
 	//================= END OVERRIDE VIRTUAL METHOD =============
@@ -83,6 +88,7 @@ public:
 	void setDimension();
 	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
 	vector<string> getStringMap() { return this->stringMapSamus; }
+	
 };
 
 

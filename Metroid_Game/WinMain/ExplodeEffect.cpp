@@ -32,19 +32,26 @@ void ExplodeEffect::Update(float t)
 	{
 		vector<Enemy*> enemy = this->manager->enemy;
 		for (int i = 0; i < enemy.size(); i++) {
-			if (enemy[i]->pos_x >= this->pos_x && enemy[i]->pos_x <= this->pos_x + this->getWidth() || this->pos_x >= enemy[i]->pos_x && this->pos_x <= enemy[i]->pos_x + enemy[i]->width) {
-				if (enemy[i]->getType() == ZOOMER_PINK || enemy[i]->getType() == ZOOMER_YELLOW) {
-					Zoomer* zoomer = dynamic_cast<Zoomer*>(enemy[i]);
-					zoomer->isDeath = true;
-					zoomer->setIsEnemyFreezed(false);
+			if (enemy[i]->isActive) {
+				if ((enemy[i]->pos_x >= this->pos_x && enemy[i]->pos_x <= this->pos_x + this->getWidth() 
+					|| this->pos_x >= enemy[i]->pos_x && this->pos_x <= enemy[i]->pos_x + enemy[i]->width)
+					&& (enemy[i]->pos_y >= this->pos_y && enemy[i]->pos_y <= this->pos_y + this->getHeight()||
+						this->pos_y >= enemy[i]->pos_y && this->pos_y <= enemy[i]->pos_y + enemy[i]->getHeight()
+						)) {
+					if (enemy[i]->getType() == ZOOMER_PINK || enemy[i]->getType() == ZOOMER_YELLOW) {
+						Zoomer* zoomer = dynamic_cast<Zoomer*>(enemy[i]);
+						zoomer->isDeath = true;
+						zoomer->setIsEnemyFreezed(false);
 
-					zoomer->reset();
-					GameObject* object = static_cast<GameObject*>(zoomer);
-					object->setActive(false);
-					this->manager->grid->updateGrid(object, this->getPosX(), this->getPosY());
+						zoomer->reset();
+						GameObject* object = static_cast<GameObject*>(zoomer);
+						object->setActive(false);
+						this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+					}
+
 				}
-				
 			}
+			
 		}
 		//time_survive = EFFECT_TIME_SURVIVE;
 		DWORD now = GetTickCount();

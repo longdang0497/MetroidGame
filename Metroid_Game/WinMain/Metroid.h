@@ -4,9 +4,12 @@
 
 #include "Define.h"
 #include "Game.h"
-#include "Sprite.h"
 #include "Map.h"
 #include "World.h"
+#include "Grid.h"
+#include <time.h>
+#include "trace.h"
+#include "utils.h"
 
 class Metroid : public Game
 {
@@ -20,6 +23,7 @@ protected:
 	CSound * intro;
 	CSound * appear;
 	GameSound *sound;
+	Grid *grid;
 private:
 	void _InitBackground();
 	void _InitSprites(LPDIRECT3DDEVICE9 d3ddv);
@@ -30,7 +34,7 @@ private:
 	DWORD tick_per_frame;
 
 	Map *map;
-	ROOM_NUMBER roomNum;
+
 	Texture texture;
 public:
 	Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate);
@@ -65,9 +69,7 @@ public:
 
 	LPD3DXSPRITE getSpriteHandler();
 	Map *getMap();
-
-	ROOM_NUMBER getRoomNum();
-	void setRoomNum(ROOM_NUMBER value);
+	Grid* getGrid();
 
 	void setSamusBulletDirection(Bullet*);
 };

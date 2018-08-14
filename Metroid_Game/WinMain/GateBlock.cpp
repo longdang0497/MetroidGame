@@ -2,8 +2,11 @@
 
 GateBlock::GateBlock(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 {
+	this->type = GATE_BLOCK;
 	gateBlock = nullptr;
 	this->grid = grid;
+	this->width = GATE_BLOCK_WIDTH;
+	this->height = GATE_BLOCK_HEIGHT;
 }
 
 GateBlock::~GateBlock()
@@ -25,7 +28,7 @@ void GateBlock::Init(int x, int y)
 {
 	this->pos_x = x;
 	this->pos_y = y;
-	currentSprite = gateBlock;
+	//currentSprite = gateBlock;
 }
 
 void GateBlock::Update(float t)
@@ -39,5 +42,5 @@ void GateBlock::Render()
 	posBlock.y = pos_y;
 	posBlock.z = 0;
 
-	currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), posBlock);
+	gateBlock->drawSprite(gateBlock->getWidth(), gateBlock->getHeight(), posBlock);
 }

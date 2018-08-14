@@ -9,6 +9,15 @@ class Game;
 class Bullet;
 class Grid;
 class GameObject;
+class CSound;
+class GameSound;
+class Map;
+class Gate;
+class KraidBomerang;
+class KraidBullet;
+class RidleyBullet;
+class Kraid;
+class Ridley;
 
 #define KEYBOARD_BUFFER_SIZE	1024
 #define KEY_DOWN(code) ( IsKeyDown(code) )
@@ -17,32 +26,32 @@ class GameObject;
 #define TIME_FREEZING 5000
 #define TIME_IN_GAME 7000
 
+#define JUMP_VELOCITY 150.0f
 #define JUMP_VELOCITY_BOOST 0.5f
 #define JUMP_VELOCITY_BOOST_FIRST 28.0f
 #define FALLDOWN_VELOCITY_DECREASE 295.0f
 #define MAX_FALLING 600.0f
-
+#define GRAVITY_VELOCITY 180.0f
 #define ANIMATE_RATE 30
 #define LIVE_TIME 3000
-#define SAMUS_MAX_JUMP 160.0f
-#define SAMUS_MIN_JUMP 64.0f
-#define SAMUS_SPEED 150.0f
+#define SAMUS_MAX_JUMP 182
+#define SAMUS_MIN_JUMP 64
+
+#define SAMUS_SPEED 200.0f
 #define FRICTION 1.0f
 #define TEXTURE_GAME_CHARACTERS L"sprites\\Player_32x16.png"
 
-#define MAP_ROOM1 "map\\fieldRoom1.txt"
-#define MAP_ROOM2 "map\\fieldBossRidley.txt"
-#define MAP_ROOM3 "map\\fieldBossMB.txt"
-#define MAP_STAIR "map\\fieldStair.txt"
-
-#define JUMP_VELOCITY 200.0f
-#define GRAVITY_VELOCITY 200.0f
+#define MAP_FULL_ROOM "map\\fieldFullRoom.txt"
+#define WIDTH_ROOM1 2272
+#define WIDTH_ROOM2 2048
+#define WIDTH_ROOM_BOSS 640
+#define HEIGHT_ROOM	480
 
 enum ROOM_NUMBER {
 	ROOM1,
 	ROOM2,
-	ROOM3,
-	STAIR
+	BOSS1,
+	BOSS2
 };
 //================ SCREEN RESOLUTION ================
 #define GAME_SCREEN_RESOLUTION_640_480_24   0
@@ -97,13 +106,16 @@ enum OBJECT_TYPE
 	SKREE,
 	GATE_BLOCK,
 	RIDLEY,
-	MOTHER_BRAIN,
+	KRAID,
 	EXPLOSION_BOMB,
 	MARU_MARI,
 	ENERGY_ITEM,
 	MISSILE_ITEM,
 	BOMB_ITEM,
-	BOMB_WEAPON
+	BOMB_WEAPON,
+	RIDLEY_BULLET,
+	KRAID_BOMERANG,
+	KRAID_BULLET
 };
 //================= END OBJECT TYPE ============
 
@@ -209,7 +221,7 @@ enum OBJECT_TYPE
 
 //================ BRICK SIZE =============================================
 #define BRICK_SIZE 32.0f
-#define BRICK_TEXTURE L"brick_32x32.png"
+#define BRICK_TEXTURE L"map\\brick_32x32.png"
 //================ END BRICK SIZE =========================================
 
 //================ GAME SOUND =============================================
@@ -303,6 +315,16 @@ enum ZOOMER_DIRECTION {
 
 
 //================== SKREE  =====================
+enum SKREE_STATE
+{
+	ON_HANGING,
+	ON_FALLING,
+	LANDED,
+	SHOT,
+	EXPLOSION_STATE,
+	KILLED
+};
+
 
 #define SKREE_WIDTH 36
 #define SKREE_HEIGHT 52
@@ -314,10 +336,10 @@ enum ZOOMER_DIRECTION {
 #define SKREE_STANDARD_ANIMATE_RATE 7
 #define SKREE_BOOST_ANIMATE_RATE 30
 
-#define ZOOMER_YELLOW_CASE 0
-#define ZOOMER_PINK_CASE 1
+#define ZOOMER_CASE 0
 #define SKREE_CASE 2
-#define RIO_CASE 3
+#define BOSS1_CASE 3
+#define BOSS2_CASE 4
 
 #define SKREE_DISTANCE_TO_SAMUS  300.0f
 #define SKREE_SPEED 150.0f
@@ -328,6 +350,26 @@ enum ZOOMER_DIRECTION {
 #define SKREE_LIVE_TIME 50.0f
 
 //================== END SKREE =================
+
+//================ GATE ===============
+#define GATE_SPRITES_PATH L"sprites\\gate\\GATE_32.png"
+#define GATE_LEFT_EXISTS L"sprites\\gate\\GATE_LEFT_EXISTS.txt"
+#define GATE_RIGHT_EXISTS L"sprites\\gate\\GATE_RIGHT_EXISTS.txt"
+#define GATE_EXISTS_COUNT 1
+
+#define GATE_LEFT_DESTROYING L"sprites\\gate\\GATE_LEFT_DESTROYING.txt"
+#define GATE_RIGHT_DESTROYING L"sprites\\gate\\GATE_RIGHT_DESTROYING.txt"
+#define GATE_DESTROYING_COUNT 3
+
+#define GATE_WIDTH 16
+#define GATE_HEIGHT 96
+
+#define GATE_BLOCK_PATH L"sprites\\gate\\GATE_BLOCK.txt"
+#define GATE_BLOCK_WIDTH 64
+#define GATE_BLOCK_HEIGHT 96
+
+#define GATE_TIME_SURVIVE 3
+//================= END GATE ===========
 
 //================== EXPLOSION =================
 #define EXPLOSION L"enemy\\ENEMY_DETROYED.txt"
@@ -436,4 +478,47 @@ enum COLLISION_DIRECTION {
 #define ZOOMER_PINK_CASE 1
 #define SKREE_CASE 2
 #define RIO_CASE 3
+
+//================== BOSS ====================
+#define BOSS_TEXTURE L"enemy\\boss_sheet.png"
+//---------RIDLEY------------
+#define WIDTH_RIDLEY 96
+#define HEIGHT_RIDLEY_SIT 120
+#define HEIGHT_RIDLEY_FLY 139
+#define RIDLEY_COUNT 2
+#define RIDLEY_SIT_LEFT_PATH L"enemy\\RIDLEY_SIT_LEFT.txt"
+#define RIDLEY_SIT_RIGHT_PATH L"enemy\\RIDLEY_SIT_RIGHT.txt"
+#define RIDLEY_FLY_LEFT_PATH L"enemy\\RIDLEY_FLY_RIGHT.txt"
+#define RIDLEY_FLY_RIGHT_PATH L"enemy\\RIDLEY_FLY_RIGHT.txt"
+
+#define WIDTH_RIDLEY_BULLET 23
+#define HEIGHT_RIDLEY_BULLET 24
+#define RIDLEY_BULLET_COUNT 4
+#define RIDLEY_BULLET_PATH L"enemy\\RIDLEY_BULLET.txt"
+
+enum RIDLEY_STATE {
+	SIT_LEFT,
+	FLY_LEFT,
+	SIT_RIGHT,
+	FLY_RIGHT
+};
+//---------END RIDLEY--------
+
+//---------KRAID-------------
+#define WIDTH_KRAID 70
+#define HEIGHT_KRAID 96
+#define KRAID_COUNT 2
+#define KRAID_RIGHT_PATH L"enemy\\KRAID_RIGHT.txt"
+#define KRAID_LEFT_PATH L"enemy\\KRAID_LEFT.txt"
+
+#define SIZE_KRAID_BOMERANG 25
+#define COUNT_KRAID_BOMERANG 4
+#define KRAID_BOMERANG_PATH L"enemy\\KRAID_BOMERANG.txt"
+
+#define WIDTH_KRAID_BULLET 26
+#define HEIGHT_KRAID_BULLET 11
+#define COUNT_KRAID_BULLET 1
+#define KRAID_BULLET_PATH L"enemy\\KRAID_BULLET.txt"
+//---------END KRAID---------
+//================== END BOSS ====================
 

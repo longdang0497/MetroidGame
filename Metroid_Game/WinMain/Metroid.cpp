@@ -1,7 +1,5 @@
 ﻿#include "Metroid.h"
-#include <time.h>
-#include "trace.h"
-#include "utils.h"
+
 
 void Metroid::_InitBackground()
 {
@@ -14,19 +12,49 @@ void Metroid::_InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 
 void Metroid::_InitPositions()
 {
+	// Thêm Brick vào brick
+	this->map->inputBrickToGrid(this->grid);
+
 	world->samus->InitPostition();
-	this->world->grid->add(this->world->samus);
+	this->grid->add(this->world->samus);
 
 	world->maruMari->Init(420, 352);
-	this->world->grid->add(this->world->maruMari);
+	this->grid->add(this->world->maruMari);
 
 	world->bombWeapon->CreateBomb(0, 0);
-	world->grid->add(world->bombWeapon);
+	this->grid->add(world->bombWeapon);
 	world->bombWeapon->setActive(false);
 
 	world->explodeEffect->CreateExplode(360, 360);
-	world->grid->add(world->explodeEffect);
+	this->grid->add(world->explodeEffect);
 	world->explodeEffect->setActive(false);
+
+	world->gateLeftRoom1->Init(2224, 160);
+	grid->add(world->gateLeftRoom1);
+	world->gateRightRoom1->Init(2304, 160);
+	grid->add(world->gateRightRoom1);
+	world->gateBlockRoom1->Init(2240, 160);
+	grid->add(world->gateBlockRoom1);
+
+	world->gateLeftRoom2->Init(4272, 160);
+	grid->add(world->gateLeftRoom2);
+	world->gateRightRoom2->Init(4352, 160);
+	grid->add(world->gateRightRoom2);
+	world->gateBlockRoom2->Init(4288, 160);
+	grid->add(world->gateBlockRoom2);
+
+	world->gateLeftBoss1->Init(4912, 160);
+	grid->add(world->gateLeftBoss1);
+	world->gateRightBoss1->Init(4992, 160);
+	world->gateRightBoss1->setGateState(OPEN);
+	grid->add(world->gateRightBoss1);
+	world->gateBlockBoss1->Init(4928, 160);
+	grid->add(world->gateBlockBoss1);
+
+	//world->kraid->Init(4704, 256);
+	//grid->add(world->kraid);
+	//world->ridley->Init(5408, 192);
+	//grid->add(world->ridley);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -53,8 +81,11 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 
 Metroid::~Metroid()
 {
-	/*delete(map);
-	delete(world);*/
+	/*delete(this->world);
+	delete(this->intro);
+	delete(this->appear);
+	delete(this->sound);
+	delete(this->grid);*/
 }
 
 /*
@@ -74,14 +105,13 @@ void Metroid::LoadResources(LPDIRECT3DDEVICE9 d3ddev)
 		trace(L"Unable to load BrickTexture");
 
 	// Khoi tao map
-	this->map = new Map(this->getSpriteHandler(), _texture, "field1.txt", this->_device, 0, 0);
+	this->map = new Map(this->getSpriteHandler(), _texture, MAP_FULL_ROOM, 0, 0);
 
 	int height = this->map->getRow();
 	int width = this->map->getColumn();
-	world = new World(spriteHandler, this, width, height);
+	this->grid = new Grid(height, width);
 
-	this->map->setGrid(world->grid);
-	this->map->inputBrickToGrid();
+	world = new World(spriteHandler, this);
 
 	srand((unsigned)time(NULL));
 	this->_InitSprites(d3ddev);
@@ -111,6 +141,7 @@ void Metroid::Update(float Delta)
 		// game running
 	case GAMEMODE_GAMERUN:
 		this->camera->Update();
+		this->grid->setDeltaTime(Delta);
 		map->UpdateMap(this->camera->getBoundary());
 		UpdateFrame(Delta);
 		break;
@@ -222,14 +253,19 @@ void Metroid::RenderGameOver(LPDIRECT3DDEVICE9 d3ddv)
 //render từng object trong game
 void Metroid::RenderFrame(LPDIRECT3DDEVICE9 d3ddv)
 {
-	map->drawMap();
 	world->Render();
+	map->drawMap();
 }
 
 // Xử lý nhấn đè phím
 void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 {
 	Samus* samus = this->world->samus;
+	// Nếu đang va chạm vs enemy thì không điều khiển đc
+
+	if (samus->isCollideWithEnemy) {
+		return;
+	}
 	SAMUS_STATE state = samus->GetState();
 
 	if (_input->IsKeyDown(DIK_RIGHT))
@@ -487,18 +523,20 @@ void Metroid::OnKeyDown(int KeyCode)
 			switch (KeyCode)
 			{
 			case DIK_SPACE:
-				if (_input->IsKeyDown(DIK_SPACE) && world->bombWeapon->getBombExplode() == true)
-				{
-					world->bombWeapon->setActive(true);
-					world->bombWeapon->setTimeSurvive(3);
-					world->bombWeapon->setBombExplode(false);
+				if (this->world->samus->isOnGround) {
+					if (_input->IsKeyDown(DIK_SPACE) && world->bombWeapon->getBombExplode() == true)
+					{
+						world->bombWeapon->setActive(true);
+						world->bombWeapon->setTimeSurvive(3);
+						world->bombWeapon->setBombExplode(false);
 
-					float xpos = world->samus->getPosX();
-					float ypos = world->samus->getPosY();
-					float bombPosX = xpos + world->samus->getWidth() / 2;
-					float bombPosY = ypos + world->samus->getHeight() / 2;
-					world->bombWeapon->setPosX(bombPosX);
-					world->bombWeapon->setPosY(bombPosY);
+						float xpos = world->samus->getPosX();
+						float ypos = world->samus->getPosY();
+						float bombPosX = xpos + world->samus->getWidth() / 2;
+						float bombPosY = ypos + world->samus->getHeight() / 2;
+						world->bombWeapon->setPosX(bombPosX);
+						world->bombWeapon->setPosY(bombPosY);
+					}
 				}
 				break;
 			case DIK_X:
@@ -633,14 +671,9 @@ Map * Metroid::getMap() {
 	return this->map;
 }
 
-ROOM_NUMBER Metroid::getRoomNum()
+Grid * Metroid::getGrid()
 {
-	return roomNum;
-}
-
-void Metroid::setRoomNum(ROOM_NUMBER value)
-{
-	roomNum = value;
+	return this->grid;
 }
 
 void Metroid::setSamusBulletDirection(Bullet* bullet) {

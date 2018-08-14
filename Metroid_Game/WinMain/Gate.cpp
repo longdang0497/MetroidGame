@@ -1,13 +1,17 @@
 ﻿#include "Gate.h"
 
-Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
+Gate::Gate()
+{
+}
+
+Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager)
 {
 	this->spriteHandler = spriteHandler;
 	this->manager = manager;
 	this->type = GATE;
 	this->width = GATE_WIDTH;
 	this->height = GATE_HEIGHT;
-	this->grid = grid;
+	//this->grid = this->manager->getMetroid()->getGrid();
 
 	exists_right = nullptr;
 	exists_left = nullptr;
@@ -23,7 +27,7 @@ Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager, Grid * grid)
 
 Gate::~Gate()
 {
-	currentSprite = nullptr; delete (currentSprite);
+	//currentSprite = nullptr; delete (currentSprite);
 	delete(exists_right);
 	delete(exists_left);
 	delete(destroying_right);
@@ -68,38 +72,55 @@ void Gate::Init(int x, int y)
 {
 	this->pos_x = x;
 	this->pos_y = y;
-
-	switch (state)
-	{
-	case CLOSE:
-		switch (gate_type)
-		{
-		case LEFT:
-			currentSprite = exists_left;
-			break;
-		case RIGHT:
-			currentSprite = exists_right;
-			break;
-		}
-		break;
-	case DESTROYING:
-		switch (gate_type)
-		{
-		case LEFT:
-			currentSprite = destroying_left;
-			break;
-		case RIGHT:
-			currentSprite = destroying_right;
-			break;
-		}
-		break;
-	}
 }
 
 void Gate::Update(float t)
 {
 	if (!isActive)
 		return;
+
+	/*if (manager->samus->getRoomNum() == ROOM2)
+	{
+		if (this->GetGateType() == GATE_LEFT)
+			this->pos_x += WIDTH_ROOM2;
+		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM1 + 10 * BRICK_SIZE)
+			this->pos_x += WIDTH_ROOM2;
+	}
+	else if (manager->samus->getRoomNum() == BOSS1)
+	{
+		if (this->GetGateType() == GATE_LEFT)
+			this->pos_x += WIDTH_ROOM_BOSS;
+		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM_BOSS + 10 * BRICK_SIZE)
+			this->pos_x += WIDTH_ROOM_BOSS;
+	}
+	else if (manager->samus->getRoomNum() == BOSS2)
+	{
+		if (this->GetGateType() == GATE_LEFT)
+			this->pos_x += WIDTH_ROOM_BOSS;
+		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM1 + 10 * BRICK_SIZE)
+			this->pos_x += WIDTH_ROOM_BOSS;
+	}*/
+
+	this->isRight = false;
+	this->isLeft = false;
+
+	int row = (int)floor(this->pos_y / CELL_SIZE);
+	int column = (int)floor(this->pos_x / CELL_SIZE);
+	// Xet va cham va cap nhat vi tri
+	manager->getMetroid()->getGrid()->handleCell(this, row, column);
+
+	if (isLeft == true)
+		setGateState(OPEN);
+
+	if (this->getGateState() == OPEN && (isLeft == true || isRight == true))
+	{
+		float time = 0.3f;
+		time -= t;
+		if (time <= 0.0f)
+			this->setGateState(CLOSE);
+	}
+
+	manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
@@ -109,14 +130,24 @@ void Gate::Update(float t)
 		case CLOSE:
 			break;
 		case DESTROYING:
-			currentSprite->updateIndex();
-			if (currentSprite == destroying_left || currentSprite == destroying_right)
+			switch (gate_type)
 			{
-				if (currentSprite->GetIndex() == currentSprite->GetCount() - 1)
+			case GATE_LEFT:
+				destroying_left->updateSprite();
+				if (destroying_left->GetIndex() == destroying_left->GetCount() - 1)
 				{
 					state = OPEN;
 					isActive = false;
 				}
+				break;
+			case GATE_RIGHT:
+				destroying_right->updateSprite();
+				if (destroying_left->GetIndex() == destroying_left->GetCount() - 1)
+				{
+					state = OPEN;
+					isActive = false;
+				}
+				break;
 			}
 			break;
 		}		
@@ -133,13 +164,46 @@ void Gate::Render()
 
 	if (!isActive)
 		return;
-
-	currentSprite->drawSprite(currentSprite->getWidth(), currentSprite->getHeight(), position);
 	
+	switch (state)
+	{
+	case CLOSE:
+		switch (gate_type)
+		{
+		case GATE_LEFT:
+			exists_left->drawSprite(exists_left->getWidth(), exists_left->getHeight(), position);
+			break;
+		case GATE_RIGHT:
+			exists_right->drawSprite(exists_right->getWidth(), exists_right->getHeight(), position);
+			break;
+		}
+		break;
+	case DESTROYING:
+		switch (gate_type)
+		{
+		case GATE_LEFT:
+			destroying_left->drawSprite(destroying_left->getWidth(), destroying_left->getHeight(), position);
+			break;
+		case GATE_RIGHT:
+			destroying_right->drawSprite(destroying_right->getWidth(), destroying_right->getHeight(), position);
+			break;
+		}
+		break;
+	}
 }
 
 void Gate::DestroyGate()
 {
 	//Đặt state là destroy để hủy cổng
 	state = DESTROYING;
+}
+
+void Gate::setIsRight(bool value)
+{
+	isRight = value;
+}
+
+void Gate::setIsLeft(bool value)
+{
+	isLeft = value;
 }
