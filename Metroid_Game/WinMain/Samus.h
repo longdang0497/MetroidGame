@@ -29,14 +29,8 @@ protected:
 
 	SAMUS_STATE state;	
 
-	bool isInRoom1 = true;
-	bool isInRoom2 = false;
-	bool isInBoss1 = false;
-	bool isInBoss2 = false;
-
 	int tempX;
 	bool isBall;
-
 	float startPosJump;
 	float endPosJump;
 private:
@@ -44,6 +38,7 @@ private:
 	bool isChangingRoom;
 	float posX_StartChangingRoom;
 	float posX_EndChangingRoom;
+	bool startMovingAfterRoomChanged;
 public:
 	bool isJumping;	// Trạng thái đang nhảy của Samus
 	bool canMorph = true;
@@ -55,6 +50,10 @@ public:
 	bool isLeft = false;
 	bool isRight = false;
 	bool isColisionHandled = false;
+
+	bool isCollideWithEnemy = false;
+	// Khi va cham thi animate_rate thay doi
+	int animate_rate;
 
 	float health;	// Máu của Samus
 	bool isDeath = false;	// Trạng thái chết của Samus
@@ -80,6 +79,7 @@ public:
 	//================ OVERRIDE VIRTUAL METHOD ==================
 	void Reset(float  x, float y);
 	void Update(float t);
+	void collideEnemy();
 	void Render();
 	void Destroy();
 	//================= END OVERRIDE VIRTUAL METHOD =============
@@ -100,6 +100,9 @@ public:
 	float getPosX_StartChangingRoom() { return this->posX_StartChangingRoom; }
 	void  setPosX_EndChangingRoom(float value) { this->posX_EndChangingRoom = value; }
 	float getPosX_EndChangingRoom() { return this->posX_EndChangingRoom; }
+	
+	void setStartMovingAfterRoomChanged(bool value) { this->startMovingAfterRoomChanged = value; }
+	float getStartMovingAfterRoomChanged() { return this->startMovingAfterRoomChanged; }
 };
 
 

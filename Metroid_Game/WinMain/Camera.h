@@ -5,6 +5,7 @@
 #include <d3dx9.h>
 #include "DeviceManager.h"
 #include "GameObject.h"
+#include "Map.h"
 
 class Camera
 {
@@ -14,18 +15,12 @@ public:
 	~Camera();
 
 	//Game Functions
-	void Update(float t);
+	void Update();
 	void SetTransform(DeviceManager *device) const;
 	void SetMapBoundary(RECT rect);
 	RECT getBoundary();
 	void Follow(GameObject * object);
 
-	void setIsChanging(bool value) { this->isChangingRoom = value; }
-	bool getIsChanging() { return this->isChangingRoom; }
-	void setStartPosX(float value) { this->startPosX = value; }
-	float getStartPosX() { return this->startPosX; }
-	void setEndPosX(float value) { this->endPosX = value; }
-	float getEndPosX() { return this->endPosX; }
 private:
 	float angle;
 	DirectX::XMFLOAT3 scaleFactors;
@@ -35,12 +30,10 @@ private:
 
 	int width;
 	int height;
-	RECT m_map_bound;
+	RECT m_map_bound = RECT();
 	GameObject* m_following = nullptr;
 	RECT Camera_bound;
 
-	bool isChangingRoom;
-	float startPosX;	//vi tri bat dau luot camera (co dinh)
-	float endPosX;	//
-
+	float startPosX;
+	float endPosX;
 };

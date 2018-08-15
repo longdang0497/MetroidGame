@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "GameObject.h"
-//#include "BulletManager.h"
 #include <time.h>
 
 #define ANIMATE_ENEMY_RATE 7
@@ -12,6 +11,7 @@ protected:
 	LPDIRECT3DTEXTURE9 texture;
 	float initPosX;
 	float initPosY;
+	float isEnemyFreezed;
 public:
 	float time_freeze;	// thời gian dừng khi bị hit
 	int health;		// Máu của object
@@ -36,6 +36,8 @@ public:
 	virtual void startMoving();
 	//============== END OVERRIDE VIRTUAL METHOD ============
 
+	virtual void setSamusLocation(float posX, float posY);
+
 	bool isInsideMapBound(RECT cameraBound);
 
 	void setTexture(LPDIRECT3DTEXTURE9 texture);
@@ -46,7 +48,11 @@ public:
 	void setInitPosY(float y);
 	float getInitPosY();
 
-	void setHealth(int value);
-	int getHealth();
+	void setHealth(int value) { this->health = value; }
+	int getHealth() { return this->health; }
+
+	void setIsEnemyFreezed(bool value) { this->isEnemyFreezed = value; }
+	bool getIsEnemyFreezed() { return this->isEnemyFreezed; }
+
 };
 

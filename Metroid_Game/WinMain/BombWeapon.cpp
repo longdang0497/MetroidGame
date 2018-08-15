@@ -71,6 +71,7 @@ void BombWeapon::Render()
 	position.y = pos_y;
 	position.z = 0;
 
+	position.y += 10;
 	if (isActive == true && isExplode == false)
 	{
 		bomb->drawSprite(BOMB_WIDTH, BOMB_HEIGHT, position);

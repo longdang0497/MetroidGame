@@ -9,7 +9,7 @@
 #include <vector>
 #include "Math.h"
 #include "Brick.h"
-//#include "Metroid.h"
+#include "Grid.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ class Map {
 		int y_pixel;
 	};
 public:
-	Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture, string filePath, int left, int top);
+	Map(LPD3DXSPRITE spriteHandler, LPDIRECT3DTEXTURE9 texture,string filePath, int left, int top);
 
 	~Map();
 
@@ -37,6 +37,7 @@ public:
 	// Load map lên
 	bool loadMap(string filePath);
 
+	LPDIRECT3DDEVICE9 getDevice();
 	LPDIRECT3DTEXTURE9 getTexture();
 	vector<string> getStringMap();
 
@@ -45,11 +46,8 @@ public:
 	int getRow();
 	int getColumn();
 
-	//Metroid * getMetroid();
-
-	//void inputBrickToGrid(Metroid * metroid);
+	void inputBrickToGrid(Grid *grid);
 private:
-	//Metroid * metroid;
 	std::string filePath;
 	vector<string> stringMap;
 	vector<brick> drawBrickArray = vector<brick> ();

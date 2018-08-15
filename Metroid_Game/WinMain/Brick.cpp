@@ -16,8 +16,8 @@ Brick::Brick(float x, float y, int width, int height){
 	this->type = BRICK;
 	this->pos_x = x;
 	this->pos_y = y;
-	this->width = width;
-	this->height = height;
+	this->width = 32;
+	this->height = 32;
 	this->isActive = true;
 }
 

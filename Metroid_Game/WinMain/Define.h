@@ -195,8 +195,8 @@ enum OBJECT_TYPE
 #define WIDTH_SAMUS_JUMPSHOOT 38
 #define HEIGHT_SAMUS_JUMPSHOOT 66
 #define COUNT_SAMUS_JUMPSHOOT 1
-#define JUMPSHOOTright_PATH L"sprites\\JUMPSHOOT_RIGHT.txt"
-#define JUMPSHOOTleft_PATH L"sprites\\JUMPSHOOT_LEFT.txt"
+#define JUMPSHOOTright_PATH L"sprites\\JUMPSHOOT_LEFT.txt"
+#define JUMPSHOOTleft_PATH L"sprites\\JUMPSHOOT_RIGHT.txt"
 
 #define WIDTH_SAMUS_RUN_SHOOTUP_right 40
 #define HEIGHT_SAMUS_RUN_SHOOTUP_right 78
@@ -315,6 +315,16 @@ enum ZOOMER_DIRECTION {
 
 
 //================== SKREE  =====================
+enum SKREE_STATE
+{
+	ON_HANGING,
+	ON_FALLING,
+	LANDED,
+	SHOT,
+	EXPLOSION_STATE,
+	KILLED
+};
+
 
 #define SKREE_WIDTH 36
 #define SKREE_HEIGHT 52
@@ -326,10 +336,10 @@ enum ZOOMER_DIRECTION {
 #define SKREE_STANDARD_ANIMATE_RATE 7
 #define SKREE_BOOST_ANIMATE_RATE 30
 
-#define ZOOMER_YELLOW_CASE 0
-#define ZOOMER_PINK_CASE 1
+#define ZOOMER_CASE 0
 #define SKREE_CASE 2
-#define RIO_CASE 3
+#define BOSS1_CASE 3
+#define BOSS2_CASE 4
 
 #define SKREE_DISTANCE_TO_SAMUS  300.0f
 #define SKREE_SPEED 150.0f

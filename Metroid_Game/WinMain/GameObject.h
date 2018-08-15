@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <d3dx9.h>
 #include "Sprite.h"
 #include "Define.h"
 
@@ -15,7 +16,6 @@ public:
 	float lastPosY;
 	float friction = FRICTION;	//ma sát
 
-	ROOM_NUMBER roomNum;
 	Sprite * currentSprite;
 	GameObject * previousUnit;
 	GameObject * nextUnit;
@@ -26,7 +26,6 @@ public:
 	float vy_last;
 
 	float gravity;
-	float currentTime = 0;
 
 	LPD3DXSPRITE spriteHandler;
 
@@ -84,9 +83,6 @@ public:
 	float getgravity();
 	void setgravity(float value);
 
-	void setCurrentTime(float value);
-	float getCurrentTime();
-
 	void SetBound(int objWidth, int objHeight);
 	RECT GetBound();
 	//===============================END GET - SET METHOD============================
@@ -104,7 +100,5 @@ public:
 
 	// ============================== END VIRTUAL METHOD =============================
 	
-	ROOM_NUMBER getRoomNum();
-	void setRoomNum(ROOM_NUMBER value);
-	Grid * getGrid();
+
 };

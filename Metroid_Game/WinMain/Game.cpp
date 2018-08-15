@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "trace.h"
 
 //SoundManager* Game::gameSound = NULL;
 Graphics* Game::_dxgraphics = NULL;

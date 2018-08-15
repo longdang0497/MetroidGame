@@ -3,6 +3,7 @@
 #include "Define.h"
 #include "Samus.h"
 #include "Zoomer.h"
+#include "Skree.h"
 #include <vector>
 #include "Texture.h"
 #include "Bullet.h"
@@ -10,8 +11,8 @@
 #include "BombWeapon.h"
 #include "Gate.h"
 #include "GateBlock.h"
-#include "Ridley.h"
-#include "Kraid.h"
+//#include "Ridley.h"
+//#include "Kraid.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
 	MaruMari * maruMari;
 	ExplodeEffect* explodeEffect;
 	BombWeapon* bombWeapon;
+
 	Gate * gateLeftRoom1;
 	Gate * gateRightRoom1;
 	Gate * gateLeftRoom2;
@@ -37,8 +39,8 @@ public:
 	GateBlock * gateBlockRoom1;
 	GateBlock * gateBlockRoom2;
 	GateBlock * gateBlockBoss1;
-	Kraid * kraid;
-	Ridley * ridley;
+	//Kraid * kraid;
+	//Ridley * ridley;
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;

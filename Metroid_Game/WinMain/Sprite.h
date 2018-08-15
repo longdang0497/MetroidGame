@@ -1,4 +1,6 @@
 #pragma once
+#include <d3d9.h>
+#include <d3dx9.h>
 #include "Define.h"
 #include "DeviceManager.h"
 #include "DXGraphics.h"

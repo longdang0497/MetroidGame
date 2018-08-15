@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Sound.h"
 #include "utils.h"
+#include "trace.h"
 
 class Game
 {

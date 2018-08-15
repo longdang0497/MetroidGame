@@ -1,8 +1,4 @@
 ﻿#include "World.h"
-#include <vector>
-
-using namespace std;
-
 World::World()
 {
 }
@@ -13,19 +9,19 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	this->metroid = metroid;
 
 	//Khởi tạo các đối tượng trong World
-	samus = new Samus(spriteHandler, this, metroid->getGrid());
+	samus = new Samus(spriteHandler, this, this->getMetroid()->getGrid());
 	
 	// Khởi tạo đạn (3 viên)
-	Bullet *bullet1 = new Bullet(spriteHandler, metroid->getGrid());
-	Bullet *bullet2 = new Bullet(spriteHandler, metroid->getGrid());
-	Bullet *bullet3 = new Bullet(spriteHandler, metroid->getGrid());
+	Bullet *bullet1 = new Bullet(spriteHandler, this->getMetroid()->getGrid());
+	Bullet *bullet2 = new Bullet(spriteHandler, this->getMetroid()->getGrid());
+	Bullet *bullet3 = new Bullet(spriteHandler, this->getMetroid()->getGrid());
 	this->samusBullet.push_back(bullet1);
 	this->samusBullet.push_back(bullet2);
 	this->samusBullet.push_back(bullet3);
 
 	maruMari = new MaruMari(spriteHandler, this);
 
-	explodeEffect = new ExplodeEffect(spriteHandler, this, metroid->getGrid());
+	explodeEffect = new ExplodeEffect(spriteHandler, this, this->getMetroid()->getGrid());
 	bombWeapon = new BombWeapon(spriteHandler, this);
 
 	gateRightRoom1 = new Gate(spriteHandler, this);
@@ -39,8 +35,8 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	gateBlockRoom2 = new GateBlock(spriteHandler, this, metroid->getGrid());
 	gateBlockBoss1 = new GateBlock(spriteHandler, this, metroid->getGrid());
 
-	kraid = new Kraid(spriteHandler, this);
-	ridley = new Ridley(spriteHandler, this);
+	//kraid = new Kraid(spriteHandler, this);
+	//ridley = new Ridley(spriteHandler, this);
 
 	loadEnemyPositions("Monster_Room1.txt");
 }
@@ -61,8 +57,8 @@ World::~World()
 	delete(gateBlockRoom1);
 	delete(gateBlockRoom2);
 	delete(gateBlockBoss1);
-	delete(ridley);
-	delete(kraid);
+	/*delete(ridley);
+	delete(kraid);*/
 }
 
 void World::Update(float t)
@@ -80,22 +76,33 @@ void World::Update(float t)
 	/*START UPDATING ENEMY*/
 	for (int i = 0; i < this->enemy.size(); i++) {
 		if (this->enemy[i]->isInsideMapBound(this->metroid->camera->getBoundary())) {
-			if (!this->enemy[i]->isActive && !this->enemy[i]->isDeath) {
-				enemy[i]->isActive = true;
-				enemy[i]->startMoving();
+			if (!this->enemy[i]->isActive) {
+				if (this->enemy[i]->isDeath) {
+				}
+				else {
+					enemy[i]->isActive = true;
+				}
+
 			}
 			else if (this->enemy[i]->isActive && !this->enemy[i]->isDeath) {
+				if (enemy[i]->getType() == SKREE) {
+					enemy[i]->setSamusLocation(this->samus->pos_x, this->samus->pos_y);
+				}
 				enemy[i]->Update(t);
+				
 			}
-			else {
-				//khong lam gi het
-			}
+		}
+		else {
+			this->enemy[i]->isDeath = false;
+			this->enemy[i]->health = 100.0f;
+			
 		}
 	}
 	/*END UPDATING ENEMY*/
 
 	bombWeapon->Update(t);
 	explodeEffect->Update(t);
+
 	gateBlockRoom1->Update(t);
 	gateBlockRoom2->Update(t);
 	gateBlockBoss1->Update(t);
@@ -107,31 +114,8 @@ void World::Update(float t)
 	gateLeftBoss1->Update(t);
 	gateRightBoss1->Update(t);
 
-	kraid->Update(t);
-	ridley->Update(t);
-
-	if (samus->pos_x < gateLeftRoom1->pos_x + gateLeftRoom1->width || samus->pos_x > gateLeftRoom1->pos_x + gateLeftRoom1->width)
-	{
-		//float time = 0.2;
-		if (gateLeftRoom1->getGateState() == OPEN)
-		{			
-			//time -= t;
-			//if (time <= 0)
-				gateLeftRoom1->setGateState(CLOSE);
-		}
-	}
-	if (samus->pos_x > gateRightRoom1->pos_x + gateRightRoom1->width || samus->pos_x < gateRightRoom1->pos_x + gateRightRoom1->width)
-	{
-		//float time = 0.2;
-		if (gateRightRoom1->getGateState() == OPEN)
-		{
-			//time -= t;
-			//if (time <= 0)
-				gateRightRoom1->setGateState(CLOSE);
-		}
-	}
-	/*else if(gateRight->getGateState() == DESTROYING)
-		gateLeft->setGateState(DESTROYING);*/
+	//kraid->Update(t);
+	//ridley->Update(t);
 }
 
 void World::Render()
@@ -142,16 +126,22 @@ void World::Render()
 		this->samusBullet[i]->Render();
 	}
 
+
 	for (int i = 0; i < this->enemy.size(); i++) {
 		if (this->enemy[i]->isInsideMapBound(this->metroid->camera->getBoundary())) {
 			if (this->enemy[i]->isActive && !this->enemy[i]->isDeath) {
+
 				this->enemy[i]->Render();
+
 			}
 		}
 	}
 
+
+
 	bombWeapon->Render();
 	explodeEffect->Render();
+
 	gateBlockRoom1->Render();
 	gateBlockRoom2->Render();
 	gateBlockBoss1->Render();
@@ -163,8 +153,8 @@ void World::Render()
 	gateRightBoss1->Render();
 	gateLeftBoss1->Render();
 
-	kraid->Render();
-	ridley->Render();
+	//kraid->Render();
+	//ridley->Render();
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -175,14 +165,13 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 		trace(L"Unable to load PlayerTexture");
 	samus->InitSprites(d3ddv, samus_texture);
 
-	Texture * texture1 = new Texture();
-	LPDIRECT3DTEXTURE9 maru_texture = texture1->loadTexture(d3ddv, ITEM_SPRITE_PATH);
+	LPDIRECT3DTEXTURE9 maru_texture = texture->loadTexture(d3ddv, ITEM_SPRITE_PATH);
 	if (maru_texture == NULL)
 		trace(L"Unable to load PlayerTexture");
 	maruMari->InitSprites(d3ddv, maru_texture);
 
 	// Bullet Texture
-	LPDIRECT3DTEXTURE9 bulletTexture = texture1->loadTexture(d3ddv, SAMUS_BULLET_PATH);
+	LPDIRECT3DTEXTURE9 bulletTexture = texture->loadTexture(d3ddv, SAMUS_BULLET_PATH);
 	if (bulletTexture == NULL)
 		trace(L"Unable to load BulletTexture");
 	for (int i = 0; i < this->samusBullet.size(); i++) {
@@ -190,29 +179,28 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	}
 
 	// Explode Texture
-	Texture * textureExplode = new Texture();
-	LPDIRECT3DTEXTURE9 explode_texture = textureExplode->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
+	LPDIRECT3DTEXTURE9 explode_texture = texture->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
 	if (explode_texture == NULL)
 		trace(L"Unable to load Explode Texture");
 	explodeEffect->InitSprites(d3ddv, explode_texture);
 
 	// Bomb Texture
-	Texture * textureBomb = new Texture();
-	LPDIRECT3DTEXTURE9 bomb_texture = textureBomb->loadTexture(d3ddv, BOMB_TEXTURE);
+	LPDIRECT3DTEXTURE9 bomb_texture = texture->loadTexture(d3ddv, BOMB_TEXTURE);
 	if (bomb_texture == NULL)
 		trace(L"Unable to load Bomb Texture");
 	bombWeapon->InitSprites(d3ddv, bomb_texture);
 	
 	// Enemy Texture
-	LPDIRECT3DTEXTURE9 enemyTexture = texture1->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
+	LPDIRECT3DTEXTURE9 enemyTexture = texture->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
 	//Enemy (Zoomer) Texture
 	for (int i = 0; i < this->enemy.size(); i++) {
-		this->enemy[i]->InitSprites(d3ddv, enemyTexture);
+		if (this->enemy[i] != NULL) {
+			this->enemy[i]->InitSprites(d3ddv, enemyTexture);
+		}
 	}
 
 	// Gate Texture
-	Texture * textureGate = new Texture();
-	LPDIRECT3DTEXTURE9 gate_texture = textureGate->loadTexture(d3ddv, GATE_SPRITES_PATH);
+	LPDIRECT3DTEXTURE9 gate_texture = texture->loadTexture(d3ddv, GATE_SPRITES_PATH);
 	if (gate_texture == NULL)
 		trace(L"Unable to load Gate Texture");
 	gateRightRoom1->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
@@ -221,18 +209,18 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	gateLeftRoom2->InitSprites(d3ddv, gate_texture, GATE_LEFT);
 	gateRightBoss1->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
 	gateLeftBoss1->InitSprites(d3ddv, gate_texture, GATE_LEFT);
-	
+
 	gateBlockRoom1->InitSprites(d3ddv, gate_texture);
 	gateBlockRoom2->InitSprites(d3ddv, gate_texture);
 	gateBlockBoss1->InitSprites(d3ddv, gate_texture);
 
 	// Boss Texture
-	Texture * textureBoss = new Texture();
-	LPDIRECT3DTEXTURE9 boss_texture = textureBoss->loadTexture(d3ddv, BOSS_TEXTURE);
-	if (boss_texture == NULL)
-		trace(L"Unable to load Boss Texture");
-	kraid->InitSprites(d3ddv, boss_texture);
-	ridley->InitSprites(d3ddv, boss_texture);
+	//Texture * textureBoss = new Texture();
+	//LPDIRECT3DTEXTURE9 boss_texture = textureBoss->loadTexture(d3ddv, BOSS_TEXTURE);
+	//if (boss_texture == NULL)
+	//	trace(L"Unable to load Boss Texture");
+	//kraid->InitSprites(d3ddv, boss_texture);
+	//ridley->InitSprites(d3ddv, boss_texture);
 }
 
 void World::loadEnemyPositions(string filePath) {
@@ -241,44 +229,43 @@ void World::loadEnemyPositions(string filePath) {
 	vector<string> v;
 	while (getline(file_txt, str)) {
 		v = split(str, "\t");
-		Enemy *monster;
+		Enemy *monster = nullptr;
 		int value = atoi(v[0].c_str());
 		switch (value)
 		{
-		case ZOOMER_YELLOW_CASE: {
+		case ZOOMER_CASE: {
 			monster = new Zoomer(spriteHandler, this, ZOOMER_YELLOW);
 			this->setDirectionForZoomer(monster, v[5]);
 			monster->setEnemyStatefromString(v[6]);
-			break;
-		}
-		case ZOOMER_PINK_CASE: {
-			monster = new Zoomer(spriteHandler, this, ZOOMER_PINK);
-			this->setDirectionForZoomer(monster, v[5]);
-			monster->setEnemyStatefromString(v[6]);
+			
 			break;
 		}
 		case SKREE_CASE: {
-
+			monster = new Skree(spriteHandler, this, SKREE);
 			break;
 		}
-		case RIO_CASE: {
-
+		case BOSS1_CASE: {
+			break;
+		}
+		case BOSS2_CASE: {
 			break;
 		}
 		default:
 			break;
 		}
-		monster->setPosX(stoi(v[3]));
-		monster->setInitPosX(stoi(v[3]));
-		monster->setPosY(stoi(v[4]));
-		monster->setInitPosY(stoi(v[4]));
-		monster->setActive(false);
-		monster->setVelocityX(0);
-		monster->setVelocityY(0);
-		this->enemy.push_back(monster);
-		v.clear();
-		if(monster != NULL)
-			metroid->getGrid()->add(monster);
+		if (monster != nullptr) {
+			monster->setPosX(stoi(v[3]));
+			monster->setInitPosX(stoi(v[3]));
+			monster->setPosY(stoi(v[4]));
+			monster->setInitPosY(stoi(v[4]));
+			monster->setActive(false);
+			monster->setVelocityX(0);
+			monster->setVelocityY(0);
+			this->enemy.push_back(monster);
+			v.clear();
+			this->getMetroid()->getGrid()->add(monster);
+		}
+			
 	}
 	if (v.size() != NULL)
 		trace(L"Unable to load EnemyPosition");
@@ -307,15 +294,16 @@ Metroid * World::getMetroid()
 void World::setDirectionForZoomer(Enemy* enemy, string str) {
 	Zoomer* zoomer = dynamic_cast<Zoomer*>(enemy);
 	if (str == "RIGHT") {
-		zoomer->setInitDirection(ZOOMER_RIGHT);
+		zoomer->setDirection(ZOOMER_RIGHT);
 	}
 	else if (str == "LEFT") {
-		zoomer->setInitDirection(ZOOMER_LEFT);
+		zoomer->setDirection(ZOOMER_LEFT);
 	}
 	else if (str == "UP") {
-		zoomer->setInitDirection(ZOOMER_UP);
+		zoomer->setDirection(ZOOMER_UP);
 	}
 	else if (str == "DOWN") {
-		zoomer->setInitDirection(ZOOMER_DOWN);
+		zoomer->setDirection(ZOOMER_DOWN);
 	}
+	zoomer->setInitDirection(zoomer->getDirection());
 }
