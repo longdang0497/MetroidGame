@@ -26,6 +26,8 @@ protected:
 	Sprite * ballRight;
 	Sprite * jumpShootL;
 	Sprite * jumpShootR;
+	Sprite * jumpFadeL;
+	Sprite * jumpFadeR;
 
 	SAMUS_STATE state;	
 
@@ -36,7 +38,7 @@ protected:
 	ROOM_NUMBER roomNum;
 private:
 	vector<string> stringMapSamus;
-	bool isChangingRoom;
+	bool isChangingRoomLR;
 	bool isChangingRoomRL;
 	float posX_StartChangingRoom;
 	float posX_EndChangingRoom;
@@ -95,8 +97,8 @@ public:
 	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
 	vector<string> getStringMap() { return this->stringMapSamus; }
 
-	void setIsChangingRoom(bool value) { this->isChangingRoom = value; }
-	bool getIsChangingRoom() { return this->isChangingRoom; }
+	void setIsChangingRoom(bool value) { this->isChangingRoomLR = value; }
+	bool getIsChangingRoom() { return this->isChangingRoomLR; }
 	void setIsChangingRoomRL(bool value) { this->isChangingRoomRL = value; }
 	bool getIsChangingRoomRL() { return this->isChangingRoomRL; }
 

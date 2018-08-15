@@ -444,6 +444,12 @@
     <Text Include="Monster_Room1.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sprites\JUMP_FADE_LEFT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
+    <Text Include="sprites\JUMP_FADE_RIGHT.txt">
+      <Filter>Resource Files\sprites</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound\bullet.wav">

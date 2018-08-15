@@ -107,13 +107,22 @@ void Gate::Update(float t)
 			switch (gate_type)
 			{
 			case GATE_LEFT:
-				if (this->pos_x + this->width <= manager->samus->pos_x
-					&&  manager->samus->pos_x <= manager->gateBlockBoss1->pos_x + manager->gateBlockBoss1->width)
-					//|| manager->samus->getStartMovingAfterRoomChanged() == false)
-					this->setGateState(CLOSE);
+				switch (manager->samus->getRoomNum())
+				{
+				case ROOM1:
+					if (this->pos_x + this->width <= manager->samus->pos_x
+						&&  manager->samus->pos_x <= manager->gateBlockBoss1->pos_x + manager->gateBlockBoss1->width)
+						//|| manager->samus->getStartMovingAfterRoomChanged() == false)
+						this->setGateState(CLOSE);
+					break;
+				case ROOM2:
+
+					break;
+				}
 				break;
 			case GATE_RIGHT:
-				if (manager->samus->pos_x >= this->pos_x + this->width)
+				if (manager->samus->pos_x <= this->pos_x + this->width
+					&&  manager->samus->pos_x <= manager->gateBlockBoss1->pos_x + manager->gateBlockBoss1->width)
 					this->setGateState(CLOSE);
 				break;
 			}

@@ -241,6 +241,8 @@
     <Text Include="sprites\item\MARU_MARI.txt" />
     <Text Include="sprites\JUMPSHOOT_LEFT.txt" />
     <Text Include="sprites\JUMPSHOOT_RIGHT.txt" />
+    <Text Include="sprites\JUMP_FADE_LEFT.txt" />
+    <Text Include="sprites\JUMP_FADE_RIGHT.txt" />
     <Text Include="sprites\JUMP_LEFT.txt" />
     <Text Include="sprites\JUMP_RIGHT.txt" />
     <Text Include="sprites\LEFTING.txt" />

@@ -251,7 +251,7 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			}
 			else if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == OPEN)
 			{
-				collisionDirection = NONE;
+				samus->isRight = false;
 				samus->pos_x += samus->vx * this->getDeltaTime();
 				if (samus->pos_x == gate->pos_x + gate->width)
 					gate->setGateState(CLOSE);
@@ -275,23 +275,35 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
 			break;
 		}
+		case GATE_BLOCK: {
+			samus->isLeft = false;
+			break;
+		}
 		case GATE:
 			Gate * gate = dynamic_cast<Gate*>(otherObject);
 			if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == CLOSE)
 			{
 				gate->setIsLeft(true);
-				//gate->setGateState(OPEN);
+				//gate->setGateState(DESTROYING);
+				if (samus->pos_x == gate->pos_x + gate->width)
+					gate->setGateState(CLOSE);
+				samus->pos_x += samus->vx * this->getDeltaTime();
 			}
 			else if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == OPEN)
 			{
-				collisionDirection = NONE;
+				samus->isLeft = false;
 				samus->pos_x += samus->vx * this->getDeltaTime();
-				samus->setIsChangingRoom(true);
+				if (samus->pos_x == gate->pos_x + gate->width)
+					gate->setGateState(CLOSE);
 			}
+
 			if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == CLOSE)
 			{
-				//if (samus->vx > 0)
-					//gate->setGateState(OPEN);
+				samus->isLeft = true;
+			}
+			else if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == OPEN)
+			{
+				samus->isLeft = false;
 			}
 			break;
 		}

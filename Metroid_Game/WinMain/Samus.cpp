@@ -82,6 +82,12 @@ void Samus::Render()
 		case JUMP_SHOOT_UP_RIGHT:
 			jumpShootR->drawSprite(jumpShootR->getWidth(), jumpShootR->getHeight(), position);
 			break;
+		case FADE_JUMP_LEFT:
+			jumpFadeL->drawSprite(jumpFadeL->getWidth(), jumpFadeL->getHeight(), position);
+			break;
+		case FADE_JUMP_RIGHT:
+			jumpFadeR->drawSprite(jumpFadeR->getWidth(), jumpFadeR->getHeight(), position);
+			break;
 		}
 
 	}	
@@ -120,7 +126,8 @@ void Samus::setDimension()
 		this->setIsBall(false);
 		break;
 	}
-	case JUMP_LEFT: case JUMP_RIGHT: case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: {
+	case JUMP_LEFT: case JUMP_RIGHT: case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: 
+	case FADE_JUMP_LEFT :  case FADE_JUMP_RIGHT: {
 		this->setWidth(32);
 		this->setHeight(50);
 		this->setIsBall(false);
@@ -167,7 +174,7 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 
 	this->isCollideWithEnemy = false;
 
-	this->isChangingRoom = false;
+	this->isChangingRoomLR = false;
 	this->isChangingRoomRL = false;
 	this->posX_EndChangingRoom = 0.0f;
 	this->posX_StartChangingRoom = 0.0f;
@@ -219,6 +226,8 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	ballRight = new Sprite(spriteHandler, texture, BALLRIGHT_PATH, WIDTH_SAMUS_BALLRIGHT, HEIGHT_SAMUS_BALLRIGHT, COUNT_SAMUS_BALLRIGHT);
 	jumpShootL = new Sprite(spriteHandler, texture, JUMPSHOOTleft_PATH, WIDTH_SAMUS_JUMPSHOOT, HEIGHT_SAMUS_JUMPSHOOT, COUNT_SAMUS_JUMPSHOOT);
 	jumpShootR = new Sprite(spriteHandler, texture, JUMPSHOOTright_PATH, WIDTH_SAMUS_JUMPSHOOT, HEIGHT_SAMUS_JUMPSHOOT, COUNT_SAMUS_JUMPSHOOT);
+	jumpFadeL = new Sprite(spriteHandler, texture, FADE_JUMP_LEFT_PATH, WIDTH_SAMUS_JUMP, HEIGHT_SAMUS_JUMP, COUNT_SAMUS_JUMP);
+	jumpFadeR = new Sprite(spriteHandler, texture, FADE_JUMP_RIGHT_PATH, WIDTH_SAMUS_JUMP, HEIGHT_SAMUS_JUMP, COUNT_SAMUS_JUMP);
 }
 
 void Samus::InitPostition()
@@ -298,7 +307,7 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	if (!this->isActive || this->isChangingRoom) return;
+	if (!this->isActive || this->isChangingRoomLR || this->isChangingRoomRL) return;
 
 	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width 
 		&& !this->startMovingAfterRoomChanged) {
@@ -306,7 +315,7 @@ void Samus::Update(float t)
 			this->posX_StartChangingRoom = this->pos_x;
 		}
 		this->setRoomNum(ROOM1);
-		this->isChangingRoom = true;
+		this->isChangingRoomLR = true;
 		return;
 	}
 	else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width 
@@ -315,7 +324,7 @@ void Samus::Update(float t)
 			this->posX_StartChangingRoom = this->pos_x;
 		}
 		this->setRoomNum(ROOM2);
-		this->isChangingRoom = true;
+		this->isChangingRoomLR = true;
 		return;
 	}
 	else if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x 
@@ -325,7 +334,7 @@ void Samus::Update(float t)
 			this->posX_StartChangingRoom = this->pos_x;
 		}
 		this->setRoomNum(BOSS1);
-		this->isChangingRoom = true;
+		this->isChangingRoomLR = true;
 		return;
 	}
 
@@ -556,6 +565,12 @@ void Samus::Update(float t)
 			break;
 		case JUMP_RIGHT:
 			jumpRight->updateSprite();
+			break;
+		case FADE_JUMP_LEFT:
+			jumpFadeL->updateSprite();
+			break;
+		case FADE_JUMP_RIGHT:
+			jumpFadeR->updateSprite();
 			break;
 		case TRANSFORM_BALL_LEFT:
 			ballLeft->updateSprite();

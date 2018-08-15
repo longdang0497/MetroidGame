@@ -88,6 +88,8 @@ enum SAMUS_STATE {
 	TRANSFORM_BALL_RIGHT,
 	JUMP_SHOOT_UP_LEFT,
 	JUMP_SHOOT_UP_RIGHT,
+	FADE_JUMP_LEFT,
+	FADE_JUMP_RIGHT
 };
 
 //================END SAMUS ====================
@@ -165,6 +167,8 @@ enum OBJECT_TYPE
 #define COUNT_SAMUS_JUMP 1
 #define JUMPLEFT_PATH L"sprites\\JUMP_LEFT.txt"
 #define JUMPRIGHT_PATH L"sprites\\JUMP_RIGHT.txt"
+#define FADE_JUMP_LEFT_PATH L"sprites\\JUMP_FADE_LEFT.txt"
+#define FADE_JUMP_RIGHT_PATH L"sprites\\JUMP_FADE_RIGHT.txt"
 
 #define WIDTH_SAMUS_BALLLEFT 26
 #define HEIGHT_SAMUS_BALLLEFT 28
