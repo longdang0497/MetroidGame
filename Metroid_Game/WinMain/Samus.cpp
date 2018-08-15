@@ -160,12 +160,15 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	this->height = 64;
 	this->width = 32;
 
+	this->setRoomNum(ROOM1);
+
 	this->startPosJump = 0.0f;
 	this->endPosJump = 0.0f;
 
 	this->isCollideWithEnemy = false;
 
 	this->isChangingRoom = false;
+	this->isChangingRoomRL = false;
 	this->posX_EndChangingRoom = 0.0f;
 	this->posX_StartChangingRoom = 0.0f;
 	this->startMovingAfterRoomChanged = false;
@@ -297,20 +300,42 @@ void Samus::Update(float t)
 {
 	if (!this->isActive || this->isChangingRoom) return;
 
-	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width && !this->startMovingAfterRoomChanged) {
+	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width 
+		&& !this->startMovingAfterRoomChanged) {
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
+		this->setRoomNum(ROOM1);
+		this->isChangingRoom = true;
+		return;
+	}
+	else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width 
+		&& !this->startMovingAfterRoomChanged) {
+		if (this->posX_StartChangingRoom == 0.0f) {
+			this->posX_StartChangingRoom = this->pos_x;
+		}
+		this->setRoomNum(ROOM2);
+		this->isChangingRoom = true;
+		return;
+	}
+	else if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x 
+		&& WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width
+		&& !this->startMovingAfterRoomChanged) {
+		if (this->posX_StartChangingRoom == 0.0f) {
+			this->posX_StartChangingRoom = this->pos_x;
+		}
+		this->setRoomNum(BOSS1);
 		this->isChangingRoom = true;
 		return;
 	}
 
 	if (this->startMovingAfterRoomChanged) {
 		this->posX_EndChangingRoom = this->pos_x;
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 160) {
+		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 64) {
 			this->pos_x += this->vx *t;
 		}
 		else {
+			//this->setRoomNum(ROOM2);
 			this->startMovingAfterRoomChanged = false;
 		}
 	}
@@ -481,8 +506,6 @@ void Samus::Update(float t)
 			}
 		}
 	}
-
-
 	
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 

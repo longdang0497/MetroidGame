@@ -46,7 +46,7 @@ void Metroid::_InitPositions()
 	world->gateLeftBoss1->Init(4912, 160);
 	grid->add(world->gateLeftBoss1);
 	world->gateRightBoss1->Init(4992, 160);
-	world->gateRightBoss1->setGateState(OPEN);
+	//world->gateRightBoss1->setGateState(OPEN);
 	grid->add(world->gateRightBoss1);
 	world->gateBlockBoss1->Init(4928, 160);
 	grid->add(world->gateBlockBoss1);

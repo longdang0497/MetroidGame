@@ -29,6 +29,8 @@ protected:
 
 	bool isRight = false;
 	bool isLeft = false;
+
+	bool mustCloseGate = false;
 public:
 	Gate();
 	Gate(LPD3DXSPRITE spriteHandler, World * manager);
@@ -48,4 +50,7 @@ public:
 
 	void setIsRight(bool value);
 	void setIsLeft(bool value);
+
+	void setMustCloseGate(bool value) { this->mustCloseGate = value; };
+	bool getMustCloseGate() { return this->mustCloseGate; }
 };

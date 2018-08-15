@@ -26,6 +26,7 @@ Bullet::Bullet(LPD3DXSPRITE spriteHandler, Grid*grid) {
 	this->endX = 0.0f;
 	this->endY = 0.0f;
 	this->grid->add(this);
+	//this->isHitGate = false;
 	
 	this->width = 12;
 	this->height = 14;

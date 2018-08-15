@@ -79,55 +79,62 @@ void Gate::Update(float t)
 	if (!isActive)
 		return;
 
-	/*if (manager->samus->getRoomNum() == ROOM2)
-	{
-		if (this->GetGateType() == GATE_LEFT)
-			this->pos_x += WIDTH_ROOM2;
-		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM1 + 10 * BRICK_SIZE)
-			this->pos_x += WIDTH_ROOM2;
-	}
-	else if (manager->samus->getRoomNum() == BOSS1)
-	{
-		if (this->GetGateType() == GATE_LEFT)
-			this->pos_x += WIDTH_ROOM_BOSS;
-		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM_BOSS + 10 * BRICK_SIZE)
-			this->pos_x += WIDTH_ROOM_BOSS;
-	}
-	else if (manager->samus->getRoomNum() == BOSS2)
-	{
-		if (this->GetGateType() == GATE_LEFT)
-			this->pos_x += WIDTH_ROOM_BOSS;
-		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM1 + 10 * BRICK_SIZE)
-			this->pos_x += WIDTH_ROOM_BOSS;
-	}*/
-
 	this->isRight = false;
 	this->isLeft = false;
 
-	int row = (int)floor(this->pos_y / CELL_SIZE);
-	int column = (int)floor(this->pos_x / CELL_SIZE);
-	// Xet va cham va cap nhat vi tri
-	manager->getMetroid()->getGrid()->handleCell(this, row, column);
-
-	if (isLeft == true)
-		setGateState(OPEN);
-
-	if (this->getGateState() == OPEN && (isLeft == true || isRight == true))
-	{
-		float time = 0.3f;
-		time -= t;
-		if (time <= 0.0f)
-			this->setGateState(CLOSE);
-	}
-
-	manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
+	//int row = (int)floor(this->pos_y / CELL_SIZE);
+	//int column = (int)floor(this->pos_x / CELL_SIZE);
+	//// Xet va cham va cap nhat vi tri
+	//manager->getMetroid()->getGrid()->handleCell(this, row, column);
+	//if (isLeft == true)
+	//	setGateState(OPEN);
+	//if (this->getGateState() == OPEN && (isLeft == true || isRight == true))
+	//{
+	//	float time = 0.3f;
+	//	time -= t;
+	//	if (time <= 0.0f)
+	//		this->setGateState(CLOSE);
+	//}
+	//manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
 	{			
 		switch(state)
 		{
+		case OPEN:
+		{
+			switch (gate_type)
+			{
+			case GATE_LEFT:
+				if (this->pos_x + this->width <= manager->samus->pos_x
+					&&  manager->samus->pos_x <= manager->gateBlockBoss1->pos_x + manager->gateBlockBoss1->width)
+					//|| manager->samus->getStartMovingAfterRoomChanged() == false)
+					this->setGateState(CLOSE);
+				break;
+			case GATE_RIGHT:
+				if (manager->samus->pos_x >= this->pos_x + this->width)
+					this->setGateState(CLOSE);
+				break;
+			}
+		}
+			break;
 		case CLOSE:
+			switch (gate_type)
+			{
+			case GATE_LEFT:
+				exists_left->updateSprite();
+				break;
+			case GATE_RIGHT:
+				exists_right->updateSprite();
+				if (manager->samus->pos_x + manager->samus->width >= this->pos_x)
+				{
+					this->setGateState(DESTROYING);		
+					//state = OPEN;
+					//isActive = false;
+				}
+				break;
+			}
 			break;
 		case DESTROYING:
 			switch (gate_type)
@@ -153,6 +160,9 @@ void Gate::Update(float t)
 		}		
 		last_time = now;
 	}
+
+	if (manager->samus->pos_x >= this->pos_x + this->width)
+		this->setGateState(CLOSE);
 }
 
 void Gate::Render()

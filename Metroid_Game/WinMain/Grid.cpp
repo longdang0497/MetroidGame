@@ -29,7 +29,7 @@ Grid::Grid(int height, int width) {
 }
 
 Grid::~Grid() {
-	
+	delete[] cells;
 }
 
 // Cái này là dùng danh sách liên kết đôi để lưu trữ và truy xuất object
@@ -235,10 +235,37 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
 			break;
 		}
-		case GATE: case GATE_BLOCK: {
+		case GATE_BLOCK: {
 			samus->isRight = false;
 			break;
 		}
+		case GATE:
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == CLOSE)
+			{
+				gate->setIsLeft(true);
+				//gate->setGateState(DESTROYING);
+				if (samus->pos_x == gate->pos_x + gate->width)
+					gate->setGateState(CLOSE);
+				samus->pos_x += samus->vx * this->getDeltaTime();
+			}
+			else if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == OPEN)
+			{
+				collisionDirection = NONE;
+				samus->pos_x += samus->vx * this->getDeltaTime();
+				if (samus->pos_x == gate->pos_x + gate->width)
+					gate->setGateState(CLOSE);
+			}
+			if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == CLOSE)
+			{
+				//gate->setGateState(OPEN);
+				samus->isRight = true;
+			}
+			else if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == OPEN)
+			{
+				samus->isRight = false;
+			}
+			break;
 		}
 	}
 	else if (collisionDirection == LEFT) {
@@ -248,6 +275,25 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
 			break;
 		}
+		case GATE:
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == CLOSE)
+			{
+				gate->setIsLeft(true);
+				//gate->setGateState(OPEN);
+			}
+			else if (gate->GetGateType() == GATE_LEFT && gate->getGateState() == OPEN)
+			{
+				collisionDirection = NONE;
+				samus->pos_x += samus->vx * this->getDeltaTime();
+				samus->setIsChangingRoom(true);
+			}
+			if (gate->GetGateType() == GATE_RIGHT && gate->getGateState() == CLOSE)
+			{
+				//if (samus->vx > 0)
+					//gate->setGateState(OPEN);
+			}
+			break;
 		}
 
 	}
@@ -408,7 +454,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 	switch (collisionDirection) {
 	case TOP: {
 		bullet->setIsTop(true);
-		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT 
+		if (type == BRICK || type == BULLET || type == ITEM || type == EXPLOSION_BOMB 
 			|| type == BOMB_ITEM || type == MARU_MARI
 			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
@@ -441,7 +487,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 
 	case LEFT: {
 		bullet->setIsLeft(true);
-		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
+		if (type == BRICK || type == BULLET || type == ITEM || type == EXPLOSION_BOMB
 			|| type == BOMB_ITEM || type == MARU_MARI || type == ENERGY_ITEM || type == MISSILE_ITEM) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
@@ -460,6 +506,16 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 				zoomer->setIsEnemyFreezed(true);
 			}
 			bullet->Reset();
+		}
+		else if (type == GATE)
+		{
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_LEFT || gate->GetGateType() == GATE_RIGHT)
+			{
+				gate->setIsRight(true);
+				gate->setGateState(DESTROYING);
+				gate->setActive(false);
+			}
 		}
 		break;
 	}
@@ -487,6 +543,24 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 				zoomer->setIsEnemyFreezed(true);
 			}
 			bullet->Reset();
+		}
+		else if (type == GATE)
+		{
+			Gate * gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->GetGateType() == GATE_LEFT || gate->GetGateType() == GATE_LEFT)
+			{
+				gate->setIsLeft(true);
+				gate->setGateState(DESTROYING);
+				
+				if (gate->getGateState() == DESTROYING)
+				{
+					gate->setGateState(OPEN);
+					float time = 0.1f;
+					time -= this->getDeltaTime();
+					if (time <= 0.0f)
+						gate->setGateState(CLOSE);
+				}
+			}
 		}
 		break;
 	}
@@ -519,7 +593,6 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 		}
 	}
 }
-
 
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 

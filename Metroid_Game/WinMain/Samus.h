@@ -33,9 +33,11 @@ protected:
 	bool isBall;
 	float startPosJump;
 	float endPosJump;
+	ROOM_NUMBER roomNum;
 private:
 	vector<string> stringMapSamus;
 	bool isChangingRoom;
+	bool isChangingRoomRL;
 	float posX_StartChangingRoom;
 	float posX_EndChangingRoom;
 	bool startMovingAfterRoomChanged;
@@ -95,6 +97,9 @@ public:
 
 	void setIsChangingRoom(bool value) { this->isChangingRoom = value; }
 	bool getIsChangingRoom() { return this->isChangingRoom; }
+	void setIsChangingRoomRL(bool value) { this->isChangingRoomRL = value; }
+	bool getIsChangingRoomRL() { return this->isChangingRoomRL; }
+
 
 	void setPosX_StartChangingRoom(float value) { this->posX_StartChangingRoom = value; }
 	float getPosX_StartChangingRoom() { return this->posX_StartChangingRoom; }
@@ -102,7 +107,10 @@ public:
 	float getPosX_EndChangingRoom() { return this->posX_EndChangingRoom; }
 	
 	void setStartMovingAfterRoomChanged(bool value) { this->startMovingAfterRoomChanged = value; }
-	float getStartMovingAfterRoomChanged() { return this->startMovingAfterRoomChanged; }
+	bool getStartMovingAfterRoomChanged() { return this->startMovingAfterRoomChanged; }
+
+	void setRoomNum(ROOM_NUMBER value) { this->roomNum = value; }
+	ROOM_NUMBER getRoomNum() { return this->roomNum; }
 };
 
 
