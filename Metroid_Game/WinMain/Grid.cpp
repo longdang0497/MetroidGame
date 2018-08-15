@@ -1,6 +1,8 @@
 ﻿#include "Grid.h"
 #include "Samus.h"
 #include "MaruMari.h"
+#include "Ridley.h"
+#include "Kraid.h"
 // Lưu vào mảng 2 chiều
 // Height khi quy đổi ra sẽ là row -> pos_y tương ứng với row
 // Width khi quy đổi ra sẽ là column -> pos_x tương ứng column
@@ -164,11 +166,17 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		else if (object->getType() == SKREE) {
 			this->handleSkree(object, otherObject, collisionDirection, collisionTime);
 		}
+		else if (object->getType() == RIDLEY) {
+			this->handleRidley(object, otherObject, collisionDirection, collisionTime);
+		}
+		else if (object->getType() == KRAID) {
+			this->handleKraid(object, otherObject, collisionDirection, collisionTime);
+		}
 		return true;
 	}
 	else {
 		return false;
-	}
+	} 
 }
 
 void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime) {
@@ -410,7 +418,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsTop(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT 
 			|| type == BOMB_ITEM || type == MARU_MARI
-			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
+			|| type == ENERGY_ITEM || type == MISSILE_ITEM ) {
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -517,6 +525,76 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 		if (!samus->isCollideWithEnemy) {
 			samus->collideEnemy();
 		}
+	}
+}
+
+void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	Ridley* ridley = dynamic_cast<Ridley*>(object);
+	OBJECT_TYPE otherObjectType = otherObject->getType();
+	switch (collisionDirection) {
+	case BOTTOM: {
+		ridley->setIsBottomCollided(true);
+		switch (otherObjectType) {
+		case BRICK: {
+			ridley->pos_y += ridley->vy*collisionTime*this->getDeltaTime();
+			ridley->setIsFlyingUp(false);
+			if (!ridley->getTimeIsSet()) {
+				ridley->setTimePush(GetTickCount());
+				ridley->setTimeIsSet(true);
+			}
+			if (ridley->getRidleyState() == FLY_LEFT) {
+				ridley->setRidleyState(SIT_LEFT);
+			}
+			else if(ridley->getRidleyState() == FLY_RIGHT){
+				ridley->setRidleyState(SIT_RIGHT);
+			}
+			break;
+		}
+		}
+		break;
+	}
+
+	case TOP: {
+
+		break;
+	}
+
+	case LEFT: {
+
+		break;
+	}
+
+	case RIGHT: {
+
+		break;
+	}
+	}
+}
+
+void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	Kraid *kraid = dynamic_cast<Kraid*>(object);
+	switch (collisionDirection) {
+	case BOTTOM: {
+		kraid->setIsBottom(true);
+		kraid->pos_y += kraid->vy *this->deltaTime *collisionTime;
+		break;
+	}
+	case TOP: {
+
+		break;
+	}
+	case RIGHT: {
+		kraid->setIsRight(true);
+		kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
+		break;
+	}
+	case LEFT: {
+		kraid->setIsLeft(true);
+		kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
+		break;
+	}
 	}
 }
 

@@ -35,10 +35,10 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	gateBlockRoom2 = new GateBlock(spriteHandler, this, metroid->getGrid());
 	gateBlockBoss1 = new GateBlock(spriteHandler, this, metroid->getGrid());
 
-	//kraid = new Kraid(spriteHandler, this);
-	//ridley = new Ridley(spriteHandler, this);
-
 	loadEnemyPositions("Monster_Room1.txt");
+
+	ridley = new Ridley(spriteHandler, this);
+	kraid = new Kraid(spriteHandler, this);
 }
 
 World::~World()
@@ -57,8 +57,8 @@ World::~World()
 	delete(gateBlockRoom1);
 	delete(gateBlockRoom2);
 	delete(gateBlockBoss1);
-	/*delete(ridley);
-	delete(kraid);*/
+	delete(ridley);
+	delete(kraid);
 }
 
 void World::Update(float t)
@@ -114,8 +114,8 @@ void World::Update(float t)
 	gateLeftBoss1->Update(t);
 	gateRightBoss1->Update(t);
 
-	//kraid->Update(t);
-	//ridley->Update(t);
+	kraid->Update(t);
+	ridley->Update(t);
 }
 
 void World::Render()
@@ -130,7 +130,6 @@ void World::Render()
 	for (int i = 0; i < this->enemy.size(); i++) {
 		if (this->enemy[i]->isInsideMapBound(this->metroid->camera->getBoundary())) {
 			if (this->enemy[i]->isActive && !this->enemy[i]->isDeath) {
-
 				this->enemy[i]->Render();
 
 			}
@@ -152,57 +151,41 @@ void World::Render()
 	gateLeftRoom2->Render();
 	gateRightBoss1->Render();
 	gateLeftBoss1->Render();
-
-	//kraid->Render();
-	//ridley->Render();
+	ridley->Render();
+	kraid->Render();
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 {
 	Texture * texture = new Texture();
 	LPDIRECT3DTEXTURE9 samus_texture = texture->loadTexture(d3ddv, TEXTURE_GAME_CHARACTERS);
-	if (samus_texture == NULL)
-		trace(L"Unable to load PlayerTexture");
 	samus->InitSprites(d3ddv, samus_texture);
 
 	LPDIRECT3DTEXTURE9 maru_texture = texture->loadTexture(d3ddv, ITEM_SPRITE_PATH);
-	if (maru_texture == NULL)
-		trace(L"Unable to load PlayerTexture");
 	maruMari->InitSprites(d3ddv, maru_texture);
 
 	// Bullet Texture
 	LPDIRECT3DTEXTURE9 bulletTexture = texture->loadTexture(d3ddv, SAMUS_BULLET_PATH);
-	if (bulletTexture == NULL)
-		trace(L"Unable to load BulletTexture");
 	for (int i = 0; i < this->samusBullet.size(); i++) {
 		this->samusBullet[i]->InitSprites(d3ddv, bulletTexture);
 	}
 
 	// Explode Texture
 	LPDIRECT3DTEXTURE9 explode_texture = texture->loadTexture(d3ddv, EFFECT_SPRITE_PATH);
-	if (explode_texture == NULL)
-		trace(L"Unable to load Explode Texture");
 	explodeEffect->InitSprites(d3ddv, explode_texture);
 
 	// Bomb Texture
 	LPDIRECT3DTEXTURE9 bomb_texture = texture->loadTexture(d3ddv, BOMB_TEXTURE);
-	if (bomb_texture == NULL)
-		trace(L"Unable to load Bomb Texture");
 	bombWeapon->InitSprites(d3ddv, bomb_texture);
 	
 	// Enemy Texture
 	LPDIRECT3DTEXTURE9 enemyTexture = texture->loadTexture(d3ddv, ENEMY_SPRITE_PATH);
-	//Enemy (Zoomer) Texture
 	for (int i = 0; i < this->enemy.size(); i++) {
-		if (this->enemy[i] != NULL) {
-			this->enemy[i]->InitSprites(d3ddv, enemyTexture);
-		}
+		enemy[i]->InitSprites(d3ddv, enemyTexture);
 	}
 
 	// Gate Texture
 	LPDIRECT3DTEXTURE9 gate_texture = texture->loadTexture(d3ddv, GATE_SPRITES_PATH);
-	if (gate_texture == NULL)
-		trace(L"Unable to load Gate Texture");
 	gateRightRoom1->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
 	gateLeftRoom1->InitSprites(d3ddv, gate_texture, GATE_LEFT);
 	gateRightRoom2->InitSprites(d3ddv, gate_texture, GATE_RIGHT);
@@ -214,13 +197,10 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	gateBlockRoom2->InitSprites(d3ddv, gate_texture);
 	gateBlockBoss1->InitSprites(d3ddv, gate_texture);
 
-	// Boss Texture
-	//Texture * textureBoss = new Texture();
-	//LPDIRECT3DTEXTURE9 boss_texture = textureBoss->loadTexture(d3ddv, BOSS_TEXTURE);
-	//if (boss_texture == NULL)
-	//	trace(L"Unable to load Boss Texture");
-	//kraid->InitSprites(d3ddv, boss_texture);
-	//ridley->InitSprites(d3ddv, boss_texture);
+	// boss texture
+	LPDIRECT3DTEXTURE9 boss_texture = texture->loadTexture(d3ddv, BOSS_TEXTURE);
+	ridley->InitSprites(d3ddv, boss_texture);
+	kraid->InitSprites(d3ddv, boss_texture);
 }
 
 void World::loadEnemyPositions(string filePath) {
@@ -242,12 +222,6 @@ void World::loadEnemyPositions(string filePath) {
 		}
 		case SKREE_CASE: {
 			monster = new Skree(spriteHandler, this, SKREE);
-			break;
-		}
-		case BOSS1_CASE: {
-			break;
-		}
-		case BOSS2_CASE: {
 			break;
 		}
 		default:

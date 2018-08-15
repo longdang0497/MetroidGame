@@ -164,7 +164,7 @@ void Zoomer::setVelocity() {
 
 void Zoomer::Update(float t)
 {
-	if (!this->isActive) return;
+	if (!this->isActive || this->isDeath) return;
 	if (this->isEnemyFreezed) {
 		this->isEnemyFreezed = false;
 		return;

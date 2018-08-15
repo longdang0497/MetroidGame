@@ -51,10 +51,6 @@ void Metroid::_InitPositions()
 	world->gateBlockBoss1->Init(4928, 160);
 	grid->add(world->gateBlockBoss1);
 
-	//world->kraid->Init(4704, 256);
-	//grid->add(world->kraid);
-	//world->ridley->Init(5408, 192);
-	//grid->add(world->ridley);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -457,8 +453,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 	{
 		if (world->samus->canJump) {
 			world->samus->isOnGround = false;
-			this->world->samus->setVelocityY(-JUMP_VELOCITY);
-			this->world->samus->setVelocityYLast(-JUMP_VELOCITY);
+			this->world->samus->setVelocityY(-GRAVITY_VELOCITY);
 			this->world->samus->isJumping = true;
 			this->world->samus->isFalling = false;
 			

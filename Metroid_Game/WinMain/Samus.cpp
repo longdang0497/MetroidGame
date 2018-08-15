@@ -220,12 +220,11 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 
 void Samus::InitPostition()
 {
-	//--TO DO: This code will be edited soon
-	pos_x = 992;	
-	pos_y = 320;	
-	/*this->pos_x = 1140;
-	this->pos_y = 352;*/
-	//pos_y = 200;
+
+	//pos_x = 992;	
+	//pos_y = 320;	
+	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 200;
+	pos_y = 200;
 	vx = 0;
 	vx_last = 1.0f;
 	vy = GRAVITY_VELOCITY;
@@ -357,7 +356,7 @@ void Samus::Update(float t)
 
 				if (this->isCollideWithEnemy) {
 					if (vy < 0) {
-						if (this->startPosJump - this->endPosJump >= 64) {
+					if (this->startPosJump - this->endPosJump >= 64) {
 							this->vy = GRAVITY_VELOCITY;
 						}
 					}
@@ -559,9 +558,11 @@ void Samus::collideEnemy()
 	this->canJump = false;
 	if (vx > 0 || this->state == STAND_RIGHT || this->state == JUMP_RIGHT || this->state == JUMP_SHOOT_UP_RIGHT || this->state == TRANSFORM_BALL_RIGHT || this->state == MORPH_RIGHT) {
 		this->vx = -SAMUS_SPEED;
+		this->state = JUMP_RIGHT;
 	}
 	else if (vx < 0 || this->state == STAND_LEFT || this->state == JUMP_LEFT || this->state == JUMP_SHOOT_UP_LEFT || this->state == TRANSFORM_BALL_LEFT || this->state == MORPH_LEFT) {
 		this->vx = SAMUS_SPEED;
+		this->state = JUMP_LEFT;
 	}
 
 }

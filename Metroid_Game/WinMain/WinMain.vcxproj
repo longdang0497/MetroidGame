@@ -150,11 +150,13 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Kraid.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MaruMari.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Metroid.cpp" />
+    <ClCompile Include="Ridley.cpp" />
     <ClCompile Include="Samus.cpp" />
     <ClCompile Include="SDKsound.cpp" />
     <ClCompile Include="SDKwavefile.cpp" />
@@ -189,11 +191,13 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Kraid.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MaruMari.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Metroid.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Ridley.h" />
     <ClInclude Include="Samus.h" />
     <ClInclude Include="SDKsound.h" />
     <ClInclude Include="SDKwavefile.h" />
