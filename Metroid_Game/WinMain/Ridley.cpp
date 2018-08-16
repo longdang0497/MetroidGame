@@ -11,11 +11,21 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 	this->height = HEIGHT_RIDLEY_FLY;
 	//health = HEALTH_RIDLEY;
 
-	setRidleyState(SIT_LEFT);
+	setRidleyState(FLY_LEFT);
 
+	this->vy = 100.0f;
+	//this->vx = SAMUS_SPEED - 50.0f;
+	//vy = 0.5f;
 	vx = 1.0f;
-	vy = 0.0f;
-	vx_last = -1.0f;
+	//vx_last = -1.0f;
+
+	//this->pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 350.0f;
+	//this->pos_y = 192.0f;
+
+	isRightCollided = false;
+	isLeftCollided = false;
+	isTopCollided = false;
+	isBottomCollided = false;
 }
 
 Ridley::~Ridley()
@@ -37,28 +47,46 @@ void Ridley::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	sit_right = new Sprite(spriteHandler, texture, RIDLEY_SIT_RIGHT_PATH, WIDTH_RIDLEY, HEIGHT_RIDLEY_SIT, RIDLEY_COUNT);
 }
 
-void Ridley::Init(float x, float y)
+void Ridley::Init()
 {
-	this->pos_x = x;
-	this->pos_y = y;
+	this->pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 384;
+	this->pos_y = 64;
+	/*D3DXVECTOR2 pos(this->pos_x, this->pos_y);
+	RECT camera = manager->getMetroid()->camera->getBoundary();
+	if (Math::isPointinRectangle(pos, camera) == true)
+		this->isActive = true;*/
 }
 
 void Ridley::Update(float t)
 {
 	if (!isActive) return;
-	
-	/*time_push -= t;
-	if (time_push <= 0)
-	{
-		vy -= 0.007f;
-	}
-	else
-	{
-		vy += 0.011f;
-	}*/
 
-	pos_x += vx * t;
 	pos_y += vy * t;
+
+	int row = (int)floor(this->pos_y / CELL_SIZE);
+	int column = (int)floor(this->pos_x / CELL_SIZE);
+	manager->getMetroid()->getGrid()->handleCell(this, row, column);
+	
+	time_push -= t;
+	if (isBottomCollided == true)
+	{
+		if (time_push > 0)
+		{
+			vy -= 5.5f;
+		}
+		//pos_y += vy * t;
+	}
+	else if (isTopCollided == true)
+	{
+		if (time_push <= 0)
+		{
+			vy += 10.0f;
+		}
+	}
+
+	//pos_x += vx * t;
+
+	manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / RIDLEY_ANIMATE_RATE)

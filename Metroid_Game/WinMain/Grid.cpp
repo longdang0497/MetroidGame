@@ -164,6 +164,9 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		else if (object->getType() == SKREE) {
 			this->handleSkree(object, otherObject, collisionDirection, collisionTime);
 		}
+		else if (object->getType() == RIDLEY) {
+			this->handleRidley(object, otherObject, collisionDirection, collisionTime);
+		}
 		return true;
 	}
 	else {
@@ -603,6 +606,41 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 		if (!samus->isCollideWithEnemy) {
 			samus->collideEnemy();
 		}
+	}
+}
+
+void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	Ridley * ridley = dynamic_cast<Ridley*>(object);
+
+	OBJECT_TYPE type = otherObject->getType();
+	switch (collisionDirection)
+	{
+	case BOTTOM:
+		if (type == BRICK)
+		{
+			ridley->setIsBottomCollided(true);
+			ridley->setTimePush(200);
+			ridley->setRidleyState(SIT_LEFT);
+			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
+		}
+		break;
+	case LEFT:
+
+		break;
+	case TOP:
+		if (type == BRICK)
+		{
+			ridley->setIsTopCollided(true);
+			//ridley->setTimePush(300);
+			ridley->setRidleyState(FLY_LEFT);
+			ridley->setVelocityY(-ridley->getVelocityY());
+			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
+		}
+		break;
+	case RIGHT:
+
+		break;
 	}
 }
 

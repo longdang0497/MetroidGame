@@ -53,8 +53,8 @@ void Metroid::_InitPositions()
 
 	//world->kraid->Init(4704, 256);
 	//grid->add(world->kraid);
-	//world->ridley->Init(5408, 192);
-	//grid->add(world->ridley);
+	world->ridley->Init();
+	grid->add(world->ridley);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -81,11 +81,11 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 
 Metroid::~Metroid()
 {
-	/*delete(this->world);
+	delete(this->world);
 	delete(this->intro);
 	delete(this->appear);
 	delete(this->sound);
-	delete(this->grid);*/
+	delete(this->grid);
 }
 
 /*

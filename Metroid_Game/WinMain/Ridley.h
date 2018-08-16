@@ -26,7 +26,7 @@ public:
 	~Ridley();
 
 	void InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture);
-	void Init(float x, float y);
+	void Init();
 	//============= OVERRIDE VIRTUAL METHOD ==================
 	void Update(float t);
 	void Render();
@@ -44,4 +44,7 @@ public:
 	bool getIsTopCollided();
 	void setIsBottomCollided(bool isBottom);
 	bool getIsBottomCollided();
+
+	void setTimePush(float value) { this->time_push = value; };
+	float getTimePush() { return this->time_push; };
 };

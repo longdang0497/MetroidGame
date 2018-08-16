@@ -11,7 +11,7 @@
 #include "BombWeapon.h"
 #include "Gate.h"
 #include "GateBlock.h"
-//#include "Ridley.h"
+#include "Ridley.h"
 //#include "Kraid.h"
 
 using namespace std;
@@ -40,7 +40,7 @@ public:
 	GateBlock * gateBlockRoom2;
 	GateBlock * gateBlockBoss1;
 	//Kraid * kraid;
-	//Ridley * ridley;
+	Ridley * ridley;
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;

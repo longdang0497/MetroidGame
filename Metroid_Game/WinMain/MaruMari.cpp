@@ -45,36 +45,6 @@ void MaruMari::Update(float t)
 		maruMari->updateSprite();
 		last_time = now;
 	}
-
-	//if (!isActive)
-	//	return;
-
-	//vy -= FALLDOWN_VELOCITY_DECREASE;
-
-
-	//// Xét va chạm với ground
-	//for (int i = 0; i < manager->quadtreeGroup->size; i++)
-	//{
-	//	switch (manager->quadtreeGroup->objects[i]->GetType())
-	//	{
-	//	case BRICK:
-	//		float timeScale = SweptAABB(manager->quadtreeGroup->objects[i], t);
-
-	//		// Chỉ cần xét va chạm phía trên cục gạch thôi
-	//		if (timeScale < 1.0f && normaly > 0.1f)
-	//		{
-	//			this->pos_y = (manager->quadtreeGroup->objects[i]->GetPosY() + manager->quadtreeGroup->objects[i]->GetCollider()->GetTop() - this->collider->GetBottom()) + 0.1f;
-	//			pos_y -= vy*t;
-	//		}
-	//		break;
-	//	}
-	//}
-
-	//pos_x += vx*t;
-	//pos_y += vy*t;
-
-	// Morph ball không cần set thời gian để biến mất như những item khác
-	// xxx
 }
 
 void MaruMari::Render()
@@ -87,9 +57,7 @@ void MaruMari::Render()
 	if (!isActive)
 		return;
 
-	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
 	maruMari->drawSprite(maruMari->getWidth(), maruMari->getHeight(), position);
-	spriteHandler->End();
 }
 
 void MaruMari::Destroy()
