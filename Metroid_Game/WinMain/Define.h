@@ -368,7 +368,7 @@ enum SKREE_STATE
 #define GATE_BLOCK_WIDTH 64
 #define GATE_BLOCK_HEIGHT 96
 
-#define GATE_TIME_SURVIVE 3
+#define GATE_TIME_SURVIVE 3000
 //================= END GATE ===========
 
 //================== EXPLOSION =================

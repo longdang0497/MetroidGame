@@ -33,6 +33,8 @@ protected:
 	bool isBall;
 	float startPosJump;
 	float endPosJump;
+
+	ROOM_NUMBER roomNum;
 private:
 	vector<string> stringMapSamus;
 	bool isChangingRoom;
@@ -90,6 +92,7 @@ public:
 	float getEndPosJump() { return this->endPosJump; }
 
 	void setDimension();
+	void setRoomNum();
 	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
 	vector<string> getStringMap() { return this->stringMapSamus; }
 
@@ -103,6 +106,9 @@ public:
 	
 	void setStartMovingAfterRoomChanged(bool value) { this->startMovingAfterRoomChanged = value; }
 	float getStartMovingAfterRoomChanged() { return this->startMovingAfterRoomChanged; }
+
+	void setRoomNum(ROOM_NUMBER value) { this->roomNum = value; }
+	ROOM_NUMBER getRoomNum() { return this->roomNum; }
 };
 
 

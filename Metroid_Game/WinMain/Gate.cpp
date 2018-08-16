@@ -11,7 +11,6 @@ Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager)
 	this->type = GATE;
 	this->width = GATE_WIDTH;
 	this->height = GATE_HEIGHT;
-	//this->grid = this->manager->getMetroid()->getGrid();
 
 	exists_right = nullptr;
 	exists_left = nullptr;
@@ -23,6 +22,8 @@ Gate::Gate(LPD3DXSPRITE spriteHandler, World * manager)
 
 	//Set time survive
 	time_survive = GATE_TIME_SURVIVE;
+	this->timeStartOpen = 0.0f;
+	
 }
 
 Gate::~Gate()
@@ -63,9 +64,9 @@ void Gate::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture, GATE
 	if (result != D3D_OK) return;
 
 	exists_left = new Sprite(spriteHandler, texture, GATE_LEFT_EXISTS, GATE_WIDTH, GATE_HEIGHT, GATE_EXISTS_COUNT);
-	destroying_left = new Sprite(spriteHandler, texture, GATE_LEFT_DESTROYING, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
+	//destroying_left = new Sprite(spriteHandler, texture, GATE_LEFT_DESTROYING, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
 	exists_right = new Sprite(spriteHandler, texture, GATE_RIGHT_EXISTS, GATE_WIDTH, GATE_HEIGHT, GATE_EXISTS_COUNT);
-	destroying_right = new Sprite(spriteHandler, texture, GATE_RIGHT_DESTROYING, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
+	//destroying_right = new Sprite(spriteHandler, texture, GATE_RIGHT_DESTROYING, GATE_WIDTH, GATE_HEIGHT, GATE_DESTROYING_COUNT);
 }
 
 void Gate::Init(int x, int y)
@@ -79,82 +80,34 @@ void Gate::Update(float t)
 	if (!isActive)
 		return;
 
-	/*if (manager->samus->getRoomNum() == ROOM2)
-	{
-		if (this->GetGateType() == GATE_LEFT)
-			this->pos_x += WIDTH_ROOM2;
-		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM1 + 10 * BRICK_SIZE)
-			this->pos_x += WIDTH_ROOM2;
+	if (GetTickCount() - this->timeStartOpen >= time_survive) {
+		this->setGateState(CLOSE);
+		if (this->pos_x <= this->manager->samus->pos_x && this->manager->samus->pos_x <= this->pos_x + this->width) {
+			this->setGateState(OPEN);
+		}
 	}
-	else if (manager->samus->getRoomNum() == BOSS1)
-	{
-		if (this->GetGateType() == GATE_LEFT)
-			this->pos_x += WIDTH_ROOM_BOSS;
-		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM_BOSS + 10 * BRICK_SIZE)
-			this->pos_x += WIDTH_ROOM_BOSS;
-	}
-	else if (manager->samus->getRoomNum() == BOSS2)
-	{
-		if (this->GetGateType() == GATE_LEFT)
-			this->pos_x += WIDTH_ROOM_BOSS;
-		if (this->GetGateType() == GATE_RIGHT && manager->samus->pos_x >= WIDTH_ROOM1 + 10 * BRICK_SIZE)
-			this->pos_x += WIDTH_ROOM_BOSS;
-	}*/
-
-	this->isRight = false;
-	this->isLeft = false;
-
-	int row = (int)floor(this->pos_y / CELL_SIZE);
-	int column = (int)floor(this->pos_x / CELL_SIZE);
-	// Xet va cham va cap nhat vi tri
-	manager->getMetroid()->getGrid()->handleCell(this, row, column);
-
-	if (isLeft == true)
-		setGateState(OPEN);
-
-	if (this->getGateState() == OPEN && (isLeft == true || isRight == true))
-	{
-		float time = 0.3f;
-		time -= t;
-		if (time <= 0.0f)
-			this->setGateState(CLOSE);
+	else {
+		this->setGateState(OPEN);
 	}
 
-	manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
-	{			
-		switch(state)
-		{
-		case CLOSE:
-			break;
-		case DESTROYING:
-			switch (gate_type)
-			{
-			case GATE_LEFT:
-				destroying_left->updateSprite();
-				if (destroying_left->GetIndex() == destroying_left->GetCount() - 1)
-				{
-					state = OPEN;
-					isActive = false;
-				}
-				break;
-			case GATE_RIGHT:
-				destroying_right->updateSprite();
-				if (destroying_left->GetIndex() == destroying_left->GetCount() - 1)
-				{
-					state = OPEN;
-					isActive = false;
-				}
+	{
+		if (this->state == CLOSE) {
+			switch (this->gate_type) {
+			case GATE_LEFT: {
+				exists_left->updateSprite();
 				break;
 			}
-			break;
-		}		
-		last_time = now;
+			case GATE_RIGHT: {
+				exists_right->updateSprite();
+				break;
+			}
+			}
+		}
 	}
 }
-
 void Gate::Render()
 {
 	D3DXVECTOR3 position;
@@ -165,30 +118,17 @@ void Gate::Render()
 	if (!isActive)
 		return;
 	
-	switch (state)
-	{
-	case CLOSE:
-		switch (gate_type)
-		{
-		case GATE_LEFT:
+	if (this->state == CLOSE) {
+		switch (this->gate_type) {
+		case GATE_LEFT: {
 			exists_left->drawSprite(exists_left->getWidth(), exists_left->getHeight(), position);
 			break;
-		case GATE_RIGHT:
+		}
+		case GATE_RIGHT: {
 			exists_right->drawSprite(exists_right->getWidth(), exists_right->getHeight(), position);
 			break;
 		}
-		break;
-	case DESTROYING:
-		switch (gate_type)
-		{
-		case GATE_LEFT:
-			destroying_left->drawSprite(destroying_left->getWidth(), destroying_left->getHeight(), position);
-			break;
-		case GATE_RIGHT:
-			destroying_right->drawSprite(destroying_right->getWidth(), destroying_right->getHeight(), position);
-			break;
 		}
-		break;
 	}
 }
 

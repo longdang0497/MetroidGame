@@ -59,7 +59,7 @@ void Kraid::InitPostition()
 
 void Kraid::Update(float t)
 {
-	if (this->manager->samus->pos_x >= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && this->manager->samus->pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS) {
+	if (this->manager->samus->getRoomNum() == BOSS2) {
 		this->setActive(true);
 	}
 	else

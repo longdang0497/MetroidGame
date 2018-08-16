@@ -239,11 +239,21 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 	else if (collisionDirection == RIGHT) {
 		samus->isRight = true;
 		switch (otherObjectType) {
-		case BRICK: {
+		case BRICK:{
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
 			break;
 		}
-		case GATE: case GATE_BLOCK: {
+		case GATE: {
+			Gate* gate = dynamic_cast<Gate*>(otherObject);
+			if (!otherObject->isActive || gate->getGateState() == OPEN) {
+				samus->isRight = false;
+			}
+			else {
+				object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+			}
+			break;
+		}
+		case GATE_BLOCK: {
 			samus->isRight = false;
 			break;
 		}
@@ -254,6 +264,20 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		switch (otherObjectType) {
 		case BRICK: {
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+			break;
+		}
+		case GATE: {
+			Gate* gate = dynamic_cast<Gate*>(otherObject);
+			if (!otherObject->isActive || gate->getGateState() == OPEN) {
+				samus->isLeft = false;
+			}
+			else {
+				object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+			}
+			break;
+		}
+		case GATE_BLOCK: {
+			samus->isLeft = false;
 			break;
 		}
 		}
@@ -469,6 +493,14 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			}
 			bullet->Reset();
 		}
+		else if (type == GATE)
+		{
+			Gate* gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->getGateState() == CLOSE) {
+				gate->setTimeStartOpen(GetTickCount());
+			}
+			bullet->Reset();
+		}
 		break;
 	}
 
@@ -493,6 +525,14 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			}
 			else {
 				zoomer->setIsEnemyFreezed(true);
+			}
+			bullet->Reset();
+		}
+		else if (type == GATE)
+		{
+			Gate* gate = dynamic_cast<Gate*>(otherObject);
+			if (gate->getGateState() == CLOSE) {
+				gate->setTimeStartOpen(GetTickCount());
 			}
 			bullet->Reset();
 		}

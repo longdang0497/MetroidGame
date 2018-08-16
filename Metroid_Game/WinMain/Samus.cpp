@@ -135,6 +135,19 @@ void Samus::setDimension()
 	}
 }
 
+void Samus::setRoomNum()
+{
+	if (pos_x >= 0 && pos_x <= WIDTH_ROOM1)
+		this->roomNum = ROOM1;
+	else if (pos_x >= WIDTH_ROOM1 && pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2)
+		this->roomNum = ROOM2;
+	else if (pos_x >= WIDTH_ROOM1 + WIDTH_ROOM2 && pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS)
+		this->roomNum = BOSS1;
+	else if (pos_x >= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS)
+		this->roomNum = BOSS2;
+	
+}
+
 Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 {
 	this->grid = grid;
@@ -221,10 +234,10 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 
-	//pos_x = 992;	
-	//pos_y = 320;	
-	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 200;
-	pos_y = 200;
+	pos_x = 992;	
+	pos_y = 320;	
+	//pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 200;
+	//pos_y = 200;
 	vx = 0;
 	vx_last = 1.0f;
 	vy = GRAVITY_VELOCITY;
@@ -296,7 +309,10 @@ void Samus::Update(float t)
 {
 	if (!this->isActive || this->isChangingRoom) return;
 
-	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width && !this->startMovingAfterRoomChanged) {
+	if ((WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width
+		|| WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width
+		|| WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width)
+		&& !this->startMovingAfterRoomChanged) {
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
@@ -304,9 +320,11 @@ void Samus::Update(float t)
 		return;
 	}
 
+	this->setRoomNum();
+
 	if (this->startMovingAfterRoomChanged) {
 		this->posX_EndChangingRoom = this->pos_x;
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 160) {
+		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 80) {
 			this->pos_x += this->vx *t;
 		}
 		else {
