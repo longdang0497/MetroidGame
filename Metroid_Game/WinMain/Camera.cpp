@@ -48,7 +48,9 @@ void Camera::Update()
 
 		// Cập nhật vị trí của camera
 		Samus* samus = dynamic_cast<Samus*>(m_following);
-		if (samus->getIsChangingRoom()) {
+		
+		//chuyển room từ trái qua phải
+		if (samus->getIsChangingRoomLR()) {
 			switch (samus->getRoomNum())
 			{
 			case ROOM1:
@@ -81,7 +83,7 @@ void Camera::Update()
 				if (m_map_bound.left >= WIDTH_ROOM1) {
 					m_map_bound.left = WIDTH_ROOM1;
 					m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2;
-					samus->setIsChangingRoom(false);
+					samus->setIsChangingRoomLR(false);
 					samus->setRoomNum(ROOM2);
 					samus->setStartMovingAfterRoomChanged(true);
 					this->startPosX = 0.0f;
@@ -120,7 +122,7 @@ void Camera::Update()
 				if (m_map_bound.left >= WIDTH_ROOM1) {
 					m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2;
 					m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS;
-					samus->setIsChangingRoom(false);
+					samus->setIsChangingRoomLR(false);
 					samus->setRoomNum(BOSS1);
 					samus->setStartMovingAfterRoomChanged(true);
 					this->startPosX = 0.0f;
@@ -159,13 +161,137 @@ void Camera::Update()
 				if (m_map_bound.left >= WIDTH_ROOM1) {
 					m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS;
 					m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS;
-					samus->setIsChangingRoom(false);
+					samus->setIsChangingRoomLR(false);
 					samus->setRoomNum(BOSS2);
 					samus->setStartMovingAfterRoomChanged(true);
 					this->startPosX = 0.0f;
 					this->endPosX = 0.0f;
 
 				}
+				break;
+			}
+			}
+		}
+
+		//chuyển room từ phải qua trái
+		if (samus->getIsChangingRoomRL()) {
+			switch (samus->getRoomNum())
+			{
+			case ROOM2:
+			{
+				//m_map_bound.left = WIDTH_ROOM1;
+				if (this->startPosX == 0.0f) {
+					this->startPosX = m_map_bound.left;
+				}
+
+				// Khi mà camera qua đứng giữa nhân vật thì set lại qua bên phải
+				if (Camera_bound.left <= WIDTH_ROOM1 - 320) {
+					this->endPosX = m_map_bound.right;
+					//m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 - 320;
+				}
+				else {
+					this->endPosX = m_map_bound.left;
+				}
+
+				//di chuyen left cua room khi samus dung giua man hinh
+				if (this->endPosX <= WIDTH_ROOM1 - 320) {
+					m_map_bound.right = WIDTH_ROOM1 + 320;
+				}
+
+				// day camera qua trai
+				if (this->endPosX - this->startPosX <= 320 && this->endPosX - this->startPosX >= 0) {
+					m_map_bound.left -= 5;
+				}
+				else if (this->endPosX - this->startPosX >= -320 && this->endPosX - this->startPosX <= 0) {
+					m_map_bound.right -= 5;
+				}
+				if (m_map_bound.right <= WIDTH_ROOM1) {
+					m_map_bound.right = WIDTH_ROOM1;
+					m_map_bound.left = 0;
+					samus->setIsChangingRoomRL(false);
+					samus->setRoomNum(ROOM1);
+					samus->setStartMovingAfterRoomChanged(true);
+					this->startPosX = 0.0f;
+					this->endPosX = 0.0f;
+				}
+				break;
+			}
+			case BOSS1:
+			{
+				//if (this->startPosX == 0.0f) {
+				//	this->startPosX = m_map_bound.right;
+				//}
+
+				//// Khi mà camera qua đứng giữa nhân vật thì set lại qua bên trái
+				//if (Camera_bound.right - (WIDTH_ROOM1 + WIDTH_ROOM2) >= 320) {
+				//	this->endPosX = m_map_bound.left;
+				//	//m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS - 320;
+				//}
+				//else {
+				//	this->endPosX = m_map_bound.right;
+				//}
+
+				////di chuyen left cua room khi samus dung giua man hinh
+				//if (this->endPosX >= WIDTH_ROOM1 + WIDTH_ROOM2 + 320) {
+				//	m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2 + -320;
+				//}
+
+				//// day camera qua phai
+				//if (this->endPosX - this->startPosX <= 320 && this->endPosX - this->startPosX >= 0) {
+				//	m_map_bound.right += 5;
+				//}
+				//else if (this->endPosX - this->startPosX >= -320 && this->endPosX - this->startPosX < 0) {
+				//	m_map_bound.left += 5;
+				//}
+				//if (m_map_bound.left >= WIDTH_ROOM1) {
+				//	m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2;
+				//	m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS;
+				//	samus->setIsChangingRoom(false);
+				//	samus->setRoomNum(BOSS1);
+				//	samus->setStartMovingAfterRoomChanged(true);
+				//	this->startPosX = 0.0f;
+				//	this->endPosX = 0.0f;
+
+				//}
+				break;
+			}
+			case BOSS2:
+			{
+				//if (this->startPosX == 0.0f) {
+				//	this->startPosX = m_map_bound.right;
+				//}
+
+				//// Khi mà camera qua đứng giữa nhân vật thì set lại qua bên trái
+				//if (Camera_bound.right - (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS) >= 320) {
+				//	this->endPosX = m_map_bound.left;
+				//	//m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS - 320;
+				//}
+				//else {
+				//	this->endPosX = m_map_bound.right;
+				//}
+
+				////di chuyen left cua room khi samus dung giua man hinh
+				//if (this->endPosX >= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 320) {
+				//	m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + -320;
+				//}
+
+				//// day camera qua phai
+				//if (this->endPosX - this->startPosX <= 320 && this->endPosX - this->startPosX >= 0) {
+				//	m_map_bound.right += 5;
+				//}
+				//else if (this->endPosX - this->startPosX >= -320 && this->endPosX - this->startPosX < 0) {
+				//	m_map_bound.left += 5;
+				//}
+				//if (m_map_bound.left >= WIDTH_ROOM1) {
+				//	m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS;
+				//	m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS;
+				//	samus->setIsChangingRoom(false);
+				//	samus->setRoomNum(BOSS2);
+				//	samus->setStartMovingAfterRoomChanged(true);
+				//	this->startPosX = 0.0f;
+				//	this->endPosX = 0.0f;
+
+				//}
 				break;
 			}
 			}

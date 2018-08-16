@@ -97,8 +97,8 @@ public:
 	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
 	vector<string> getStringMap() { return this->stringMapSamus; }
 
-	void setIsChangingRoom(bool value) { this->isChangingRoomLR = value; }
-	bool getIsChangingRoom() { return this->isChangingRoomLR; }
+	void setIsChangingRoomLR(bool value) { this->isChangingRoomLR = value; }
+	bool getIsChangingRoomLR() { return this->isChangingRoomLR; }
 	void setIsChangingRoomRL(bool value) { this->isChangingRoomRL = value; }
 	bool getIsChangingRoomRL() { return this->isChangingRoomRL; }
 

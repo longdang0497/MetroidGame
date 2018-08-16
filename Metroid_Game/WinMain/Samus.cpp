@@ -309,13 +309,22 @@ void Samus::Update(float t)
 {
 	if (!this->isActive || this->isChangingRoomLR || this->isChangingRoomRL) return;
 
+	//chuyển room từ trái sang phải
 	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width 
 		&& !this->startMovingAfterRoomChanged) {
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
-		this->setRoomNum(ROOM1);
-		this->isChangingRoomLR = true;
+		if (this->vx > 0)
+		{
+			this->setRoomNum(ROOM1);
+			this->isChangingRoomLR = true;
+		}
+		else if (this->vx < 0)
+		{
+			this->setRoomNum(ROOM2);
+			this->isChangingRoomRL = true;
+		}
 		return;
 	}
 	else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width 
@@ -338,14 +347,58 @@ void Samus::Update(float t)
 		return;
 	}
 
+	//chuyển room từ phải sang trái
+	/*if (WIDTH_ROOM1 + 32 >= this->pos_x && WIDTH_ROOM1 + 32 <= this->pos_x + this->width
+		&& !this->startMovingAfterRoomChanged) {
+		if (this->posX_StartChangingRoom == 0.0f) {
+			this->posX_StartChangingRoom = this->pos_x;
+		}
+		this->setRoomNum(ROOM2);
+		this->isChangingRoomRL = true;
+		return;
+	}*/
+	/*else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width
+		&& !this->startMovingAfterRoomChanged) {
+		if (this->posX_StartChangingRoom == 0.0f) {
+			this->posX_StartChangingRoom = this->pos_x;
+		}
+		this->setRoomNum(BOSS1);
+		this->isChangingRoomLR = true;
+		return;
+	}
+	else if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x
+		&& WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width
+		&& !this->startMovingAfterRoomChanged) {
+		if (this->posX_StartChangingRoom == 0.0f) {
+			this->posX_StartChangingRoom = this->pos_x;
+		}
+		this->setRoomNum(BOSS2);
+		this->isChangingRoomLR = true;
+		return;
+	}*/
+
 	if (this->startMovingAfterRoomChanged) {
 		this->posX_EndChangingRoom = this->pos_x;
-		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 64) {
-			this->pos_x += this->vx *t;
+		if (this->vx > 0)
+		{
+			if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 64) {
+				this->pos_x += this->vx *t;
+			}
+			else {
+				//this->setRoomNum(ROOM2);
+				this->startMovingAfterRoomChanged = false;
+			}
 		}
-		else {
-			//this->setRoomNum(ROOM2);
-			this->startMovingAfterRoomChanged = false;
+		else if (this->vx < 0)
+		{
+			if (this->posX_EndChangingRoom - this->posX_StartChangingRoom >= -64 
+				&& this->posX_EndChangingRoom - this->posX_StartChangingRoom <= 0) {
+				this->pos_x += this->vx *t;
+			}
+			else {
+				//this->setRoomNum(ROOM2);
+				this->startMovingAfterRoomChanged = false;
+			}
 		}
 	}
 	else {
