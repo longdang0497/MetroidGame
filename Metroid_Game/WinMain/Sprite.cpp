@@ -48,7 +48,7 @@ Sprite::Sprite(LPD3DXSPRITE SpriteHandler, LPDIRECT3DTEXTURE9 texture, LPWSTR _c
 }
 
 Sprite::~Sprite() {
-	texture->Release();
+	//texture->Release();
 	//delete(_Coord);
 }
 

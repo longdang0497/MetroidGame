@@ -186,6 +186,9 @@
     <ClCompile Include="Ridley.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="RidleyBullet.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -300,6 +303,9 @@
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Ridley.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="RidleyBullet.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

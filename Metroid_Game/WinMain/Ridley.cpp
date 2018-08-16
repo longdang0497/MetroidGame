@@ -5,7 +5,7 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 	this->type = RIDLEY;
 	this->spriteHandler = spriteHandler;
 	this->manager = manager;
-	this->isActive = true;
+	this->isActive = false;
 
 	this->width = WIDTH_RIDLEY;
 	this->height = HEIGHT_RIDLEY_FLY;
@@ -13,7 +13,7 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 
 	setRidleyState(FLY_LEFT);
 
-	this->vy = 100.0f;
+	this->vy = GRAVITY_VELOCITY - 65.0f;
 	//this->vx = SAMUS_SPEED - 50.0f;
 	//vy = 0.5f;
 	vx = 1.0f;
@@ -59,54 +59,62 @@ void Ridley::Init()
 
 void Ridley::Update(float t)
 {
-	if (!isActive) return;
-
-	pos_y += vy * t;
-
-	int row = (int)floor(this->pos_y / CELL_SIZE);
-	int column = (int)floor(this->pos_x / CELL_SIZE);
-	manager->getMetroid()->getGrid()->handleCell(this, row, column);
-	
-	time_push -= t;
-	if (isBottomCollided == true)
+	if (isActive == false)
 	{
-		if (time_push > 0)
-		{
-			vy -= 5.5f;
-		}
-		//pos_y += vy * t;
+		D3DXVECTOR2 posRidley(this->pos_x + this->width/2, this->pos_y + this->height / 2);
+		D3DXVECTOR2 posSamus(manager->samus->pos_x + manager->samus->width / 2, manager->samus->pos_y + manager->samus->height / 2);
+		if (Math::distance(posRidley, posSamus) <= WIDTH_ROOM_BOSS)
+			this->isActive = true;
 	}
-	else if (isTopCollided == true)
+	else if (this->isActive == true)
 	{
-		if (time_push <= 0)
+		pos_y += vy * t;
+
+		int row = (int)floor(this->pos_y / CELL_SIZE);
+		int column = (int)floor(this->pos_x / CELL_SIZE);
+		manager->getMetroid()->getGrid()->handleCell(this, row, column);
+
+		time_push -= t;
+		if (isBottomCollided == true)
 		{
-			vy += 10.0f;
+			if (time_push > 0)
+			{
+				vy -= 5.5f;
+			}
+			//pos_y += vy * t;
 		}
-	}
-
-	//pos_x += vx * t;
-
-	manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
-
-	DWORD now = GetTickCount();
-	if (now - last_time > 1000 / RIDLEY_ANIMATE_RATE)
-	{
-		switch (state)
+		else if (isTopCollided == true)
 		{
-		case SIT_LEFT:
-			sit_left->updateSprite();
-			break;
-		case SIT_RIGHT:
-			sit_right->updateSprite();
-			break;
-		case FLY_LEFT:
-			fly_left->updateSprite();
-			break;
-		case FLY_RIGHT:
-			fly_right->updateSprite();
-			break;
-		}		
-		last_time = now;
+			if (time_push <= 0)
+			{
+				vy += 10.0f;
+			}
+		}
+
+		//pos_x += vx * t;
+
+		manager->getMetroid()->getGrid()->updateGrid(this, this->pos_x, this->pos_y);
+
+		DWORD now = GetTickCount();
+		if (now - last_time > 1000 / RIDLEY_ANIMATE_RATE)
+		{
+			switch (state)
+			{
+			case SIT_LEFT:
+				sit_left->updateSprite();
+				break;
+			case SIT_RIGHT:
+				sit_right->updateSprite();
+				break;
+			case FLY_LEFT:
+				fly_left->updateSprite();
+				break;
+			case FLY_RIGHT:
+				fly_right->updateSprite();
+				break;
+			}
+			last_time = now;
+		}
 	}
 }
 

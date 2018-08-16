@@ -238,6 +238,13 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
 			break;
 		}
+		case ZOOMER_YELLOW: case ZOOMER_PINK: case RIDLEY:
+		{
+			samus->isCollideWithEnemy = true;
+			samus->isLeft = true;
+			//samus->vx = ;
+			break;
+		}
 		case GATE_BLOCK: {
 			samus->isRight = false;
 			break;
@@ -276,6 +283,12 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		switch (otherObjectType) {
 		case BRICK: {
 			object->pos_x += object->vx * collisionTime*this->getDeltaTime();
+			break;
+		}
+		case ZOOMER_YELLOW : case ZOOMER_PINK: case RIDLEY:
+		{
+			samus->isLeft = true;
+			samus->pos_x += 45;
 			break;
 		}
 		case GATE_BLOCK: {
@@ -419,6 +432,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 				samus->collideEnemy();
 			}
 			zoomer->setIsLeftCollided(false);
+			zoomer->pos_x += 20.0f;
 		}
 		break;
 	}
@@ -453,6 +467,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 				samus->collideEnemy();
 			}
 			zoomer->setIsRightCollided(false);
+			zoomer->pos_x -= 45.0f;
 		}
 		break;
 	}
@@ -620,7 +635,7 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 		if (type == BRICK)
 		{
 			ridley->setIsBottomCollided(true);
-			ridley->setTimePush(200);
+			ridley->setTimePush(900);
 			ridley->setRidleyState(SIT_LEFT);
 			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
 		}

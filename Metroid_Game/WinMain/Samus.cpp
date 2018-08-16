@@ -167,7 +167,7 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	this->height = 64;
 	this->width = 32;
 
-	this->setRoomNum(BOSS1);
+	this->setRoomNum(ROOM1);
 
 	this->startPosJump = 0.0f;
 	this->endPosJump = 0.0f;
@@ -233,10 +233,10 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 	//--TO DO: This code will be edited soon
-	//pos_x = 992;	
-	//pos_y = 320;	
-	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 200;
-	pos_y = 128;
+	pos_x = 992;	
+	pos_y = 320;	
+	//pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 200;
+	//pos_y = 128;
 	/*this->pos_x = 1140;
 	this->pos_y = 352;*/
 	//pos_y = 200;
@@ -488,10 +488,14 @@ void Samus::Update(float t)
 				this->pos_y += vy * t;
 			}
 			else if (isLeft && isBottom) {
+				if (isCollideWithEnemy == true)
+					pos_x += 1.0f;
 				this->pos_x += 1;
 				pos_y += 0;
 			}
 			else if (isRight && isBottom) {
+				if (isCollideWithEnemy == true)
+					pos_x -= 1.0f;
 				this->pos_x -= 1;
 				pos_y += 0;
 			}

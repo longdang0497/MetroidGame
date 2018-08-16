@@ -156,6 +156,7 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Metroid.cpp" />
     <ClCompile Include="Ridley.cpp" />
+    <ClCompile Include="RidleyBullet.cpp" />
     <ClCompile Include="Samus.cpp" />
     <ClCompile Include="SDKsound.cpp" />
     <ClCompile Include="SDKwavefile.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Metroid.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Ridley.h" />
+    <ClInclude Include="RidleyBullet.h" />
     <ClInclude Include="Samus.h" />
     <ClInclude Include="SDKsound.h" />
     <ClInclude Include="SDKwavefile.h" />
