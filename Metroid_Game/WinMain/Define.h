@@ -518,6 +518,11 @@ enum KraidState {
 	KRAID_LEFT,
 	KRAID_RIGHT
 };
+
+enum BULLET_KRAID_STATE {
+	BULLET_KRAID_LEFT,
+	BULLET_KRAID_RIGHT
+};
 #define KRAID_ANIMATE_RATE 15
 #define WIDTH_KRAID 70
 #define HEIGHT_KRAID 96
@@ -532,7 +537,10 @@ enum KraidState {
 #define WIDTH_KRAID_BULLET 26
 #define HEIGHT_KRAID_BULLET 11
 #define COUNT_KRAID_BULLET 1
-#define KRAID_BULLET_PATH L"enemy\\KRAID_BULLET.txt"
+#define KRAID_BULLET_LEFT_PATH L"enemy\\KRAID_BULLET_LEFT.txt"
+#define KRAID_BULLET_RIGHT_PATH L"enemy\\KRAID_BULLET_RIGHT.txt"
+
+#define RANGE_BULLET_KRAID 192.0f
+#define KRAID_BULLET_SPEED 250.0f
 //---------END KRAID---------
 //================== END BOSS ====================
-

@@ -31,4 +31,6 @@ public:
 	void handleSkree(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 	void handleRidley(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 	void handleKraid(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
+	void handleBoomerang(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
+	void handleKraidBullet(GameObject*, GameObject*, COLLISION_DIRECTION, float collisionTime);
 };

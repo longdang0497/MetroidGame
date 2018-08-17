@@ -18,7 +18,7 @@ void Metroid::_InitPositions()
 	world->samus->InitPostition();
 	this->grid->add(this->world->samus);
 
-	world->maruMari->Init(420, 352);
+	world->maruMari->Init(420, 288);
 	this->grid->add(this->world->maruMari);
 
 	world->bombWeapon->CreateBomb(0, 0);
@@ -50,9 +50,6 @@ void Metroid::_InitPositions()
 	grid->add(world->gateRightBoss1);
 	world->gateBlockBoss1->Init(4928, 160);
 	grid->add(world->gateBlockBoss1);
-
-	world->ridley->Init();
-	grid->add(world->ridley);
 
 }
 

@@ -3,6 +3,8 @@
 #include "MaruMari.h"
 #include "Ridley.h"
 #include "Kraid.h"
+#include "KraidBoomerang.h"
+#include "BulletKraid.h"
 // Lưu vào mảng 2 chiều
 // Height khi quy đổi ra sẽ là row -> pos_y tương ứng với row
 // Width khi quy đổi ra sẽ là column -> pos_x tương ứng column
@@ -171,6 +173,12 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		}
 		else if (object->getType() == KRAID) {
 			this->handleKraid(object, otherObject, collisionDirection, collisionTime);
+		}
+		else if (object->getType() == KRAID_BOMERANG) {
+			this->handleBoomerang(object, otherObject, collisionDirection, collisionTime);
+		}
+		else if (object->getType() == KRAID_BULLET) {
+			this->handleKraidBullet(object, otherObject, collisionDirection, collisionTime);
 		}
 		return true;
 	}
@@ -620,36 +628,43 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 
 void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
 {
-	Ridley * ridley = dynamic_cast<Ridley*>(object);
-
-	OBJECT_TYPE type = otherObject->getType();
-	switch (collisionDirection)
-	{
-	case BOTTOM:
-		if (type == BRICK)
-		{
-			ridley->setIsBottomCollided(true);
-			ridley->setTimePush(900);
-			ridley->setRidleyState(SIT_LEFT);
-			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
+	Ridley* ridley = dynamic_cast<Ridley*>(object);
+	OBJECT_TYPE otherObjectType = otherObject->getType();
+	switch (collisionDirection) {
+	case BOTTOM: {
+		ridley->setIsBottomCollided(true);
+		switch (otherObjectType) {
+		case BRICK: {
+			ridley->pos_y += ridley->vy*collisionTime*this->getDeltaTime();
+			if (!collisionTime == 0.0f) {
+				ridley->setTimePush(GetTickCount());
+			}
+			if (ridley->getRidleyState() == FLY_LEFT) {
+				ridley->setRidleyState(SIT_LEFT);
+			}
+			else if (ridley->getRidleyState() == FLY_RIGHT) {
+				ridley->setRidleyState(SIT_RIGHT);
+			}
+			break;
+		}
 		}
 		break;
-	case LEFT:
+	}
+
+	case TOP: {
 
 		break;
-	case TOP:
-		if (type == BRICK)
-		{
-			ridley->setIsTopCollided(true);
-			//ridley->setTimePush(300);
-			ridley->setRidleyState(FLY_LEFT);
-			ridley->setVelocityY(-ridley->getVelocityY());
-			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
-		}
-		break;
-	case RIGHT:
+	}
+
+	case LEFT: {
 
 		break;
+	}
+
+	case RIGHT: {
+
+		break;
+	}
 	}
 }
 
@@ -677,6 +692,21 @@ void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DI
 		break;
 	}
 	}
+}
+
+void Grid::handleBoomerang(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	KraidBoomerang* boomerange = dynamic_cast<KraidBoomerang*>(object);
+	boomerange->Reset(0.0f, 0.0f);
+	boomerange->setIsBottom(true);
+	boomerange->setIsFall(false);
+}
+
+void Grid::handleKraidBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collsionDirection, float collisionTime)
+{
+	BulletKraid* bullet = dynamic_cast<BulletKraid*>(object);
+	bullet->Reset(0.0f, 0.0f);
+	bullet->setIsBottom(true);
 }
 
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {

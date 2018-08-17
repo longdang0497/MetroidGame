@@ -29,6 +29,23 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	this->skreeBullet.push_back(bulletKree3);
 	this->skreeBullet.push_back(bulletKree4);
 
+	// Khoi tao dan cua Kraid (3 vien)
+	BulletKraid* kraidBullet3 = new BulletKraid(spriteHandler, this);
+	kraidBullet3->pos_y = 202.0f;
+	BulletKraid* kraidBullet1 = new BulletKraid(spriteHandler, this);
+	kraidBullet1->pos_y = 232.0f;
+	BulletKraid* kraidBullet2 = new BulletKraid(spriteHandler, this);
+	kraidBullet2->pos_y = 262.0f;
+	this->kraidBullet.push_back(kraidBullet3);
+	this->kraidBullet.push_back(kraidBullet1);
+	this->kraidBullet.push_back(kraidBullet2);
+
+	// Khoi tao boomerange cua kraid (2 vien)
+	KraidBoomerang* boomerang1 = new KraidBoomerang(spriteHandler, this);
+	KraidBoomerang* boomerang2 = new KraidBoomerang(spriteHandler, this);
+	kraidBomerang.push_back(boomerang1);
+	kraidBomerang.push_back(boomerang2);
+
 	maruMari = new MaruMari(spriteHandler, this);
 
 	explodeEffect = new ExplodeEffect(spriteHandler, this, this->getMetroid()->getGrid());
@@ -85,6 +102,14 @@ void World::Update(float t)
 
 	for (int i = 0; i < this->skreeBullet.size(); i++) {
 		this->skreeBullet[i]->Update(t);
+	}
+
+	for (int i = 0; i < this->kraidBullet.size(); i++) {
+		this->kraidBullet[i]->Update(t);
+	}
+
+	for (int i = 0; i < this->kraidBomerang.size(); i++) {
+		this->kraidBomerang[i]->Update(t);
 	}
 
 	/*START UPDATING ENEMY*/
@@ -157,6 +182,14 @@ void World::Render()
 		this->skreeBullet[i]->Render();
 	}
 
+	for (int i = 0; i < this->kraidBullet.size(); i++) {
+		this->kraidBullet[i]->Render();
+	}
+
+	for (int i = 0; i < this->kraidBomerang.size(); i++) {
+		this->kraidBomerang[i]->Render();
+	}
+
 	bombWeapon->Render();
 	explodeEffect->Render();
 
@@ -225,6 +258,13 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	ridley->InitSprites(d3ddv, boss_texture);
 	kraid->InitSprites(d3ddv, boss_texture);
 	
+	for (int i = 0; i < this->kraidBullet.size(); i++) {
+		this->kraidBullet[i]->InitSprites(d3ddv, boss_texture);
+	}
+	for (int i = 0; i < this->kraidBomerang.size(); i++) {
+		this->kraidBomerang[i]->InitSprites(d3ddv, boss_texture);
+	}
+
 	texture = nullptr;
 	delete(texture);
 }

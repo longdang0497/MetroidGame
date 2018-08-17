@@ -1,6 +1,6 @@
 #include "Kraid.h"
 #include "World.h"
-
+#include "BulletKraid.h"
 
 Kraid::Kraid()
 {
@@ -98,6 +98,31 @@ void Kraid::Update(float t)
 	}
 
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
+
+	for (int i = 0; i < this->manager->kraidBullet.size(); i++) {
+		if (!this->manager->kraidBullet[i]->isActive && GetTickCount() - this->manager->kraidBullet[i]->getTimeFreezed() >= 1500) {
+			this->manager->kraidBullet[i]->setActive(true);
+			this->manager->kraidBullet[i]->setPosXKraid(this->pos_x);
+			this->manager->kraidBullet[i]->setPosYKraid(this->pos_y);
+		}
+	}
+
+	for (int i = 0; i < this->manager->kraidBomerang.size(); i++) {
+		if (!this->manager->kraidBomerang[i]->isActive ) {
+			if (i == 0 && GetTickCount() - this->manager->kraidBomerang[i]->getTimeFreezed() >= 1500) {
+				this->manager->kraidBomerang[i]->setActive(true);
+				this->manager->kraidBomerang[i]->setPosXKraid(this->pos_x);
+				this->manager->kraidBomerang[i]->setPosYKraid(this->pos_y);
+			}
+			else if (i == 1 && GetTickCount() - this->manager->kraidBomerang[i]->getTimeFreezed() >= 1800) {
+				this->manager->kraidBomerang[i]->setActive(true);
+				this->manager->kraidBomerang[i]->setPosXKraid(this->pos_x);
+				this->manager->kraidBomerang[i]->setPosYKraid(this->pos_y);
+			}
+				
+		}
+	}
+
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / KRAID_ANIMATE_RATE)
 	{

@@ -234,10 +234,10 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 
-	pos_x = 992;	
-	pos_y = 320;	
-	//pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 200;
-	//pos_y = 200;
+	//pos_x = 992;	
+	//pos_y = 320;	
+	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 200;
+	pos_y = 200;
 	vx = 0;
 	vx_last = 1.0f;
 	vy = GRAVITY_VELOCITY;

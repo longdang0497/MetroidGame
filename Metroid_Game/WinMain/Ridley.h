@@ -3,7 +3,7 @@
 #include "Define.h"
 #include "World.h"
 
-#define RIDLEY_ANIMATE_RATE 2
+#define RIDLEY_ANIMATE_RATE 15
 
 class Ridley : public GameObject
 {
@@ -12,6 +12,9 @@ private:
 	bool isRightCollided;
 	bool isTopCollided;
 	bool isBottomCollided;
+
+	bool isFall;
+	bool isDeath;
 protected:
 	//LPDIRECT3DTEXTURE9 textureRidley;
 	RIDLEY_STATE state;
@@ -20,7 +23,7 @@ protected:
 	Sprite * sit_right;
 	Sprite * fly_left;
 	Sprite * fly_right;
-	float time_push; //thời gian push lực y cho Ridley bay lên
+	DWORD time_push; //thời gian push lực y cho Ridley bay lên
 public:
 	Ridley(LPD3DXSPRITE spriteHandler, World * manager);
 	~Ridley();
@@ -45,6 +48,12 @@ public:
 	void setIsBottomCollided(bool isBottom);
 	bool getIsBottomCollided();
 
-	void setTimePush(float value) { this->time_push = value; };
-	float getTimePush() { return this->time_push; };
+	void setTimePush(DWORD value) { this->time_push = value; }
+	DWORD getTimePush() { return this->time_push; }
+
+	void setIsFall(bool value) { this->isFall = value; }
+	bool getIsFall() { return this->isFall; }
+
+	void setIsDeath(bool value) { this->isDeath = value; }
+	bool getIsDeath() { return this->isDeath; }
 };
