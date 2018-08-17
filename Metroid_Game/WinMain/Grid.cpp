@@ -136,7 +136,7 @@ bool Grid::handleObject(GameObject *object, GameObject* otherObject) {
 			int x2 = (int)((otherObject->pos_x + otherObject->width/2));
 			int y2 = (int)((otherObject->pos_y + otherObject->height/2));
 			D3DXVECTOR2 otherPos(x2, y2);
-			if (Math::distance(objectPos, otherPos) < 150) {
+			if (Math::distance(objectPos, otherPos) < 100) {
 				if (handleCollision(object, otherObject))
 					isCollision = true;
 			}
@@ -241,7 +241,7 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		case ZOOMER_YELLOW: case ZOOMER_PINK: case RIDLEY:
 		{
 			samus->isCollideWithEnemy = true;
-			samus->isLeft = true;
+			samus->isRight = true;
 			//samus->vx = ;
 			break;
 		}
@@ -288,6 +288,7 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		case ZOOMER_YELLOW : case ZOOMER_PINK: case RIDLEY:
 		{
 			samus->isLeft = true;
+			samus->isCollideWithEnemy = true;
 			samus->pos_x += 45;
 			break;
 		}
@@ -635,10 +636,12 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 		if (type == BRICK)
 		{
 			ridley->setIsBottomCollided(true);
-			ridley->setTimePush(900);
+			ridley->setTimePush(10000);
 			ridley->setRidleyState(SIT_LEFT);
-			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
+			//ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
 		}
+		else
+			ridley->setIsBottomCollided(false);
 		break;
 	case LEFT:
 
@@ -649,7 +652,13 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 			ridley->setIsTopCollided(true);
 			//ridley->setTimePush(300);
 			ridley->setRidleyState(FLY_LEFT);
-			ridley->setVelocityY(-ridley->getVelocityY());
+
+			/*if (ridley->pos_y >= ridley->pos_y - 32)
+			{
+				ridley->pos_y = ridley->pos_y - 32;
+			}*/
+			ridley->setVelocityY(-ridley->getVelocityY() + 64.0f);
+			
 			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
 		}
 		break;

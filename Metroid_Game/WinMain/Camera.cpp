@@ -148,7 +148,7 @@ void Camera::Update()
 
 				//di chuyen left cua room khi samus dung giua man hinh
 				if (this->endPosX >= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 320) {
-					m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + -320;
+					m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS - 320;
 				}
 
 				// day camera qua phai

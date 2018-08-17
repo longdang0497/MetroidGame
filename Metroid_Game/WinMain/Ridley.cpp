@@ -13,7 +13,7 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 
 	setRidleyState(FLY_LEFT);
 
-	this->vy = GRAVITY_VELOCITY - 65.0f;
+	this->vy = 70.0f;
 	//this->vx = SAMUS_SPEED - 50.0f;
 	//vy = 0.5f;
 	vx = 1.0f;
@@ -63,7 +63,7 @@ void Ridley::Update(float t)
 	{
 		D3DXVECTOR2 posRidley(this->pos_x + this->width/2, this->pos_y + this->height / 2);
 		D3DXVECTOR2 posSamus(manager->samus->pos_x + manager->samus->width / 2, manager->samus->pos_y + manager->samus->height / 2);
-		if (Math::distance(posRidley, posSamus) <= WIDTH_ROOM_BOSS)
+		if (Math::distance(posRidley, posSamus) <= 500)
 			this->isActive = true;
 	}
 	else if (this->isActive == true)
@@ -79,17 +79,28 @@ void Ridley::Update(float t)
 		{
 			if (time_push > 0)
 			{
-				vy -= 5.5f;
+				vy -= 5.5f;	
+			}
+			else if (time_push <= 0)
+			{
+				vy += 3.5f;
 			}
 			//pos_y += vy * t;
 		}
 		else if (isTopCollided == true)
 		{
-			if (time_push <= 0)
-			{
-				vy += 10.0f;
-			}
+			vy += vy;
+			//pos_y += vy * t;
 		}
+
+		/*if (vy <= 60.0f)
+			vy = 60.0f;
+		else if (vy >= 60.0f)
+			vy = 60.0f;*/
+		if (pos_y <= pos_y - 32)
+			pos_y = pos_y - 32;
+		if (vy >= 200.0f)
+			vy = 200.0f;
 
 		//pos_x += vx * t;
 
