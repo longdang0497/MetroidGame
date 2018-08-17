@@ -528,7 +528,7 @@ void Metroid::OnKeyDown(int KeyCode)
 					if (_input->IsKeyDown(DIK_SPACE) && world->bombWeapon->getBombExplode() == true)
 					{
 						world->bombWeapon->setActive(true);
-						world->bombWeapon->setTimeSurvive(3);
+						world->bombWeapon->setTimeSurvive(1);
 						world->bombWeapon->setBombExplode(false);
 
 						float xpos = world->samus->getPosX();

@@ -761,19 +761,21 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 	}
 
 	case LEFT: {
-		if (otherObjectType == EXPLOSION_BOMB)
-		{
-			ridley->setIsLeftCollided(true);
-			ridley->setHealth(ridley->getHealth() - 20);
+		ridley->setIsLeftCollided(false);
+		if (otherObjectType == EXPLOSION_BOMB) {
+			object->pos_y += object->vy * deltaTime;
+			ridley->setHealth(ridley->getHealth() - 30.0f);
+			ridley->setIsLeftCollided(false);
 		}
 		break;
 	}
 
 	case RIGHT: {
-		if (otherObjectType == EXPLOSION_BOMB)
-		{
-			ridley->setIsRightCollided(true);
-			ridley->setHealth(ridley->getHealth() - 20);
+		ridley->setIsRightCollided(false);
+		if (otherObjectType == EXPLOSION_BOMB) {
+			object->pos_y += object->vy * deltaTime;
+			ridley->setHealth(ridley->getHealth() - 30.0f);
+			ridley->setIsRightCollided(false);
 		}
 		break;
 	}
@@ -783,10 +785,16 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
 {
 	Kraid *kraid = dynamic_cast<Kraid*>(object);
+	OBJECT_TYPE otherObjectType = otherObject->getType();
 	switch (collisionDirection) {
 	case BOTTOM: {
 		kraid->setIsBottom(true);
 		kraid->pos_y += kraid->vy *this->deltaTime *collisionTime;
+		if (otherObjectType == EXPLOSION_BOMB) {
+			//object->pos_y += object->vy * deltaTime;
+			kraid->setHealth(kraid->getHealth() - 30.0f);
+			kraid->setIsRight(false);
+		}
 		break;
 	}
 	case TOP: {
@@ -796,11 +804,21 @@ void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DI
 	case RIGHT: {
 		kraid->setIsRight(true);
 		kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
+		if (otherObjectType == EXPLOSION_BOMB) {
+			//object->pos_y += object->vy * deltaTime;
+			kraid->setHealth(kraid->getHealth() - 30.0f);
+			kraid->setIsRight(false);
+		}
 		break;
 	}
 	case LEFT: {
 		kraid->setIsLeft(true);
 		kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
+		if (otherObjectType == EXPLOSION_BOMB) {
+			//object->pos_y += object->vy * deltaTime;
+			kraid->setHealth(kraid->getHealth() - 30.0f);
+			kraid->setIsLeft(false);
+		}
 		break;
 	}
 	}
