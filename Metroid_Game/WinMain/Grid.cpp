@@ -272,7 +272,14 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			samus->isRight = false;
 			break;
 		}
-		case KRAID:
+		case SKREE_BULLET:
+		{
+			samus->isRight = true;
+			samus->setHealth(samus->getHealth() - 10);
+			samus->setPosX(samus->getPosX() - 20);
+			break;
+		}
+		case KRAID: 
 		{
 			samus->isRight = true;
 			samus->setHealth(samus->getHealth() - 10);
@@ -335,7 +342,14 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			otherObject->setActive(false);
 			break;
 		}
-		case KRAID:
+		case SKREE_BULLET:
+		{
+			samus->isLeft = true;
+			samus->setHealth(samus->getHealth() - 10);
+			samus->setPosX(samus->getPosX() + 20);
+			break;
+		}
+		case KRAID: 
 		{
 			samus->isLeft = true;
 			samus->setHealth(samus->getHealth() - 10);

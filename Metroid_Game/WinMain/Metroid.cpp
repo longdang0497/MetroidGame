@@ -72,16 +72,16 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 	startscreen = NULL;
 	gameoverscreen = NULL;
 
-	screenMode = GAMEMODE_GAMERUN; // GAMEMODE_INTRO;
+	screenMode = GAMEMODE_INTRO; // GAMEMODE_INTRO;
 }
 
 Metroid::~Metroid()
 {
-	/*delete(this->world);
+	delete(this->world);
 	delete(this->intro);
-	delete(this->appear);
-	delete(this->sound);
-	delete(this->grid);*/
+	//delete(this->appear);
+	//delete(this->sound);
+	delete(this->grid);
 }
 
 /*
@@ -192,11 +192,11 @@ void Metroid::Render(LPDIRECT3DDEVICE9 d3ddv)
 	{
 		// intro
 	case GAMEMODE_INTRO:
-		//RenderIntro(d3ddv);
+		RenderIntro(d3ddv);
 		break;
 		// start screen
 	case GAMEMODE_START:
-		//RenderStartScreen(d3ddv);
+		RenderStartScreen(d3ddv);
 		break;
 		// game running
 	case GAMEMODE_GAMERUN:
@@ -204,7 +204,7 @@ void Metroid::Render(LPDIRECT3DDEVICE9 d3ddv)
 		break;
 		// game over
 	case GAMEMODE_GAMEOVER:
-		//RenderGameOver(d3ddv);
+		RenderGameOver(d3ddv);
 	default:
 		break;
 	}
@@ -232,6 +232,7 @@ void Metroid::RenderStartScreen(LPDIRECT3DDEVICE9 d3ddv)
 		_device->getBuffer(),		// to 
 		NULL,				// which portion?
 		D3DTEXF_NONE);
+
 	startscreen = CreateSurfaceFromFile(d3ddv, STARTSCREEN_FILE);
 }
 
