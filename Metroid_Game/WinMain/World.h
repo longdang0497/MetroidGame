@@ -12,7 +12,10 @@
 #include "Gate.h"
 #include "GateBlock.h"
 #include "Ridley.h"
-//#include "Kraid.h"
+#include "Kraid.h"
+#include "BulletSkree.h"
+#include "BulletKraid.h"
+#include "KraidBoomerang.h"
 
 using namespace std;
 
@@ -39,12 +42,16 @@ public:
 	GateBlock * gateBlockRoom1;
 	GateBlock * gateBlockRoom2;
 	GateBlock * gateBlockBoss1;
-	//Kraid * kraid;
+	Kraid * kraid;
 	Ridley * ridley;
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;
+	vector<BulletSkree*> skreeBullet;
 	LPD3DXSPRITE spriteHandler;
+
+	vector<BulletKraid*> kraidBullet;
+	vector<KraidBoomerang*> kraidBomerang;
 
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);

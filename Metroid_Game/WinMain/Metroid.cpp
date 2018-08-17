@@ -18,7 +18,7 @@ void Metroid::_InitPositions()
 	world->samus->InitPostition();
 	this->grid->add(this->world->samus);
 
-	world->maruMari->Init(420, 352);
+	world->maruMari->Init(420, 288);
 	this->grid->add(this->world->maruMari);
 
 	world->bombWeapon->CreateBomb(0, 0);
@@ -46,15 +46,11 @@ void Metroid::_InitPositions()
 	world->gateLeftBoss1->Init(4912, 160);
 	grid->add(world->gateLeftBoss1);
 	world->gateRightBoss1->Init(4992, 160);
-	//world->gateRightBoss1->setGateState(OPEN);
+	world->gateRightBoss1->setGateState(OPEN);
 	grid->add(world->gateRightBoss1);
 	world->gateBlockBoss1->Init(4928, 160);
 	grid->add(world->gateBlockBoss1);
 
-	//world->kraid->Init(4704, 256);
-	//grid->add(world->kraid);
-	world->ridley->Init();
-	grid->add(world->ridley);
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 
@@ -81,11 +77,11 @@ Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, i
 
 Metroid::~Metroid()
 {
-	delete(this->world);
+	/*delete(this->world);
 	delete(this->intro);
 	delete(this->appear);
 	delete(this->sound);
-	delete(this->grid);
+	delete(this->grid);*/
 }
 
 /*
@@ -263,8 +259,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 	Samus* samus = this->world->samus;
 	// Nếu đang va chạm vs enemy thì không điều khiển đc
 
-	if (samus->isCollideWithEnemy || samus->getIsChangingRoomLR() 
-		|| samus->getIsChangingRoomRL() || samus->getStartMovingAfterRoomChanged()) {
+	if (samus->isCollideWithEnemy || samus->getIsChangingRoom() || samus->getStartMovingAfterRoomChanged()) {
 		return;
 	}
 	SAMUS_STATE state = samus->GetState();
@@ -458,8 +453,7 @@ void Metroid::ProcessInput(LPDIRECT3DDEVICE9 d3ddv, float Delta)
 	{
 		if (world->samus->canJump) {
 			world->samus->isOnGround = false;
-			this->world->samus->setVelocityY(-JUMP_VELOCITY);
-			this->world->samus->setVelocityYLast(-JUMP_VELOCITY);
+			this->world->samus->setVelocityY(-GRAVITY_VELOCITY);
 			this->world->samus->isJumping = true;
 			this->world->samus->isFalling = false;
 			
@@ -496,8 +490,7 @@ void Metroid::OnKeyDown(int KeyCode)
 	Samus* samus = this->world->samus;
 	// Nếu đang va chạm vs enemy thì không điều khiển đc
 
-	if (samus->isCollideWithEnemy || samus->getIsChangingRoomLR() 
-		|| samus->getIsChangingRoomRL() || samus->getStartMovingAfterRoomChanged()) {
+	if (samus->isCollideWithEnemy || samus->getIsChangingRoom() || samus->getStartMovingAfterRoomChanged()) {
 		return;
 	}
 	switch (screenMode)
@@ -645,8 +638,7 @@ void Metroid::OnKeyUp(int KeyCode)
 	Samus* samus = this->world->samus;
 	// Nếu đang va chạm vs enemy thì không điều khiển đc
 
-	if (samus->isCollideWithEnemy || samus->getIsChangingRoomLR() 
-		|| samus->getIsChangingRoomRL() || samus->getStartMovingAfterRoomChanged()) {
+	if (samus->isCollideWithEnemy || samus->getIsChangingRoom() || samus->getStartMovingAfterRoomChanged()) {
 		return;
 	}
 	switch (KeyCode)

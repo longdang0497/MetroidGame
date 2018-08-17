@@ -82,12 +82,6 @@ void Samus::Render()
 		case JUMP_SHOOT_UP_RIGHT:
 			jumpShootR->drawSprite(jumpShootR->getWidth(), jumpShootR->getHeight(), position);
 			break;
-		case FADE_JUMP_LEFT:
-			jumpFadeL->drawSprite(jumpFadeL->getWidth(), jumpFadeL->getHeight(), position);
-			break;
-		case FADE_JUMP_RIGHT:
-			jumpFadeR->drawSprite(jumpFadeR->getWidth(), jumpFadeR->getHeight(), position);
-			break;
 		}
 
 	}	
@@ -126,8 +120,7 @@ void Samus::setDimension()
 		this->setIsBall(false);
 		break;
 	}
-	case JUMP_LEFT: case JUMP_RIGHT: case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: 
-	case FADE_JUMP_LEFT :  case FADE_JUMP_RIGHT: {
+	case JUMP_LEFT: case JUMP_RIGHT: case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: {
 		this->setWidth(32);
 		this->setHeight(50);
 		this->setIsBall(false);
@@ -140,6 +133,19 @@ void Samus::setDimension()
 		break;
 	}
 	}
+}
+
+void Samus::setRoomNum()
+{
+	if (pos_x >= 0 && pos_x <= WIDTH_ROOM1)
+		this->roomNum = ROOM1;
+	else if (pos_x >= WIDTH_ROOM1 && pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2)
+		this->roomNum = ROOM2;
+	else if (pos_x >= WIDTH_ROOM1 + WIDTH_ROOM2 && pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS)
+		this->roomNum = BOSS1;
+	else if (pos_x >= WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS && pos_x <= WIDTH_ROOM1 + WIDTH_ROOM2 + 2 * WIDTH_ROOM_BOSS)
+		this->roomNum = BOSS2;
+	
 }
 
 Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
@@ -166,16 +172,14 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 
 	this->height = 64;
 	this->width = 32;
-
-	this->setRoomNum(ROOM1);
+	this->health = 90000;
 
 	this->startPosJump = 0.0f;
 	this->endPosJump = 0.0f;
 
 	this->isCollideWithEnemy = false;
 
-	this->isChangingRoomLR = false;
-	this->isChangingRoomRL = false;
+	this->isChangingRoom = false;
 	this->posX_EndChangingRoom = 0.0f;
 	this->posX_StartChangingRoom = 0.0f;
 	this->startMovingAfterRoomChanged = false;
@@ -226,20 +230,15 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	ballRight = new Sprite(spriteHandler, texture, BALLRIGHT_PATH, WIDTH_SAMUS_BALLRIGHT, HEIGHT_SAMUS_BALLRIGHT, COUNT_SAMUS_BALLRIGHT);
 	jumpShootL = new Sprite(spriteHandler, texture, JUMPSHOOTleft_PATH, WIDTH_SAMUS_JUMPSHOOT, HEIGHT_SAMUS_JUMPSHOOT, COUNT_SAMUS_JUMPSHOOT);
 	jumpShootR = new Sprite(spriteHandler, texture, JUMPSHOOTright_PATH, WIDTH_SAMUS_JUMPSHOOT, HEIGHT_SAMUS_JUMPSHOOT, COUNT_SAMUS_JUMPSHOOT);
-	jumpFadeL = new Sprite(spriteHandler, texture, FADE_JUMP_LEFT_PATH, WIDTH_SAMUS_JUMP, HEIGHT_SAMUS_JUMP, COUNT_SAMUS_JUMP);
-	jumpFadeR = new Sprite(spriteHandler, texture, FADE_JUMP_RIGHT_PATH, WIDTH_SAMUS_JUMP, HEIGHT_SAMUS_JUMP, COUNT_SAMUS_JUMP);
 }
 
 void Samus::InitPostition()
 {
-	//--TO DO: This code will be edited soon
-	pos_x = 992;	
-	pos_y = 320;	
-	//pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 200;
-	//pos_y = 128;
-	/*this->pos_x = 1140;
-	this->pos_y = 352;*/
-	//pos_y = 200;
+
+	//pos_x = 992;	
+	//pos_y = 320;	
+	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 200;
+	pos_y = 200;
 	vx = 0;
 	vx_last = 1.0f;
 	vy = GRAVITY_VELOCITY;
@@ -309,98 +308,28 @@ bool Samus::isSamusDeath()
 // Update samus status
 void Samus::Update(float t)
 {
-	if (!this->isActive || this->isChangingRoomLR || this->isChangingRoomRL) return;
+	if (!this->isActive || this->isChangingRoom) return;
 
-	//chuyển room từ trái sang phải
-	if (WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width 
+	if ((WIDTH_ROOM1 >= this->pos_x && WIDTH_ROOM1 <= this->pos_x + this->width
+		|| WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width
+		|| WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width)
 		&& !this->startMovingAfterRoomChanged) {
 		if (this->posX_StartChangingRoom == 0.0f) {
 			this->posX_StartChangingRoom = this->pos_x;
 		}
-		if (this->vx > 0)
-		{
-			this->setRoomNum(ROOM1);
-			this->isChangingRoomLR = true;
-		}
-		else if (this->vx < 0)
-		{
-			this->setRoomNum(ROOM2);
-			this->isChangingRoomRL = true;
-		}
-		return;
-	}
-	else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width 
-		&& !this->startMovingAfterRoomChanged) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->setRoomNum(ROOM2);
-		this->isChangingRoomLR = true;
-		return;
-	}
-	else if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x 
-		&& WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width
-		&& !this->startMovingAfterRoomChanged) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->setRoomNum(BOSS1);
-		this->isChangingRoomLR = true;
+		this->isChangingRoom = true;
 		return;
 	}
 
-	//chuyển room từ phải sang trái
-	/*if (WIDTH_ROOM1 + 32 >= this->pos_x && WIDTH_ROOM1 + 32 <= this->pos_x + this->width
-		&& !this->startMovingAfterRoomChanged) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->setRoomNum(ROOM2);
-		this->isChangingRoomRL = true;
-		return;
-	}*/
-	/*else if (WIDTH_ROOM1 + WIDTH_ROOM2 >= this->pos_x && WIDTH_ROOM1 + WIDTH_ROOM2 <= this->pos_x + this->width
-		&& !this->startMovingAfterRoomChanged) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->setRoomNum(BOSS1);
-		this->isChangingRoomLR = true;
-		return;
-	}
-	else if (WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS >= this->pos_x
-		&& WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS <= this->pos_x + this->width
-		&& !this->startMovingAfterRoomChanged) {
-		if (this->posX_StartChangingRoom == 0.0f) {
-			this->posX_StartChangingRoom = this->pos_x;
-		}
-		this->setRoomNum(BOSS2);
-		this->isChangingRoomLR = true;
-		return;
-	}*/
+	this->setRoomNum();
 
 	if (this->startMovingAfterRoomChanged) {
 		this->posX_EndChangingRoom = this->pos_x;
-		if (this->vx > 0)
-		{
-			if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 64) {
-				this->pos_x += this->vx *t;
-			}
-			else {
-				//this->setRoomNum(ROOM2);
-				this->startMovingAfterRoomChanged = false;
-			}
+		if (fabs(this->posX_EndChangingRoom - this->posX_StartChangingRoom) <= 80) {
+			this->pos_x += this->vx *t;
 		}
-		else if (this->vx < 0)
-		{
-			if (this->posX_EndChangingRoom - this->posX_StartChangingRoom >= -64 
-				&& this->posX_EndChangingRoom - this->posX_StartChangingRoom <= 0) {
-				this->pos_x += this->vx *t;
-			}
-			else {
-				//this->setRoomNum(ROOM2);
-				this->startMovingAfterRoomChanged = false;
-			}
+		else {
+			this->startMovingAfterRoomChanged = false;
 		}
 	}
 	else {
@@ -446,7 +375,7 @@ void Samus::Update(float t)
 
 				if (this->isCollideWithEnemy) {
 					if (vy < 0) {
-						if (this->startPosJump - this->endPosJump >= 64) {
+					if (this->startPosJump - this->endPosJump >= 64) {
 							this->vy = GRAVITY_VELOCITY;
 						}
 					}
@@ -488,14 +417,10 @@ void Samus::Update(float t)
 				this->pos_y += vy * t;
 			}
 			else if (isLeft && isBottom) {
-				if (isCollideWithEnemy == true)
-					pos_x += 1.0f;
 				this->pos_x += 1;
 				pos_y += 0;
 			}
 			else if (isRight && isBottom) {
-				if (isCollideWithEnemy == true)
-					pos_x -= 1.0f;
 				this->pos_x -= 1;
 				pos_y += 0;
 			}
@@ -574,6 +499,8 @@ void Samus::Update(float t)
 			}
 		}
 	}
+
+
 	
 	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 
@@ -625,12 +552,6 @@ void Samus::Update(float t)
 		case JUMP_RIGHT:
 			jumpRight->updateSprite();
 			break;
-		case FADE_JUMP_LEFT:
-			jumpFadeL->updateSprite();
-			break;
-		case FADE_JUMP_RIGHT:
-			jumpFadeR->updateSprite();
-			break;
 		case TRANSFORM_BALL_LEFT:
 			ballLeft->updateSprite();
 			break;
@@ -656,9 +577,11 @@ void Samus::collideEnemy()
 	this->canJump = false;
 	if (vx > 0 || this->state == STAND_RIGHT || this->state == JUMP_RIGHT || this->state == JUMP_SHOOT_UP_RIGHT || this->state == TRANSFORM_BALL_RIGHT || this->state == MORPH_RIGHT) {
 		this->vx = -SAMUS_SPEED;
+		this->state = JUMP_RIGHT;
 	}
 	else if (vx < 0 || this->state == STAND_LEFT || this->state == JUMP_LEFT || this->state == JUMP_SHOOT_UP_LEFT || this->state == TRANSFORM_BALL_LEFT || this->state == MORPH_LEFT) {
 		this->vx = SAMUS_SPEED;
+		this->state = JUMP_LEFT;
 	}
 
 }

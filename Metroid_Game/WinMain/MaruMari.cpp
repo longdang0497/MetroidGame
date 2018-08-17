@@ -3,8 +3,7 @@
 
 MaruMari::MaruMari(LPD3DXSPRITE spriteHandler, World * manager) :Item(spriteHandler, manager)
 {
-	this->setType(ITEM);
-	this->type = MARU_MARI;
+	this->setType(MARU_MARI);
 	maruMari = NULL;
 	isActive = true;
 
@@ -38,6 +37,7 @@ void MaruMari::Init(float posX, float posY)
 
 void MaruMari::Update(float t)
 {
+	if (!this->isActive) return;
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / ANIMATE_RATE)
@@ -49,13 +49,12 @@ void MaruMari::Update(float t)
 
 void MaruMari::Render()
 {
+	if (!this->isActive) return;
+
 	D3DXVECTOR3 position;
 	position.x = pos_x;
 	position.y = pos_y;
 	position.z = 0;
-
-	if (!isActive)
-		return;
 
 	maruMari->drawSprite(maruMari->getWidth(), maruMari->getHeight(), position);
 }

@@ -8,6 +8,7 @@ Zoomer::Zoomer()
 
 Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type) : Enemy(spriteHandler, manager)
 {
+	this->spriteHandler = spriteHandler;
 	this->setType(enemy_type);
 	this->setActive(false);
 
@@ -23,6 +24,7 @@ Zoomer::Zoomer(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_ty
 
 	this->isDeath = false;
 	this->setIsEnemyFreezed(false);
+	this->timeStartDie = 0.0f;
 }
 
 
@@ -164,7 +166,7 @@ void Zoomer::setVelocity() {
 
 void Zoomer::Update(float t)
 {
-	if (!this->isActive) return;
+	if (!this->isActive || this->isDeath) return;
 	if (this->isEnemyFreezed) {
 		this->isEnemyFreezed = false;
 		return;
@@ -391,6 +393,7 @@ void Zoomer::Destroy(float x, float y)
 		GameObject* object = static_cast<GameObject*>(this);
 		object->setActive(false);
 		this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+		this->setTimeStartDie(GetTickCount());
 	}
 }
 

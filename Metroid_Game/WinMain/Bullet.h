@@ -23,8 +23,6 @@ private:
 	bool isBottom;
 	bool isRight;
 	bool isHandled;
-
-	//bool isHitGate;
 public:
 	void initBullet(float posX, float posY);
 	void Update(float t);
@@ -53,7 +51,4 @@ public:
 	bool getIsBottom() { return this->isBottom; }
 	void setIsHandled(bool isHandled) { this->isHandled = isHandled; }
 	bool getIsHandled() { return this->isHandled; }
-
-	//void setIsHitGate(bool value) { this->isHitGate = value; }
-	//bool getIsHitGate() { return this->isHitGate; }
 };

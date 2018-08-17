@@ -256,6 +256,16 @@ void GameObject::setgravity(float value)
 	gravity = value;
 }
 
+float GameObject::getHealth()
+{
+	return health;
+}
+
+void GameObject::setHealth(float value)
+{
+	this->health = value;
+}
+
 void GameObject::SetBound(int objWidth, int objHeight)
 {
 	rigidBody.x = objWidth;

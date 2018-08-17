@@ -31,6 +31,8 @@ protected:
 	bool isLeft = false;
 
 	bool mustCloseGate = false;
+
+	DWORD timeStartOpen;
 public:
 	Gate();
 	Gate(LPD3DXSPRITE spriteHandler, World * manager);
@@ -53,4 +55,7 @@ public:
 
 	void setMustCloseGate(bool value) { this->mustCloseGate = value; };
 	bool getMustCloseGate() { return this->mustCloseGate; }
+
+	void setTimeStartOpen(DWORD time) { this->timeStartOpen = time; }
+	DWORD getTimeStartOpen() { return this->timeStartOpen; }
 };

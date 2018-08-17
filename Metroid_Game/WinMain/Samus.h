@@ -26,8 +26,6 @@ protected:
 	Sprite * ballRight;
 	Sprite * jumpShootL;
 	Sprite * jumpShootR;
-	Sprite * jumpFadeL;
-	Sprite * jumpFadeR;
 
 	SAMUS_STATE state;	
 
@@ -35,11 +33,11 @@ protected:
 	bool isBall;
 	float startPosJump;
 	float endPosJump;
+
 	ROOM_NUMBER roomNum;
 private:
 	vector<string> stringMapSamus;
-	bool isChangingRoomLR;
-	bool isChangingRoomRL;
+	bool isChangingRoom;
 	float posX_StartChangingRoom;
 	float posX_EndChangingRoom;
 	bool startMovingAfterRoomChanged;
@@ -94,14 +92,12 @@ public:
 	float getEndPosJump() { return this->endPosJump; }
 
 	void setDimension();
+	void setRoomNum();
 	void setStringMap(vector<string> stringMap) { this->stringMapSamus = stringMap; }
 	vector<string> getStringMap() { return this->stringMapSamus; }
 
-	void setIsChangingRoomLR(bool value) { this->isChangingRoomLR = value; }
-	bool getIsChangingRoomLR() { return this->isChangingRoomLR; }
-	void setIsChangingRoomRL(bool value) { this->isChangingRoomRL = value; }
-	bool getIsChangingRoomRL() { return this->isChangingRoomRL; }
-
+	void setIsChangingRoom(bool value) { this->isChangingRoom = value; }
+	bool getIsChangingRoom() { return this->isChangingRoom; }
 
 	void setPosX_StartChangingRoom(float value) { this->posX_StartChangingRoom = value; }
 	float getPosX_StartChangingRoom() { return this->posX_StartChangingRoom; }
@@ -109,7 +105,7 @@ public:
 	float getPosX_EndChangingRoom() { return this->posX_EndChangingRoom; }
 	
 	void setStartMovingAfterRoomChanged(bool value) { this->startMovingAfterRoomChanged = value; }
-	bool getStartMovingAfterRoomChanged() { return this->startMovingAfterRoomChanged; }
+	float getStartMovingAfterRoomChanged() { return this->startMovingAfterRoomChanged; }
 
 	void setRoomNum(ROOM_NUMBER value) { this->roomNum = value; }
 	ROOM_NUMBER getRoomNum() { return this->roomNum; }

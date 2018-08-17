@@ -14,6 +14,11 @@ float Math::distance(D3DXVECTOR2 point1, D3DXVECTOR2 point2)
 	return result;
 }
 
+float Math::distance(float startX, float endX, float startY, float endY)
+{
+	return (float)sqrt(pow(startX - endX, 2) + pow(startY - endY, 2));
+}
+
 int Math::abs(int a, int b) 
 {
 	return (a - b)*((a - b) % 1);
