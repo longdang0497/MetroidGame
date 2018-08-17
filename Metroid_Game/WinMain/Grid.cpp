@@ -5,6 +5,7 @@
 #include "Kraid.h"
 #include "KraidBoomerang.h"
 #include "BulletKraid.h"
+#include "BulletRidley.h"
 // Lưu vào mảng 2 chiều
 // Height khi quy đổi ra sẽ là row -> pos_y tương ứng với row
 // Width khi quy đổi ra sẽ là column -> pos_x tương ứng column
@@ -179,6 +180,9 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		}
 		else if (object->getType() == KRAID_BULLET) {
 			this->handleKraidBullet(object, otherObject, collisionDirection, collisionTime);
+		}
+		else if (object->getType() == RIDLEY_BULLET) {
+			this->handleRidleyBullet(object, otherObject, collisionDirection, collisionTime);
 		}
 		return true;
 	}
@@ -663,6 +667,32 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 
 	case RIGHT: {
 
+		break;
+	}
+	}
+}
+
+void Grid::handleRidleyBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	BulletRidley* bullet = dynamic_cast<BulletRidley*>(object);
+
+	switch (collisionDirection) {
+	case TOP: {
+
+		break;
+	}
+
+	case BOTTOM: {
+
+		break;
+	}
+
+	case LEFT: {
+
+		break;
+	}
+
+	case RIGHT: {
 		break;
 	}
 	}

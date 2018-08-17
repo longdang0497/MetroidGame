@@ -15,6 +15,7 @@ private:
 
 	bool isFall;
 	bool isDeath;
+	int health;
 protected:
 	//LPDIRECT3DTEXTURE9 textureRidley;
 	RIDLEY_STATE state;
@@ -56,4 +57,7 @@ public:
 
 	void setIsDeath(bool value) { this->isDeath = value; }
 	bool getIsDeath() { return this->isDeath; }
+
+	void setHealth(int value) { this->health = value; }
+	int getHealth() { return this->health; }
 };

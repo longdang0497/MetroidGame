@@ -161,6 +161,20 @@ void Kraid::Render()
 
 void Kraid::Destroy(float x, float y)
 {
+	if (this->health == 0)
+	{
+		manager->explodeEffect->setTimeSurvive(EFFECT_TIME_SURVIVE);
+		if (manager->explodeEffect->getTimeSurvive() > 0)
+		{
+			manager->explodeEffect->setActive(true);
+			manager->explodeEffect->setPosX(x + width / 2);
+			manager->explodeEffect->setPosY(y + height / 2);
+		}
+		this->isDeath = true;
+		GameObject* object = static_cast<GameObject*>(this);
+		object->setActive(false);
+		this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+	}
 }
 
 void Kraid::setState(KraidState state)

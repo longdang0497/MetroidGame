@@ -46,6 +46,18 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	kraidBomerang.push_back(boomerang1);
 	kraidBomerang.push_back(boomerang2);
 
+	// Khoi tao dan cho ridley (5 vien)
+	BulletRidley* ridleyBullet1 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet2 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet3 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet4 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet5 = new BulletRidley(spriteHandler, this);
+	this->ridleyBullet.push_back(ridleyBullet1);
+	this->ridleyBullet.push_back(ridleyBullet2);
+	this->ridleyBullet.push_back(ridleyBullet3);
+	this->ridleyBullet.push_back(ridleyBullet4);
+	this->ridleyBullet.push_back(ridleyBullet5);
+
 	maruMari = new MaruMari(spriteHandler, this);
 
 	explodeEffect = new ExplodeEffect(spriteHandler, this, this->getMetroid()->getGrid());
@@ -110,6 +122,10 @@ void World::Update(float t)
 
 	for (int i = 0; i < this->kraidBomerang.size(); i++) {
 		this->kraidBomerang[i]->Update(t);
+	}
+
+	for (int i = 0; i < this->ridleyBullet.size(); i++) {
+		this->ridleyBullet[i]->Update(t);
 	}
 
 	/*START UPDATING ENEMY*/
@@ -190,6 +206,10 @@ void World::Render()
 		this->kraidBomerang[i]->Render();
 	}
 
+	for (int i = 0; i < this->ridleyBullet.size(); i++) {
+		this->ridleyBullet[i]->Render();
+	}
+
 	bombWeapon->Render();
 	explodeEffect->Render();
 
@@ -264,7 +284,9 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	for (int i = 0; i < this->kraidBomerang.size(); i++) {
 		this->kraidBomerang[i]->InitSprites(d3ddv, boss_texture);
 	}
-
+	for (int i = 0; i < this->ridleyBullet.size(); i++) {
+		this->ridleyBullet[i]->InitSprites(d3ddv, boss_texture);
+	}
 	texture = nullptr;
 	delete(texture);
 }

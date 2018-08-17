@@ -48,11 +48,55 @@ void ExplodeEffect::Update(float t)
 						object->setActive(false);
 						this->grid->updateGrid(object, this->getPosX(), this->getPosY());
 					}
+					else if (enemy[i]->getType() == SKREE) {
+						Skree* skree = dynamic_cast<Skree*>(enemy[i]);
+						skree->isDeath = true;
+						skree->reset();
+						GameObject* object = static_cast<GameObject*>(skree);
+						object->setActive(false);
+						this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+					}
 
 				}
 			}
 			
 		}
+
+		Kraid * kraid = this->manager->kraid;
+		if (kraid->isActive) {
+			if ((kraid->pos_x >= this->pos_x && kraid->pos_x <= this->pos_x + this->getWidth()
+				|| this->pos_x >= kraid->pos_x && this->pos_x <= kraid->pos_x + kraid->width)
+				&& (kraid->pos_y >= this->pos_y && kraid->pos_y <= this->pos_y + this->getHeight() ||
+					this->pos_y >= kraid->pos_y && this->pos_y <= kraid->pos_y + kraid->getHeight()
+					)) {
+				kraid->setHealth(kraid->getHealth() - 2);
+				if (kraid->getHealth() <= 0) {
+					kraid->setIsDeath(true);
+					kraid->setActive(false);
+					GameObject * object = static_cast<Kraid*>(kraid);
+					this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+				}
+			}
+		}
+
+		Ridley * ridley = this->manager->ridley;
+		if (ridley->isActive) {
+			if ((ridley->pos_x >= this->pos_x && ridley->pos_x <= this->pos_x + this->getWidth()
+				|| this->pos_x >= ridley->pos_x && this->pos_x <= ridley->pos_x + ridley->width)
+				&& (ridley->pos_y >= this->pos_y && ridley->pos_y <= this->pos_y + this->getHeight() ||
+					this->pos_y >= ridley->pos_y && this->pos_y <= ridley->pos_y + ridley->getHeight()
+					)) {
+				ridley->setHealth(ridley->getHealth() - 2);
+				if (ridley->getHealth() <= 0) {
+					//kraid->Destroy(kraid->pos_x, kraid->pos_y);
+					ridley->setIsDeath(true);
+					ridley->setActive(false);
+					GameObject * object = static_cast<Ridley*>(ridley);
+					this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+				}
+			}
+		}
+
 		//time_survive = EFFECT_TIME_SURVIVE;
 		DWORD now = GetTickCount();
 		if (now - last_time > 1000 / ANIMATE_RATE)

@@ -16,6 +16,7 @@
 #include "BulletSkree.h"
 #include "BulletKraid.h"
 #include "KraidBoomerang.h"
+#include "BulletRidley.h"
 
 using namespace std;
 
@@ -52,6 +53,7 @@ public:
 
 	vector<BulletKraid*> kraidBullet;
 	vector<KraidBoomerang*> kraidBomerang;
+	vector<BulletRidley*> ridleyBullet;
 
 	World();
 	World(LPD3DXSPRITE spriteHandler, Metroid * metroid);

@@ -1,4 +1,5 @@
 #include "Ridley.h"
+#include "BulletRidley.h"
 
 Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 {
@@ -10,6 +11,7 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 
 	this->width = WIDTH_RIDLEY;
 	this->height = HEIGHT_RIDLEY_SIT;
+	this->health = 1000.0f;
 
 	setRidleyState(FLY_LEFT);
 
@@ -21,11 +23,12 @@ Ridley::Ridley(LPD3DXSPRITE spriteHandler, World * manager)
 	isBottomCollided = false;
 	this->isFall = false;
 
-	this->pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 384;
+	this->pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 350;
 	this->pos_y = 64;
 	this->isDeath = false;
 	this->time_push = GetTickCount();
 	this->grid->add(this);
+	
 }
 
 Ridley::~Ridley()
@@ -96,6 +99,37 @@ void Ridley::Update(float t)
 			this->isFall = false;
 		}
 	}
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
+
+	for (int i = 0; i < this->manager->ridleyBullet.size(); i++) {
+		if (!this->manager->ridleyBullet[i]->isActive) {
+			if (i == 0 && GetTickCount() - this->manager->ridleyBullet[i]->getTimeFreezed() >= 1400) {
+				this->manager->ridleyBullet[i]->setActive(true);
+				this->manager->ridleyBullet[i]->setPosXRidley(this->pos_x);
+				this->manager->ridleyBullet[i]->setPosYRidley(this->pos_y);
+			}
+			else if (i == 1 && GetTickCount() - this->manager->ridleyBullet[i]->getTimeFreezed() >= 1500) {
+				this->manager->ridleyBullet[i]->setActive(true);
+				this->manager->ridleyBullet[i]->setPosXRidley(this->pos_x);
+				this->manager->ridleyBullet[i]->setPosYRidley(this->pos_y);
+			}
+			else if (i == 2 && GetTickCount() - this->manager->ridleyBullet[i]->getTimeFreezed() >= 1600) {
+				this->manager->ridleyBullet[i]->setActive(true);
+				this->manager->ridleyBullet[i]->setPosXRidley(this->pos_x);
+				this->manager->ridleyBullet[i]->setPosYRidley(this->pos_y);
+			}
+			else if (i == 3 && GetTickCount() - this->manager->ridleyBullet[i]->getTimeFreezed() >= 1470) {
+				this->manager->ridleyBullet[i]->setActive(true);
+				this->manager->ridleyBullet[i]->setPosXRidley(this->pos_x);
+				this->manager->ridleyBullet[i]->setPosYRidley(this->pos_y);
+			}
+			else if (i == 4 && GetTickCount() - this->manager->ridleyBullet[i]->getTimeFreezed() >= 1550) {
+				this->manager->ridleyBullet[i]->setActive(true);
+				this->manager->ridleyBullet[i]->setPosXRidley(this->pos_x);
+				this->manager->ridleyBullet[i]->setPosYRidley(this->pos_y);
+			}
+		}
+	}
 
 	DWORD now = GetTickCount();
 	if (now - last_time > 1000 / RIDLEY_ANIMATE_RATE)
@@ -117,6 +151,8 @@ void Ridley::Update(float t)
 		}
 		last_time = now;
 	}
+
+
 }
 
 void Ridley::Render()
@@ -148,7 +184,20 @@ void Ridley::Render()
 
 void Ridley::Destroy(float x, float y)
 {
-	this->isActive = false;
+	if (this->health == 0)
+	{
+		manager->explodeEffect->setTimeSurvive(EFFECT_TIME_SURVIVE);
+		if (manager->explodeEffect->getTimeSurvive() > 0)
+		{
+			manager->explodeEffect->setActive(true);
+			manager->explodeEffect->setPosX(x + width/2);
+			manager->explodeEffect->setPosY(y + height/2);
+		}
+		this->isDeath = true;
+		GameObject* object = static_cast<GameObject*>(this);
+		object->setActive(false);
+		this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+	}
 }
 
 void Ridley::setRidleyState(RIDLEY_STATE value)

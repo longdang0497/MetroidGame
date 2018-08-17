@@ -111,7 +111,7 @@ enum OBJECT_TYPE
 	EXPLOSION_BOMB,
 	MARU_MARI,
 	ENERGY_ITEM,
-	MISSILE_ITEM,
+	MISSIBLE,
 	BOMB_ITEM,
 	BOMB_WEAPON,
 	RIDLEY_BULLET,
@@ -453,6 +453,23 @@ enum Bullet_Skree_Direction {
 
 //================== END ENEMY =================
 
+//================== MISSIBLE =================
+#define MISSIBLE_PATH L"sprites\\item\\Missible.png"
+#define X_VELOCITY_MISSIBLE 400.0f
+#define Y_VELOCITY_MISSIBLE 400.0f
+#define MISSIBLE_COUNT 1
+#define WIDTH_MISSIBLE 24
+#define HEIGHT_MISSIBLE 16
+#define MISSIBLE_UP_PATH L"sprites\\item\\MISSILE_UP.txt"
+#define MISSIBLE_LEFT_PATH L"sprites\\item\\MISSILE_LEFT.txt"
+#define MISSIBLE_RIGHT_PATH L"sprites\\item\\MISSILE_RIGHT.txt"
+
+enum MISSIBLE_STATE {
+	MISSIBLE_SHOT_UP,
+	MISSIBLE_SHOT_LEFT,
+	MISSIBLE_SHOT_RIGHT
+};
+//================== END MISSIBLE =================
 
 //================== Bullet ====================
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
@@ -504,6 +521,18 @@ enum COLLISION_DIRECTION {
 #define HEIGHT_RIDLEY_BULLET 24
 #define RIDLEY_BULLET_COUNT 4
 #define RIDLEY_BULLET_PATH L"enemy\\RIDLEY_BULLET.txt"
+
+enum BULLET_RIDLEY_STATE {
+	BULLET_RIDLEY_LEFT,
+	BULLET_RIDLEY_RIGHT
+};
+
+#define BULLET_RIDLEY_SPEED_1 60.0f
+#define BULLET_RIDLEY_SPEED_2 80.0f
+#define BULLET_RIDLEY_SPEED_3 100.0f
+#define BULLET_RIDLEY_RANGE_1 100.0f
+#define BULLET_RIDLEY_RANGE_2 200.0f
+#define BULLET_RIDLEY_RANGE_3 210.0f
 
 enum RIDLEY_STATE {
 	SIT_LEFT,
