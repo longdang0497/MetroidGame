@@ -585,6 +585,47 @@ void Metroid::OnKeyDown(int KeyCode)
 				}
 			}
 				break;
+
+				// C la ban ten lua
+			case DIK_C:
+			{
+				if (!this->world->missible->isActive) {
+					if (this->world->samus->getIsBall() || this->world->samus->isMorphing)
+						return;
+					else {
+						SAMUS_STATE samusState = this->world->samus->GetState();
+
+						switch (samusState) {
+						case STAND_LEFT: case RUNNING_LEFT: case JUMP_LEFT: case RUN_SHOOTING_LEFT: {
+							this->world->missible->isActive = true;
+							this->world->missible->setState(MISSIBLE_SHOT_LEFT);
+							break;
+						}
+
+						case STAND_RIGHT: case RUNNING_RIGHT: case JUMP_RIGHT: case RUN_SHOOTING_RIGHT: {
+							this->world->missible->isActive = true;
+							this->world->missible->setState(MISSIBLE_SHOT_RIGHT);
+							break;
+						}
+
+						case JUMP_SHOOT_UP_LEFT: case JUMP_SHOOT_UP_RIGHT: case STAND_SHOOT_UP_LEFT: case STAND_SHOOT_UP_RIGHT: {
+							this->world->missible->isActive = true;
+							this->world->missible->setState(MISSIBLE_SHOT_UP);
+							break;
+						}
+						}
+
+						if (samusState == RUNNING_RIGHT) {
+							this->world->samus->SetState(RUN_SHOOT_UP_RIGHT);
+						}
+						else if (samusState == RUNNING_LEFT) {
+							this->world->samus->SetState(RUN_SHOOT_UP_LEFT);
+						}
+					}
+				}
+			}
+				break;
+
 			case DIK_LEFT:
 				if (world->samus->GetState() == MORPH_RIGHT)
 					world->samus->SetState(MORPH_LEFT);

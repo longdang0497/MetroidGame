@@ -82,6 +82,14 @@ void Samus::Render()
 		case JUMP_SHOOT_UP_RIGHT:
 			jumpShootR->drawSprite(jumpShootR->getWidth(), jumpShootR->getHeight(), position);
 			break;
+
+		case FADE_LEFT:
+			fadeLeft->drawSprite(fadeLeft->getWidth(), fadeLeft->getHeight(), position);
+			break;
+
+		case FADE_RIGHT:
+			fadeRight->drawSprite(fadeRight->getWidth(), fadeRight->getHeight(), position);
+			break;
 		}
 
 	}	
@@ -99,8 +107,6 @@ void Samus::Destroy()
 {
 	//Ngưng active
 	this->isActive = false;
-
-	//--TO DO: Đưa Samus ra khỏi viewport
 }
 
 // Chieu dai va chieu rong cua bounding box
@@ -182,6 +188,10 @@ Samus::Samus(LPD3DXSPRITE spriteHandler, World * manager, Grid* grid)
 	this->posX_EndChangingRoom = 0.0f;
 	this->posX_StartChangingRoom = 0.0f;
 	this->startMovingAfterRoomChanged = false;
+	this->timeStartCollide = 0.0f;
+	this->startPosYCollide = 0.0f;
+	this->endPosYCollide = 0.0f;
+	this->isFallAfterCollide = false;
 }
 
 Samus::~Samus()
@@ -229,14 +239,16 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 	ballRight = new Sprite(spriteHandler, texture, BALLRIGHT_PATH, WIDTH_SAMUS_BALLRIGHT, HEIGHT_SAMUS_BALLRIGHT, COUNT_SAMUS_BALLRIGHT);
 	jumpShootL = new Sprite(spriteHandler, texture, JUMPSHOOTleft_PATH, WIDTH_SAMUS_JUMPSHOOT, HEIGHT_SAMUS_JUMPSHOOT, COUNT_SAMUS_JUMPSHOOT);
 	jumpShootR = new Sprite(spriteHandler, texture, JUMPSHOOTright_PATH, WIDTH_SAMUS_JUMPSHOOT, HEIGHT_SAMUS_JUMPSHOOT, COUNT_SAMUS_JUMPSHOOT);
+	fadeLeft = new Sprite(spriteHandler, texture, JUMP_FADE_LEFT, WIDTH_SAMUS_FADE, HEIGHT_SAMUS_FADE, COUNT_SAMUS_FADE);
+	fadeRight = new Sprite(spriteHandler, texture, JUMP_FADE_RIGHT, WIDTH_SAMUS_FADE, HEIGHT_SAMUS_FADE, COUNT_SAMUS_FADE);
 }
 
 void Samus::InitPostition()
 {
 
-	//pos_x = 992;	
-	//pos_y = 320;	
-	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + 200;
+	/*pos_x = 992;	
+	pos_y = 320;*/	
+	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2  + 200;
 	pos_y = 200;
 	vx = 0;
 	vx_last = 1.0f;
@@ -373,11 +385,16 @@ void Samus::Update(float t)
 				this->endPosJump = this->pos_y;
 
 				if (this->isCollideWithEnemy) {
-					if (vy < 0) {
-					if (this->startPosJump - this->endPosJump >= 64) {
-							this->vy = GRAVITY_VELOCITY;
-						}
+					this->endPosYCollide = this->pos_y;
+					if (-this->endPosYCollide + this->startPosYCollide >= 64) {
+						this->isFallAfterCollide = true;
 					}
+
+					if (this->isFallAfterCollide)
+						this->vy = GRAVITY_VELOCITY;
+					else
+						this->vy = -GRAVITY_VELOCITY + 80.0f;
+					
 				}
 				else {
 					if (vy < 0) {
@@ -487,6 +504,13 @@ void Samus::Update(float t)
 			}
 			else if (isBottom) {
 				this->pos_x += vx * t;
+				if (isCollideOnGround == true) {
+					this->vy = -GRAVITY_VELOCITY + 80.0f;
+					this->pos_y -= 32;
+					this->isCollideOnGround = false;
+					this->endPosYCollide = this->pos_y;
+					isCollideWithEnemy = true;
+				}
 			}
 			else if (isTop) {
 				if (this->isJumping) {
@@ -563,6 +587,13 @@ void Samus::Update(float t)
 		case JUMP_SHOOT_UP_RIGHT:
 			jumpShootR->updateSprite();
 			break;
+
+		case FADE_LEFT:
+			fadeLeft->updateSprite();
+			break;
+
+		case FADE_RIGHT:
+			fadeRight->updateSprite();
 		}
 		last_time = now;
 	}
@@ -570,18 +601,23 @@ void Samus::Update(float t)
 }
 void Samus::collideEnemy()
 {
-	this->isCollideWithEnemy = true;
-	this->vy = -JUMP_VELOCITY;
-	this->setStartPosJump(this->pos_y);
-	this->canJump = false;
-	if (vx > 0 || this->state == STAND_RIGHT || this->state == JUMP_RIGHT || this->state == JUMP_SHOOT_UP_RIGHT || this->state == TRANSFORM_BALL_RIGHT || this->state == MORPH_RIGHT) {
-		this->vx = -SAMUS_SPEED;
-		this->state = JUMP_RIGHT;
+	if (GetTickCount() - this->timeStartCollide >= 5000) {
+		this->isCollideWithEnemy = true;
+		this->startPosYCollide = this->pos_y;
+		this->canJump = false;
+		if (vx > 0 || this->state == STAND_RIGHT || this->state == JUMP_RIGHT || this->state == JUMP_SHOOT_UP_RIGHT || this->state == TRANSFORM_BALL_RIGHT || this->state == MORPH_RIGHT) {
+			this->vx = -SAMUS_SPEED;
+			this->state = FADE_RIGHT;
+		}
+		else if (vx < 0 || this->state == STAND_LEFT || this->state == JUMP_LEFT || this->state == JUMP_SHOOT_UP_LEFT || this->state == TRANSFORM_BALL_LEFT || this->state == MORPH_LEFT) {
+			this->vx = SAMUS_SPEED;
+			this->state = FADE_LEFT;
+		}
+		this->timeStartCollide = GetTickCount();
+		if (this->isOnGround)
+			isCollideOnGround = true;
 	}
-	else if (vx < 0 || this->state == STAND_LEFT || this->state == JUMP_LEFT || this->state == JUMP_SHOOT_UP_LEFT || this->state == TRANSFORM_BALL_LEFT || this->state == MORPH_LEFT) {
-		this->vx = SAMUS_SPEED;
-		this->state = JUMP_LEFT;
-	}
+
 
 }
 //----------------------------------------------------------

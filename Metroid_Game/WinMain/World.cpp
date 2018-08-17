@@ -63,6 +63,8 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	explodeEffect = new ExplodeEffect(spriteHandler, this, this->getMetroid()->getGrid());
 	bombWeapon = new BombWeapon(spriteHandler, this);
 
+	missible = new Missible(spriteHandler, this);
+
 	gateRightRoom1 = new Gate(spriteHandler, this);
 	gateLeftRoom1 = new Gate(spriteHandler, this);
 	gateRightRoom2 = new Gate(spriteHandler, this);
@@ -174,6 +176,8 @@ void World::Update(float t)
 
 	kraid->Update(t);
 	ridley->Update(t);
+
+	this->missible->Update(t);
 }
 
 void World::Render()
@@ -226,6 +230,8 @@ void World::Render()
 
 	ridley->Render();
 	kraid->Render();
+
+	this->missible->Render();
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -287,6 +293,11 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	for (int i = 0; i < this->ridleyBullet.size(); i++) {
 		this->ridleyBullet[i]->InitSprites(d3ddv, boss_texture);
 	}
+
+	// Missible Texture
+	LPDIRECT3DTEXTURE9 missible_texture = texture->loadTexture(d3ddv, MISSIBLE_PATH);
+	this->missible->InitSprites(d3ddv, missible_texture);
+
 	texture = nullptr;
 	delete(texture);
 }

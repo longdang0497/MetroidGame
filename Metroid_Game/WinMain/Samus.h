@@ -26,6 +26,8 @@ protected:
 	Sprite * ballRight;
 	Sprite * jumpShootL;
 	Sprite * jumpShootR;
+	Sprite * fadeLeft;
+	Sprite *fadeRight;
 
 	SAMUS_STATE state;	
 
@@ -54,6 +56,11 @@ public:
 	bool isColisionHandled = false;
 
 	bool isCollideWithEnemy = false;
+	bool isCollideOnGround = false;
+	DWORD timeStartCollide;
+	float startPosYCollide;
+	float endPosYCollide;
+	bool isFallAfterCollide;
 	// Khi va cham thi animate_rate thay doi
 	int animate_rate;
 

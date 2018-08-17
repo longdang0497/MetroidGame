@@ -163,7 +163,7 @@ void Skree::Destroy(float x, float y)
 		{
 			manager->explodeEffect->setActive(true);
 			manager->explodeEffect->setPosX(x + this->width/2);
-			manager->explodeEffect->setPosY(y + this->height/2);
+			manager->explodeEffect->setPosY(y);
 		}
 		this->isDeath = true;
 		this->isEnemyFreezed = false;

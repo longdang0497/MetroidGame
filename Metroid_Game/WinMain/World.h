@@ -17,6 +17,7 @@
 #include "BulletKraid.h"
 #include "KraidBoomerang.h"
 #include "BulletRidley.h"
+#include "Missble.h"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ public:
 	MaruMari * maruMari;
 	ExplodeEffect* explodeEffect;
 	BombWeapon* bombWeapon;
+	Missible* missible;
 
 	Gate * gateLeftRoom1;
 	Gate * gateRightRoom1;

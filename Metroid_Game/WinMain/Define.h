@@ -88,6 +88,8 @@ enum SAMUS_STATE {
 	TRANSFORM_BALL_RIGHT,
 	JUMP_SHOOT_UP_LEFT,
 	JUMP_SHOOT_UP_RIGHT,
+	FADE_LEFT,
+	FADE_RIGHT
 };
 
 //================END SAMUS ====================
@@ -135,6 +137,12 @@ enum OBJECT_TYPE
 //================= END GAME SCENE ============
 
 //================ SPRITE SAMUS ================
+#define WIDTH_SAMUS_FADE 48
+#define HEIGHT_SAMUS_FADE 52
+#define COUNT_SAMUS_FADE 3
+#define JUMP_FADE_LEFT L"sprites\\JUMP_FADE_LEFT.txt"
+#define JUMP_FADE_RIGHT L"sprites\\JUMP_FADE_RIGHT.txt"
+
 #define WIDTH_SAMUS_STAND 42
 #define HEIGHT_SAMUS_STAND 66
 #define COUNT_SAMUS_STAND 1
@@ -463,7 +471,7 @@ enum Bullet_Skree_Direction {
 #define MISSIBLE_UP_PATH L"sprites\\item\\MISSILE_UP.txt"
 #define MISSIBLE_LEFT_PATH L"sprites\\item\\MISSILE_LEFT.txt"
 #define MISSIBLE_RIGHT_PATH L"sprites\\item\\MISSILE_RIGHT.txt"
-
+#define RANGE_MISSIBLE 192.0f
 enum MISSIBLE_STATE {
 	MISSIBLE_SHOT_UP,
 	MISSIBLE_SHOT_LEFT,

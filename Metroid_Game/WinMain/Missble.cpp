@@ -54,6 +54,35 @@ void Missible::Update(float t)
 void Missible::Update(float t, float posX, float posY)
 {
 	if (!isActive) return;
+
+	if (startX == 0.0f && endX == 0.0f && startY == 0.0f && endY == 0.0f) {
+		this->initBullet(posX, posY);
+	}
+
+	this->endX = this->pos_x;
+	this->endY = this->pos_y;
+
+	if (fabs(endX - startX) >= RANGE_MISSIBLE || fabs(endY - startY) >= RANGE_MISSIBLE) {
+		this->Reset(0.0f, 0.0f);
+		return;
+	}
+
+	this->isRight = false;
+	this->isLeft = false;
+	this->isTop = false;
+
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
+	
+	int row = (int)floor(this->pos_y / CELL_SIZE);
+	int column = (int)floor(this->pos_x / CELL_SIZE);
+	this->grid->handleCell(this, row, column);
+
+	if (!isTop && !isRight && !isLeft) {
+		this->pos_x += vx * t;
+		this->pos_y += vy * t;
+	}
+
+	this->grid->updateGrid(this, this->pos_x, this->pos_y);
 }
 
 void Missible::Render()

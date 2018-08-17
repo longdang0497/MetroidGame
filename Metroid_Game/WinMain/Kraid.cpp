@@ -23,7 +23,7 @@ Kraid::Kraid(LPD3DXSPRITE spriteHandler, World * manager)
 	this->height = HEIGHT_KRAID;
 	this->width = WIDTH_KRAID;
 
-	this->health = 1000.0f;
+	this->health = 1000;
 	this->isDeath = false;
 
 	this->pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 350.0f;
