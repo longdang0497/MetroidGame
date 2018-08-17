@@ -246,10 +246,10 @@ void Samus::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 void Samus::InitPostition()
 {
 
-	/*pos_x = 992;	
-	pos_y = 320;*/	
-	pos_x = WIDTH_ROOM1 + WIDTH_ROOM2  + 200;
-	pos_y = 200;
+	pos_x = 992;	
+	pos_y = 320;	
+	/*pos_x = WIDTH_ROOM1 + WIDTH_ROOM2  + 200;
+	pos_y = 200;*/
 	vx = 0;
 	vx_last = 1.0f;
 	vy = GRAVITY_VELOCITY;
@@ -412,7 +412,7 @@ void Samus::Update(float t)
 						}
 						else if (this->startPosJump - this->endPosJump < SAMUS_MIN_JUMP && !this->canJump) {
 
-							if (this->startPosJump - this->endPosJump < 32) {
+							if (this->startPosJump - this->endPosJump < 20.0f) {
 								this->vy = 50.0f;
 							}
 							else {
@@ -429,8 +429,12 @@ void Samus::Update(float t)
 						}
 					}
 				}
+				float temp = this->vy *t;
+				if (vy>50 && temp < 2.0f) {
+					temp = 2.0f;
+				}
 				this->pos_x += vx * t;
-				this->pos_y += vy * t;
+				this->pos_y += vy*t;
 			}
 			else if (isLeft && isBottom) {
 				this->pos_x += 1;
