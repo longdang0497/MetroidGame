@@ -8,6 +8,7 @@ Skree::Skree()
 
 Skree::Skree(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type)
 {
+	this->spriteHandler = spriteHandler;
 	this->setType(enemy_type);
 	this->setActive(false);
 	this->width = SKREE_WIDTH;
@@ -23,6 +24,7 @@ Skree::Skree(LPD3DXSPRITE spriteHandler, World * manager, OBJECT_TYPE enemy_type
 	this->isEnemyFreezed = false;
 	this->vx = 0.0f;
 	this->vy = 0.0f;
+	this->timeStartDie = 0.0f;
 }
 
 
@@ -34,12 +36,6 @@ Skree::~Skree()
 void Skree::InitSprites(LPDIRECT3DDEVICE9 d3ddv, LPDIRECT3DTEXTURE9 texture)
 {
 	if (d3ddv == NULL) return;
-	HRESULT result = D3DXCreateSprite(d3ddv, &spriteHandler);
-	if (result != D3D_OK) return;
-
-	this->texture = texture;
-	if(texture == NULL)
-		trace(L"Unable to load skreeTexture");
 
 	skreeSprite = new Sprite(spriteHandler, texture, SKREE_PATH, SKREE_WIDTH, SKREE_HEIGHT, SKREE_COUNT);
 }
@@ -66,7 +62,7 @@ void Skree::Update(float t)
 			animate_rate = SKREE_BOOST_ANIMATE_RATE;
 			setState(ON_FALLING);
 			setActive(true);
-			vy = SKREE_SPEED;
+			vy = SKREE_SPEED + 50;
 			if (samusPosX < pos_x)
 				vx = -SKREE_SPEED;
 			else if (samusPosX > pos_x)
@@ -97,24 +93,15 @@ void Skree::Update(float t)
 		liveTime += t * 75;
 		if (liveTime > SKREE_LIVE_TIME) {
 			this->health = 0.0f;
-			this->Destroy(this->pos_x, this->pos_y);
+			
 
-			/*for (int i = 0; i < manager->bulletSkree.size(); i++) {
-				manager->bulletSkree[i]->isActive = true;
-				manager->bulletSkree[i]->pos_x = this->pos_x;
-				manager->bulletSkree[i]->pos_y = this->pos_y + 32;
+			for (int i = 0; i < manager->skreeBullet.size(); i++) {
+				manager->skreeBullet[i]->setActive(true);
+				manager->skreeBullet[i]->setPosXSkree(this->pos_x);
+				manager->skreeBullet[i]->setPosYSkree(this->pos_y);
 			}
 
-			manager->bulletSkree[0]->bulletDirection = BULLET_RIGHT;
-			manager->bulletSkree[1]->bulletDirection = BULLET_LEFT;
-			manager->bulletSkree[2]->bulletDirection = BULLET_TOPRIGHT;
-			manager->bulletSkree[3]->bulletDirection = BULLET_TOPLEFT;
-
-			manager->bulletSkree[0]->setRange(this->pos_x + SKREE_BULLET_DISTANCE);
-			manager->bulletSkree[2]->setRange(this->pos_x + SKREE_BULLET_DISTANCE);
-
-			manager->bulletSkree[1]->setRange(this->pos_x - SKREE_BULLET_DISTANCE);
-			manager->bulletSkree[3]->setRange(this->pos_x - SKREE_BULLET_DISTANCE);*/
+			this->Destroy(this->pos_x, this->pos_y);
 		}
 		else {
 			DWORD now = GetTickCount();
@@ -185,6 +172,7 @@ void Skree::Destroy(float x, float y)
 		GameObject* object = static_cast<GameObject*>(this);
 		object->setActive(false);
 		this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+		this->setTimeStartDie(GetTickCount());
 	}
 }
 

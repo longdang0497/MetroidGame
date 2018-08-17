@@ -13,6 +13,7 @@
 #include "GateBlock.h"
 #include "Ridley.h"
 #include "Kraid.h"
+#include "BulletSkree.h"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ public:
 
 	vector<Bullet*> samusBullet;
 	vector<Enemy*> enemy;
+	vector<BulletSkree*> skreeBullet;
 	LPD3DXSPRITE spriteHandler;
 
 	World();

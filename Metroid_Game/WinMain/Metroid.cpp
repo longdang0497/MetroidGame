@@ -51,6 +51,9 @@ void Metroid::_InitPositions()
 	world->gateBlockBoss1->Init(4928, 160);
 	grid->add(world->gateBlockBoss1);
 
+	world->ridley->Init();
+	grid->add(world->ridley);
+
 }
 
 Metroid::Metroid(HINSTANCE hInstance, LPWSTR Name, int Mode, int IsFullScreen, int FrameRate) 

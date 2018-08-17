@@ -76,7 +76,6 @@ void Sprite::drawSprite(int x, int y, int width, int height, D3DXVECTOR3 positio
 	rect.bottom = y + height;
 
 	//using this line for camera only
-	//this->sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
 	this->sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_OBJECTSPACE);
 
 	D3DXMATRIX mat;

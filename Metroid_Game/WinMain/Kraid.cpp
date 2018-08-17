@@ -59,6 +59,7 @@ void Kraid::InitPostition()
 
 void Kraid::Update(float t)
 {
+	if (isDeath) return;
 	if (this->manager->samus->getRoomNum() == BOSS2) {
 		this->setActive(true);
 	}

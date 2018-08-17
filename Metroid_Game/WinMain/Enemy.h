@@ -12,6 +12,7 @@ protected:
 	float initPosX;
 	float initPosY;
 	float isEnemyFreezed;
+	DWORD timeStartDie;
 public:
 	float time_freeze;	// thời gian dừng khi bị hit
 	int health;		// Máu của object
@@ -54,5 +55,7 @@ public:
 	void setIsEnemyFreezed(bool value) { this->isEnemyFreezed = value; }
 	bool getIsEnemyFreezed() { return this->isEnemyFreezed; }
 
+	void setTimeStartDie(DWORD value) { this->timeStartDie = value; }
+	DWORD getTimeStartDie() { return this->timeStartDie; }
 };
 

@@ -19,6 +19,16 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	this->samusBullet.push_back(bullet2);
 	this->samusBullet.push_back(bullet3);
 
+	// Khoi tao Bullet Skree (4 vien)
+	BulletSkree* bulletKree1 = new BulletSkree(spriteHandler, this, BULLET_RIGHT);
+	BulletSkree* bulletKree2 = new BulletSkree(spriteHandler, this, BULLET_LEFT);
+	BulletSkree* bulletKree3 = new BulletSkree(spriteHandler, this, BULLET_TOPLEFT);
+	BulletSkree* bulletKree4 = new BulletSkree(spriteHandler, this, BULLET_TOPRIGHT);
+	this->skreeBullet.push_back(bulletKree1);
+	this->skreeBullet.push_back(bulletKree2);
+	this->skreeBullet.push_back(bulletKree3);
+	this->skreeBullet.push_back(bulletKree4);
+
 	maruMari = new MaruMari(spriteHandler, this);
 
 	explodeEffect = new ExplodeEffect(spriteHandler, this, this->getMetroid()->getGrid());
@@ -73,6 +83,10 @@ void World::Update(float t)
 		this->samusBullet[i]->Update(t, this->samus->getPosX(), this->samus->getPosY());
 	}
 
+	for (int i = 0; i < this->skreeBullet.size(); i++) {
+		this->skreeBullet[i]->Update(t);
+	}
+
 	/*START UPDATING ENEMY*/
 	for (int i = 0; i < this->enemy.size(); i++) {
 		if (this->enemy[i]->isInsideMapBound(this->metroid->camera->getBoundary())) {
@@ -93,8 +107,11 @@ void World::Update(float t)
 			}
 		}
 		else {
-			this->enemy[i]->isDeath = false;
-			this->enemy[i]->health = 100.0f;
+			// chet sau 15s ms mo lai
+			if (GetTickCount() - enemy[i]->getTimeStartDie() >= 15000) {
+				this->enemy[i]->isDeath = false;
+				this->enemy[i]->health = 100.0f;
+			}
 			
 		}
 	}
@@ -136,7 +153,9 @@ void World::Render()
 		}
 	}
 
-
+	for (int i = 0; i < this->skreeBullet.size(); i++) {
+		this->skreeBullet[i]->Render();
+	}
 
 	bombWeapon->Render();
 	explodeEffect->Render();
@@ -151,6 +170,7 @@ void World::Render()
 	gateLeftRoom2->Render();
 	gateRightBoss1->Render();
 	gateLeftBoss1->Render();
+
 	ridley->Render();
 	kraid->Render();
 }
@@ -183,6 +203,9 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	for (int i = 0; i < this->enemy.size(); i++) {
 		enemy[i]->InitSprites(d3ddv, enemyTexture);
 	}
+	for (int i = 0; i < this->skreeBullet.size(); i++) {
+		skreeBullet[i]->InitSprites(d3ddv, enemyTexture);
+	}
 
 	// Gate Texture
 	LPDIRECT3DTEXTURE9 gate_texture = texture->loadTexture(d3ddv, GATE_SPRITES_PATH);
@@ -201,6 +224,9 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	LPDIRECT3DTEXTURE9 boss_texture = texture->loadTexture(d3ddv, BOSS_TEXTURE);
 	ridley->InitSprites(d3ddv, boss_texture);
 	kraid->InitSprites(d3ddv, boss_texture);
+	
+	texture = nullptr;
+	delete(texture);
 }
 
 void World::loadEnemyPositions(string filePath) {

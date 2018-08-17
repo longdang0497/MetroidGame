@@ -222,8 +222,15 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 				
 				}
 			}
+
+		}break;
+
+		case MARU_MARI: {
+			samus->isBottom = false;
+			samus->pos_y += samus->vy *this->deltaTime;
+			otherObject->setActive(false);
+		}break;
 			
-		}
 		}
 	}
 	else if (collisionDirection == TOP) {
@@ -257,6 +264,12 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			samus->isRight = false;
 			break;
 		}
+		case MARU_MARI: {
+			samus->isRight = false;
+			samus->pos_x += samus->vx *this->deltaTime;
+			otherObject->setActive(false);
+			break;
+		}
 		}
 	}
 	else if (collisionDirection == LEFT) {
@@ -280,6 +293,12 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			samus->isLeft = false;
 			break;
 		}
+		case MARU_MARI: {
+			samus->isLeft = false;
+			samus->pos_x += samus->vx *this->deltaTime;
+			otherObject->setActive(false);
+			break;
+		}
 		}
 
 	}
@@ -294,7 +313,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 	switch (collisionDirection) {
 	case BOTTOM: {
 		zoomer->setIsBottomCollided(true);
-		if (type != SAMUS && type != BULLET && type!=EXPLOSION_BOMB && type != SKREE) {
+		if (type == BRICK || type == ITEM || type == GATE || type == GATE_BLOCK || type == MARU_MARI) {
 			object->pos_y += object->vy * collisionTime * deltaTime;
 		}
 		else if (type == BULLET) {
@@ -310,6 +329,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			}
 			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 			bullet->Reset();
+			zoomer->setIsBottomCollided(false);
 		}
 		else if (type == EXPLOSION_BOMB) {
 			object->pos_y += object->vy * deltaTime;
@@ -320,6 +340,10 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			if (!samus->isCollideWithEnemy) {
 				samus->collideEnemy();
 			}
+			zoomer->setIsBottomCollided(false);
+		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE) {
+			object->pos_y += object->vy * this->deltaTime;
 			zoomer->setIsBottomCollided(false);
 		}
 		break;
@@ -328,7 +352,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 
 	case TOP: {
 		zoomer->setIsTopCollided(true);
-		if (type != SAMUS && type != BULLET && type != EXPLOSION_BOMB && type != SKREE) {
+		if (type == BRICK || type == ITEM || type == GATE || type == GATE_BLOCK || type == MARU_MARI) {
 			object->pos_y += object->vy * collisionTime * deltaTime;
 		}
 		else if (type == BULLET) {
@@ -357,12 +381,16 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			}
 			zoomer->setIsTopCollided(false);
 		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE) {
+			object->pos_y += object->vy * this->deltaTime;
+			zoomer->setIsTopCollided(false);
+		}
 		break;
 	}
 
 	case LEFT: {
 		zoomer->setIsLeftCollided(true);
-		if (type != SAMUS && type != BULLET && type != EXPLOSION_BOMB && type != SKREE) {
+		if (type == BRICK || type == ITEM || type == GATE || type == GATE_BLOCK || type == MARU_MARI) {
 			object->pos_x += object->vx * collisionTime *deltaTime;
 		}
 		else if (type == BULLET) {
@@ -389,6 +417,10 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			if (!samus->isCollideWithEnemy) {
 				samus->collideEnemy();
 			}
+			zoomer->setIsLeftCollided(false);
+		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE) {
+			object->pos_x += object->vx * this->deltaTime;
 			zoomer->setIsLeftCollided(false);
 		}
 		break;
@@ -396,7 +428,7 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 
 	case RIGHT: {
 		zoomer->setIsRightCollided(true);
-		if (type != SAMUS && type != BULLET && type != EXPLOSION_BOMB && type != SKREE) {
+		if (type == BRICK || type == ITEM || type == GATE || type == GATE_BLOCK || type == MARU_MARI) {
 			object->pos_x += object->vx * collisionTime *deltaTime;
 		}
 		else if (type == BULLET) {
@@ -423,6 +455,10 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			if (!samus->isCollideWithEnemy) {
 				samus->collideEnemy();
 			}
+			zoomer->setIsRightCollided(false);
+		}
+		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE) {
+			object->pos_x += object->vx * this->deltaTime;
 			zoomer->setIsRightCollided(false);
 		}
 		break;
@@ -452,7 +488,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 
 			zoomer->setHealth(zoomer->getHealth() - 20);
 
-			if (zoomer->getHealth() == 0)
+			if (zoomer->getHealth() <= 0)
 			{
 				zoomer->isActive = false;
 				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
@@ -483,7 +519,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			Zoomer* zoomer = dynamic_cast<Zoomer*>(otherObject);
 
 			zoomer->setHealth(zoomer->getHealth() - 20);
-			if (zoomer->getHealth() == 0)
+			if (zoomer->getHealth() <= 0)
 			{
 				zoomer->isActive = false;
 				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
@@ -518,7 +554,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 
 			zoomer->setHealth(zoomer->getHealth() - 20);
 
-			if (zoomer->getHealth() == 0)
+			if (zoomer->getHealth() <= 0)
 			{
 				zoomer->isActive = false;
 				zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
@@ -566,49 +602,54 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 			samus->collideEnemy();
 		}
 	}
+	else if (otherObject->getType() == BULLET) {
+		Skree* skree = dynamic_cast<Skree*>(object);
+		skree->setHealth(skree->getHealth() - 20);
+		
+		if (skree->getHealth() == 0)
+		{
+			skree->isActive = false;
+			skree->Destroy(skree->pos_x, skree->pos_y);
+		}
+
+		Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
+		bullet->Reset();
+	}
+
 }
 
 void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
 {
-	Ridley* ridley = dynamic_cast<Ridley*>(object);
-	OBJECT_TYPE otherObjectType = otherObject->getType();
-	switch (collisionDirection) {
-	case BOTTOM: {
-		ridley->setIsBottomCollided(true);
-		switch (otherObjectType) {
-		case BRICK: {
-			ridley->pos_y += ridley->vy*collisionTime*this->getDeltaTime();
-			ridley->setIsFlyingUp(false);
-			if (!ridley->getTimeIsSet()) {
-				ridley->setTimePush(GetTickCount());
-				ridley->setTimeIsSet(true);
-			}
-			if (ridley->getRidleyState() == FLY_LEFT) {
-				ridley->setRidleyState(SIT_LEFT);
-			}
-			else if(ridley->getRidleyState() == FLY_RIGHT){
-				ridley->setRidleyState(SIT_RIGHT);
-			}
-			break;
-		}
+	Ridley * ridley = dynamic_cast<Ridley*>(object);
+
+	OBJECT_TYPE type = otherObject->getType();
+	switch (collisionDirection)
+	{
+	case BOTTOM:
+		if (type == BRICK)
+		{
+			ridley->setIsBottomCollided(true);
+			ridley->setTimePush(900);
+			ridley->setRidleyState(SIT_LEFT);
+			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
 		}
 		break;
-	}
-
-	case TOP: {
+	case LEFT:
 
 		break;
-	}
-
-	case LEFT: {
+	case TOP:
+		if (type == BRICK)
+		{
+			ridley->setIsTopCollided(true);
+			//ridley->setTimePush(300);
+			ridley->setRidleyState(FLY_LEFT);
+			ridley->setVelocityY(-ridley->getVelocityY());
+			ridley->pos_y += ridley->vy * collisionTime * this->getDeltaTime();
+		}
+		break;
+	case RIGHT:
 
 		break;
-	}
-
-	case RIGHT: {
-
-		break;
-	}
 	}
 }
 
@@ -637,7 +678,6 @@ void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DI
 	}
 	}
 }
-
 
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {
 

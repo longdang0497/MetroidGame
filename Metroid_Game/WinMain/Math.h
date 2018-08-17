@@ -9,5 +9,6 @@ static class Math
 public:
 	static bool isPointinRectangle(D3DXVECTOR2 point, RECT rect);
 	static float distance(D3DXVECTOR2 point1, D3DXVECTOR2 point2);
+	static float distance(float startX, float endX, float startY, float endY);
 	static int abs(int a, int b);
 };
