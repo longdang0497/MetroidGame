@@ -490,7 +490,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsTop(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT 
 			|| type == BOMB_ITEM || type == MARU_MARI
-			|| type == ENERGY_ITEM || type == MISSILE_ITEM ) {
+			|| type == ENERGY_ITEM || type == MISSIBLE) {
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -522,7 +522,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 	case LEFT: {
 		bullet->setIsLeft(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
-			|| type == BOMB_ITEM || type == MARU_MARI || type == ENERGY_ITEM || type == MISSILE_ITEM) {
+			|| type == BOMB_ITEM || type == MARU_MARI || type == ENERGY_ITEM || type == MISSIBLE) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -556,7 +556,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsRight(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
 			|| type == BOMB_ITEM || type == MARU_MARI
-			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
+			|| type == ENERGY_ITEM || type == MISSIBLE) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -675,24 +675,61 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 void Grid::handleRidleyBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
 {
 	BulletRidley* bullet = dynamic_cast<BulletRidley*>(object);
+	OBJECT_TYPE type = otherObject->getType();
 
 	switch (collisionDirection) {
 	case TOP: {
-
+		if (type == SAMUS)
+		{
+			Samus * samus = dynamic_cast<Samus *>(otherObject);
+			//samus->setHealth(samus->getHealth() - 10);
+			samus->setPosX(samus->getPosX() - 50);
+		}
 		break;
 	}
 
 	case BOTTOM: {
-
+		if (type == SAMUS)
+		{
+			Samus * samus = dynamic_cast<Samus *>(otherObject);
+			//samus->setHealth(samus->getHealth() - 10);
+			samus->setPosX(samus->getPosX() - 50);
+		}
 		break;
 	}
 
 	case LEFT: {
-
+		if (type == SAMUS)
+		{
+			Samus * samus = dynamic_cast<Samus *>(otherObject);
+			//samus->setHealth(samus->getHealth() - 10);
+			samus->setVelocityX(0);
+			samus->setVelocityX(samus->getVelocityX() - 2000.0f);
+			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
+			if (samus->getPosX() <= samus->getPosX() - 64)
+			{
+				samus->setPosX(samus->getPosX() - 64);
+				samus->setVelocityX(0);
+			}
+		}
 		break;
 	}
 
 	case RIGHT: {
+		if (type == SAMUS)
+		{
+			Samus * samus = dynamic_cast<Samus *>(otherObject);
+			//samus->setHealth(samus->getHealth() - 10);
+			samus->setVelocityX(0);
+			samus->setVelocityX(samus->getVelocityX() + 2000.0f);
+			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
+			if (samus->getPosX() >= samus->getPosX() + 64)
+			{
+				samus->setPosX(samus->getPosX() + 64);
+				samus->setVelocityX(0);
+			}
+		}
+
 		break;
 	}
 	}
