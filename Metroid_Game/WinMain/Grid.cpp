@@ -5,6 +5,8 @@
 #include "Kraid.h"
 #include "KraidBoomerang.h"
 #include "BulletKraid.h"
+#include "BulletRidley.h"
+#include "Missble.h"
 // Lưu vào mảng 2 chiều
 // Height khi quy đổi ra sẽ là row -> pos_y tương ứng với row
 // Width khi quy đổi ra sẽ là column -> pos_x tương ứng column
@@ -180,6 +182,15 @@ bool Grid::handleCollision(GameObject *object, GameObject *otherObject) {
 		else if (object->getType() == KRAID_BULLET) {
 			this->handleKraidBullet(object, otherObject, collisionDirection, collisionTime);
 		}
+		else if (object->getType() == RIDLEY_BULLET) {
+			this->handleRidleyBullet(object, otherObject, collisionDirection, collisionTime);
+		}
+		else if (object->getType() == MISSIBLE) {
+			this->handleMissible(object, otherObject, collisionDirection, collisionTime);
+		}
+		else if (object->getType() == SKREE_BULLET) {
+			this->handleSkreeBullet(object, otherObject, collisionDirection, collisionTime);
+		}
 		return true;
 	}
 	else {
@@ -197,22 +208,23 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		switch (otherObjectType) {
 		case BRICK: {
 			samus->isCollideWithEnemy = false;
+			samus->isFallAfterCollide = false;
 			object->pos_y += object->vy * collisionTime *this->getDeltaTime();
+			samus->isOnGround = true;
 			if (samus->isJumping) {
 				samus->isJumping = false;
-				samus->isOnGround = true;
 				samus->isFalling = false;
 				if (!samus->getIsBall()) {
 					samus->pos_y -= (64 - samus->getHeight());
 					samus->setWidth(32);
 					samus->setHeight(64);
 					switch (samus->GetState()) {
-					case JUMP_RIGHT: case MORPH_RIGHT: {
+					case JUMP_RIGHT: case MORPH_RIGHT:case FADE_RIGHT:{
 						samus->SetState(STAND_RIGHT);
 						samus->isMorphing = false;
 						break;
 					}
-					case JUMP_LEFT: case MORPH_LEFT: {
+					case JUMP_LEFT: case MORPH_LEFT: case FADE_LEFT:{
 						samus->SetState(STAND_LEFT);
 						samus->isMorphing = false;
 						break;
@@ -239,6 +251,19 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			otherObject->setActive(false);
 		}break;
 			
+		case ZOOMER_YELLOW: case ZOOMER_PINK: case SKREE: case KRAID: case SKREE_BULLET: case RIDLEY_BULLET: case KRAID_BOMERANG: case KRAID_BULLET:{
+			if (!samus->isCollideWithEnemy) {
+				samus->collideEnemy();
+			}
+			else {
+				samus->isBottom = false;
+			}
+			break;
+		}
+		case EXPLOSION_BOMB: {
+			samus->isBottom = false;
+			break;
+		}
 		}
 	}
 	else if (collisionDirection == TOP) {
@@ -247,6 +272,19 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 		case BRICK: {
 			object->pos_y += object->vy * collisionTime*this->getDeltaTime();
 
+			break;
+		}
+		case ZOOMER_YELLOW: case ZOOMER_PINK: case SKREE: case KRAID: case SKREE_BULLET: case RIDLEY_BULLET: case KRAID_BOMERANG: case KRAID_BULLET: {
+			if (!samus->isCollideWithEnemy) {
+				samus->collideEnemy();
+			}
+			else {
+				samus->isTop = false;
+			}
+			break;
+		}
+		case EXPLOSION_BOMB: {
+			samus->isTop = false;
 			break;
 		}
 		}
@@ -272,45 +310,23 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			samus->isRight = false;
 			break;
 		}
-		case SKREE_BULLET:
-		{
-			samus->isRight = true;
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setPosX(samus->getPosX() - 20);
-			break;
-		}
-		case KRAID: 
-		{
-			samus->isRight = true;
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() - 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() <= samus->getPosX() - 64)
-			{
-				samus->setPosX(samus->getPosX() - 64);
-				samus->setVelocityX(0);
-			}
-			break;
-		}
-		case RIDLEY:
-		{
-			samus->isRight = true;
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() - 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() <= samus->getPosX() - 64)
-			{
-				samus->setPosX(samus->getPosX() - 64);
-				samus->setVelocityX(0);
-			}
-			break;
-		}
 		case MARU_MARI: {
 			samus->isRight = false;
 			samus->pos_x += samus->vx *this->deltaTime;
 			otherObject->setActive(false);
+			break;
+		}
+		case ZOOMER_YELLOW: case ZOOMER_PINK: case SKREE: case KRAID: case SKREE_BULLET: case RIDLEY_BULLET: case KRAID_BOMERANG: case KRAID_BULLET: {
+			if (!samus->isCollideWithEnemy) {
+				samus->collideEnemy();
+			}
+			else {
+				samus->isRight = false;
+			}
+			break;
+		}
+		case EXPLOSION_BOMB: {
+			samus->isRight = false;
 			break;
 		}
 		}
@@ -342,39 +358,17 @@ void Grid::handleSamus(GameObject* object, GameObject* otherObject, COLLISION_DI
 			otherObject->setActive(false);
 			break;
 		}
-		case SKREE_BULLET:
-		{
-			samus->isLeft = true;
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setPosX(samus->getPosX() + 20);
-			break;
-		}
-		case KRAID: 
-		{
-			samus->isLeft = true;
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() + 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() >= samus->getPosX() + 64)
-			{
-				samus->setPosX(samus->getPosX() + 64);
-				samus->setVelocityX(0);
+		case ZOOMER_YELLOW: case ZOOMER_PINK: case SKREE: case KRAID: case SKREE_BULLET: case RIDLEY_BULLET: case KRAID_BOMERANG: case KRAID_BULLET: {
+			if (!samus->isCollideWithEnemy) {
+				samus->collideEnemy();
+			}
+			else {
+				samus->isBottom = false;
 			}
 			break;
 		}
-		case RIDLEY:
-		{
-			samus->isLeft = true;
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() + 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() >= samus->getPosX() + 64)
-			{
-				samus->setPosX(samus->getPosX() + 64);
-				samus->setVelocityX(0);
-			}
+		case EXPLOSION_BOMB: {
+			samus->isLeft = false;
 			break;
 		}
 		}
@@ -408,6 +402,13 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 			bullet->Reset();
 			zoomer->setIsBottomCollided(false);
+		}
+		else if (type == MISSIBLE) {
+			zoomer->setIsBottomCollided(false);
+			zoomer->setHealth(0);
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			Missible* bullet = dynamic_cast<Missible*>(otherObject);
+			bullet->Reset(0.0f, 0.0f);
 		}
 		else if (type == EXPLOSION_BOMB) {
 			object->pos_y += object->vy * deltaTime;
@@ -463,6 +464,14 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			object->pos_y += object->vy * this->deltaTime;
 			zoomer->setIsTopCollided(false);
 		}
+		else if (type == MISSIBLE) {
+			zoomer->setIsTopCollided(false);
+			zoomer->setHealth(0);
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			Missible* bullet = dynamic_cast<Missible*>(otherObject);
+			bullet->Reset(0.0f, 0.0f);
+
+		}
 		break;
 	}
 
@@ -500,6 +509,13 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 		else if (type == ZOOMER_YELLOW || type == ZOOMER_PINK || type == SKREE) {
 			object->pos_x += object->vx * this->deltaTime;
 			zoomer->setIsLeftCollided(false);
+		}
+		else if (type == MISSIBLE) {
+			zoomer->setIsLeftCollided(false);
+			zoomer->setHealth(0);
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			Missible* bullet = dynamic_cast<Missible*>(otherObject);
+			bullet->Reset(0.0f, 0.0f);
 		}
 		break;
 	}
@@ -539,6 +555,13 @@ void Grid::handleZoomer(GameObject* object, GameObject* otherObject, COLLISION_D
 			object->pos_x += object->vx * this->deltaTime;
 			zoomer->setIsRightCollided(false);
 		}
+		else if (type == MISSIBLE) {
+			zoomer->setIsRightCollided(false);
+			zoomer->setHealth(0);
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+			Missible* bullet = dynamic_cast<Missible*>(otherObject);
+			bullet->Reset(0.0f, 0.0f);
+		}
 		break;
 	}
 	}
@@ -556,7 +579,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsTop(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT 
 			|| type == BOMB_ITEM || type == MARU_MARI
-			|| type == ENERGY_ITEM || type == MISSILE_ITEM ) {
+			|| type == ENERGY_ITEM) {
 			object->pos_y += object->vy * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -588,7 +611,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 	case LEFT: {
 		bullet->setIsLeft(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
-			|| type == BOMB_ITEM || type == MARU_MARI || type == ENERGY_ITEM || type == MISSILE_ITEM) {
+			|| type == BOMB_ITEM || type == MARU_MARI || type == ENERGY_ITEM) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -615,28 +638,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			}
 			bullet->Reset();
 		}
-		else if (type == RIDLEY)
-		{
-			Ridley* ridley = dynamic_cast<Ridley*>(otherObject);
-			ridley->setHealth(ridley->getHealth() - 20);
-			if (ridley->getHealth() <= 0)
-			{
-				ridley->setIsDeath(true);
-				ridley->Destroy(ridley->pos_x, ridley->pos_y);
-			}
-			bullet->setIsLeft(true);
-			bullet->Reset();
-		}
-		else if (type == KRAID)
-		{
-			Kraid* kraid = dynamic_cast<Kraid*>(otherObject);
-			kraid->setHealth(kraid->getHealth() - 20);
-			if (kraid->getHealth() <= 0)
-			{
-				kraid->setIsDeath(true);
-				kraid->Destroy(kraid->pos_x, kraid->pos_y);
-			}
-			bullet->setIsRight(true);
+		else if (type == RIDLEY || type == KRAID) {
 			bullet->Reset();
 		}
 		break;
@@ -646,7 +648,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 		bullet->setIsRight(true);
 		if (type == BRICK || type == BULLET || type == ITEM || type == EFFECT
 			|| type == BOMB_ITEM || type == MARU_MARI
-			|| type == ENERGY_ITEM || type == MISSILE_ITEM) {
+			|| type == ENERGY_ITEM ) {
 			object->pos_x += object->vx * collisionTime * this->getDeltaTime();
 			bullet->Reset();
 		}
@@ -674,28 +676,7 @@ void Grid::handleSamusBullet(GameObject* object, GameObject* otherObject, COLLIS
 			}
 			bullet->Reset();
 		}
-		else if (type == RIDLEY)
-		{
-			Ridley* ridley = dynamic_cast<Ridley*>(otherObject);
-			ridley->setHealth(ridley->getHealth() - 20);
-			if (ridley->getHealth() <= 0)
-			{
-				ridley->setIsDeath(true);
-				ridley->Destroy(ridley->pos_x, ridley->pos_y);
-			}
-			bullet->setIsRight(true);
-			bullet->Reset();
-		}
-		else if (type == KRAID)
-		{
-			Kraid* kraid = dynamic_cast<Kraid*>(otherObject);
-			kraid->setHealth(kraid->getHealth() - 20);
-			if (kraid->getHealth() <= 0)
-			{
-				kraid->setIsDeath(true);
-				kraid->Destroy(kraid->pos_x, kraid->pos_y);
-			}
-			bullet->setIsRight(true);
+		else if (type == RIDLEY || type == KRAID) {
 			bullet->Reset();
 		}
 		break;
@@ -741,7 +722,30 @@ void Grid::handleSkree(GameObject *object, GameObject *otherObject, COLLISION_DI
 		Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
 		bullet->Reset();
 	}
+	else if (otherObject->getType() == MISSIBLE) {
+		Skree* skree = dynamic_cast<Skree*>(object);
+		skree->setHealth(0);
+		skree->isActive = false;
+		skree->Destroy(skree->pos_x, skree->pos_y);
 
+		Missible* missible = dynamic_cast<Missible*>(otherObject);
+		missible->Reset(0.0f, 0.0f);
+	}
+
+}
+
+void Grid::handleSkreeBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	BulletSkree *bullet = dynamic_cast<BulletSkree*>(object);
+	if (otherObject->getType() == SAMUS) {
+		// khi va cham vs quai thi bi vang ra
+		Samus* samus = dynamic_cast<Samus*>(otherObject);
+		if (!samus->isCollideWithEnemy) {
+			samus->collideEnemy();
+		}
+	}
+	bullet->Reset(0.0f, 0.0f);
+	bullet->setIsBottom(true);
 }
 
 void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
@@ -750,7 +754,7 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 	OBJECT_TYPE otherObjectType = otherObject->getType();
 	switch (collisionDirection) {
 	case BOTTOM: {
-		ridley->setIsBottomCollided(true);
+		ridley->setIsBottomCollided(false);
 		switch (otherObjectType) {
 		case BRICK: {
 			ridley->pos_y += ridley->vy*collisionTime*this->getDeltaTime();
@@ -763,6 +767,7 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 			else if (ridley->getRidleyState() == FLY_RIGHT) {
 				ridley->setRidleyState(SIT_RIGHT);
 			}
+			ridley->setIsBottomCollided(true);
 			break;
 		}
 		}
@@ -775,39 +780,38 @@ void Grid::handleRidley(GameObject *object, GameObject *otherObject, COLLISION_D
 	}
 
 	case LEFT: {
-		ridley->setIsLeftCollided(false);
-		if (otherObjectType == EXPLOSION_BOMB) {
-			object->pos_y += object->vy * deltaTime;
-			ridley->setHealth(ridley->getHealth() - 30.0f);
-			ridley->setIsLeftCollided(false);
-		}
+
 		break;
 	}
 
 	case RIGHT: {
-		ridley->setIsRightCollided(false);
-		if (otherObjectType == EXPLOSION_BOMB) {
-			object->pos_y += object->vy * deltaTime;
-			ridley->setHealth(ridley->getHealth() - 30.0f);
-			ridley->setIsRightCollided(false);
-		}
+
 		break;
 	}
 	}
 }
 
+void Grid::handleRidleyBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	BulletRidley* bullet = dynamic_cast<BulletRidley*>(object);
+	if (otherObject->getType() == SAMUS) {
+		Samus* samus = dynamic_cast<Samus*>(otherObject);
+		if (!samus->isCollideWithEnemy) {
+			samus->collideEnemy();
+			bullet->Reset(0.0f, 0.0f);
+		}
+	}
+	
+}
+
 void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
 {
 	Kraid *kraid = dynamic_cast<Kraid*>(object);
-	OBJECT_TYPE otherObjectType = otherObject->getType();
 	switch (collisionDirection) {
 	case BOTTOM: {
-		kraid->setIsBottom(true);
-		kraid->pos_y += kraid->vy *this->deltaTime *collisionTime;
-		if (otherObjectType == EXPLOSION_BOMB) {
-			//object->pos_y += object->vy * deltaTime;
-			kraid->setHealth(kraid->getHealth() - 30.0f);
-			kraid->setIsRight(false);
+		if (otherObject->getType() == BRICK) {
+			kraid->setIsBottom(true);
+			kraid->pos_y += kraid->vy *this->deltaTime *collisionTime;
 		}
 		break;
 	}
@@ -816,22 +820,62 @@ void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DI
 		break;
 	}
 	case RIGHT: {
-		kraid->setIsRight(true);
-		kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
-		if (otherObjectType == EXPLOSION_BOMB) {
-			//object->pos_y += object->vy * deltaTime;
-			kraid->setHealth(kraid->getHealth() - 30.0f);
-			kraid->setIsRight(false);
+		kraid->setIsRight(false);
+		switch (otherObject->getType()) {
+		case SAMUS: {
+			Samus* samus = dynamic_cast<Samus*>(otherObject);
+			if (!samus->isCollideWithEnemy) {
+				samus->collideEnemy();
+			}
+			break;
 		}
+		case BULLET: {
+
+			break;
+		}
+		case MISSIBLE: {
+			break;
+		}
+		default: {
+			kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
+			kraid->setIsRight(true);
+		}
+		}
+		
 		break;
 	}
 	case LEFT: {
-		kraid->setIsLeft(true);
-		kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
-		if (otherObjectType == EXPLOSION_BOMB) {
-			//object->pos_y += object->vy * deltaTime;
-			kraid->setHealth(kraid->getHealth() - 30.0f);
-			kraid->setIsLeft(false);
+		kraid->setIsLeft(false);
+		switch (otherObject->getType()) {
+		case SAMUS: {
+			Samus* samus = dynamic_cast<Samus*>(otherObject);
+			if (!samus->isCollideWithEnemy) {
+				samus->collideEnemy();
+			}
+			break;
+		}
+		case BULLET: {
+			kraid->setHealth(kraid->getHealth() - 10);
+
+			if (kraid->getHealth() == 0)
+			{
+				kraid->isActive = false;
+				kraid->Destroy(kraid->pos_x, kraid->pos_y);
+			}
+
+
+			Bullet* bullet = dynamic_cast<Bullet*>(otherObject);
+			bullet->Reset();
+			break;
+		}
+		case MISSIBLE: {
+
+			break;
+		}
+		default: {
+			kraid->pos_x += kraid->vy *this->deltaTime  *collisionTime;
+			kraid->setIsLeft(true);
+		}
 		}
 		break;
 	}
@@ -841,118 +885,95 @@ void Grid::handleKraid(GameObject *object, GameObject *otherObject, COLLISION_DI
 void Grid::handleBoomerang(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
 {
 	KraidBoomerang* boomerange = dynamic_cast<KraidBoomerang*>(object);
-	OBJECT_TYPE type = otherObject->getType();
-	switch (collisionDirection)
-	{
-	case BOTTOM:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setPosX(samus->getPosX() - 50);
-		}
-		break;
-	case TOP:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setPosX(samus->getPosX() - 50);
-		}
-		break;
-	case RIGHT:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() + 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() >= samus->getPosX() + 64)
-			{
-				samus->setPosX(samus->getPosX() + 64);
-				samus->setVelocityX(0);
-			}
-		}
-		break;
-	case LEFT:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() - 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() <= samus->getPosX() - 64)
-			{
-				samus->setPosX(samus->getPosX() - 64);
-				samus->setVelocityX(0);
-			}
-		}
-		break;
-	}
-
-	boomerange->Reset(0.0f, 0.0f);
+	
 	boomerange->setIsBottom(true);
 	boomerange->setIsFall(false);
+
+	if (otherObject->getType() == SAMUS) {
+		Samus* samus = dynamic_cast<Samus*>(otherObject);
+		if (!samus->isCollideWithEnemy) {
+			samus->collideEnemy();
+			boomerange->Reset(0.0f, 0.0f);
+		}
+	}
+	else {
+		boomerange->Reset(0.0f, 0.0f);
+	}
 }
 
-void Grid::handleKraidBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+void Grid::handleKraidBullet(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collsionDirection, float collisionTime)
 {
 	BulletKraid* bullet = dynamic_cast<BulletKraid*>(object);
-	OBJECT_TYPE type = otherObject->getType();
-	switch (collisionDirection)
-	{
-	case BOTTOM:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setPosX(samus->getPosX() - 50);
+	bullet->Reset(0.0f, 0.0f);
+	bullet->setIsBottom(true);
+
+	if (otherObject->getType() == SAMUS) {
+		Samus* samus = dynamic_cast<Samus*>(otherObject);
+		if (!samus->isCollideWithEnemy) {
+			samus->collideEnemy();
+			bullet->Reset(0.0f, 0.0f);
 		}
+	}
+	else {
+		bullet->Reset(0.0f, 0.0f);
+	}
+}
+
+void Grid::handleMissible(GameObject *object, GameObject *otherObject, COLLISION_DIRECTION collisionDirection, float collisionTime)
+{
+	Missible *missble = dynamic_cast<Missible*>(object);
+
+	missble->setIsTop(true);
+
+	switch (otherObject->getType()) {
+	case BRICK: case GATE: {
+		missble->Reset(0.0f, 0.0f);
 		break;
-	case TOP:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setPosX(samus->getPosX() - 50);
+	}
+	case KRAID: {
+		Kraid *kraid = dynamic_cast<Kraid*>(otherObject);
+		kraid->setHealth(kraid->getHealth() - 100);
+		if (kraid->getHealth() <= 0) {
+			kraid->Destroy(kraid->pos_x, kraid->pos_y);
 		}
+		missble->Reset(0.0f, 0.0f);
 		break;
-	case RIGHT:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() + 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() >= samus->getPosX() + 64)
-			{
-				samus->setPosX(samus->getPosX() + 64);
-				samus->setVelocityX(0);
-			}
+	}
+	case RIDLEY: {
+		Ridley *ridley = dynamic_cast<Ridley*>(otherObject);
+		ridley->setHealth(ridley->getHealth() - 100);
+		if (ridley->getHealth() <= 0) {
+			ridley->Destroy(ridley->pos_x, ridley->pos_y);
 		}
-		break;
-	case LEFT:
-		if (type == SAMUS)
-		{
-			Samus * samus = dynamic_cast<Samus *>(otherObject);
-			samus->setHealth(samus->getHealth() - 10);
-			samus->setVelocityX(0);
-			samus->setVelocityX(samus->getVelocityX() - 2000.0f);
-			samus->setPosX(samus->getPosX() + samus->getVelocityX() * this->getDeltaTime());
-			if (samus->getPosX() <= samus->getPosX() - 64)
-			{
-				samus->setPosX(samus->getPosX() - 64);
-				samus->setVelocityX(0);
-			}
-		}
+		missble->Reset(0.0f, 0.0f);
 		break;
 	}
 
-	bullet->Reset(0.0f, 0.0f);
-	bullet->setIsBottom(true);
+	case ZOOMER_YELLOW: case ZOOMER_PINK: {
+		Zoomer *zoomer = dynamic_cast<Zoomer*>(otherObject);
+		zoomer->setHealth(zoomer->getHealth() - 100);
+		if (zoomer->getHealth() <= 0) {
+			zoomer->Destroy(zoomer->pos_x, zoomer->pos_y);
+		}
+		missble->Reset(0.0f, 0.0f);
+		break;
+	}
+
+	case SKREE: {
+		Skree *skree = dynamic_cast<Skree*>(otherObject);
+		skree->setHealth(skree->getHealth() - 100);
+		if (skree->getHealth() <= 0) {
+			skree->Destroy(skree->pos_x, skree->pos_y);
+		}
+		missble->Reset(0.0f, 0.0f);
+		break;
+	}
+	case EXPLOSION_BOMB: {
+		missble->Reset(0.0f, 0.0f);
+		break;
+	}
+	}
+	
 }
 
 void Grid::updateGrid(GameObject* object, float newPosX, float newPosY) {

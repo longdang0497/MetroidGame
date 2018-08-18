@@ -82,7 +82,8 @@ void Gate::Update(float t)
 
 	if (GetTickCount() - this->timeStartOpen >= time_survive) {
 		this->setGateState(CLOSE);
-		if (this->pos_x <= this->manager->samus->pos_x && this->manager->samus->pos_x <= this->pos_x + this->width) {
+		if (this->pos_x <= this->manager->samus->pos_x && this->manager->samus->pos_x <= this->pos_x + this->width
+			&& this->pos_y <= this->manager->samus->pos_y && this->pos_y + this->height - 32 >= this->manager->samus->pos_y) {
 			this->setGateState(OPEN);
 		}
 	}

@@ -46,10 +46,24 @@ World::World(LPD3DXSPRITE spriteHandler, Metroid * metroid)
 	kraidBomerang.push_back(boomerang1);
 	kraidBomerang.push_back(boomerang2);
 
+	// Khoi tao dan cho ridley (5 vien)
+	BulletRidley* ridleyBullet1 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet2 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet3 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet4 = new BulletRidley(spriteHandler, this);
+	BulletRidley* ridleyBullet5 = new BulletRidley(spriteHandler, this);
+	this->ridleyBullet.push_back(ridleyBullet1);
+	this->ridleyBullet.push_back(ridleyBullet2);
+	this->ridleyBullet.push_back(ridleyBullet3);
+	this->ridleyBullet.push_back(ridleyBullet4);
+	this->ridleyBullet.push_back(ridleyBullet5);
+
 	maruMari = new MaruMari(spriteHandler, this);
 
 	explodeEffect = new ExplodeEffect(spriteHandler, this, this->getMetroid()->getGrid());
 	bombWeapon = new BombWeapon(spriteHandler, this);
+
+	missible = new Missible(spriteHandler, this);
 
 	gateRightRoom1 = new Gate(spriteHandler, this);
 	gateLeftRoom1 = new Gate(spriteHandler, this);
@@ -112,6 +126,10 @@ void World::Update(float t)
 		this->kraidBomerang[i]->Update(t);
 	}
 
+	for (int i = 0; i < this->ridleyBullet.size(); i++) {
+		this->ridleyBullet[i]->Update(t);
+	}
+
 	/*START UPDATING ENEMY*/
 	for (int i = 0; i < this->enemy.size(); i++) {
 		if (this->enemy[i]->isInsideMapBound(this->metroid->camera->getBoundary())) {
@@ -158,6 +176,8 @@ void World::Update(float t)
 
 	kraid->Update(t);
 	ridley->Update(t);
+
+	this->missible->Update(t);
 }
 
 void World::Render()
@@ -190,6 +210,10 @@ void World::Render()
 		this->kraidBomerang[i]->Render();
 	}
 
+	for (int i = 0; i < this->ridleyBullet.size(); i++) {
+		this->ridleyBullet[i]->Render();
+	}
+
 	bombWeapon->Render();
 	explodeEffect->Render();
 
@@ -206,6 +230,8 @@ void World::Render()
 
 	ridley->Render();
 	kraid->Render();
+
+	this->missible->Render();
 }
 
 void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
@@ -264,6 +290,13 @@ void World::InitSprites(LPDIRECT3DDEVICE9 d3ddv)
 	for (int i = 0; i < this->kraidBomerang.size(); i++) {
 		this->kraidBomerang[i]->InitSprites(d3ddv, boss_texture);
 	}
+	for (int i = 0; i < this->ridleyBullet.size(); i++) {
+		this->ridleyBullet[i]->InitSprites(d3ddv, boss_texture);
+	}
+
+	// Missible Texture
+	LPDIRECT3DTEXTURE9 missible_texture = texture->loadTexture(d3ddv, MISSIBLE_PATH);
+	this->missible->InitSprites(d3ddv, missible_texture);
 
 	texture = nullptr;
 	delete(texture);

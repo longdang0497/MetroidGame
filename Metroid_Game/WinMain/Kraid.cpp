@@ -23,7 +23,7 @@ Kraid::Kraid(LPD3DXSPRITE spriteHandler, World * manager)
 	this->height = HEIGHT_KRAID;
 	this->width = WIDTH_KRAID;
 
-	this->health = 1000.0f;
+	this->health = 1000;
 	this->isDeath = false;
 
 	this->pos_x = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS + 350.0f;
@@ -167,8 +167,8 @@ void Kraid::Destroy(float x, float y)
 		if (manager->explodeEffect->getTimeSurvive() > 0)
 		{
 			manager->explodeEffect->setActive(true);
-			manager->explodeEffect->setPosX(x - 32);
-			manager->explodeEffect->setPosY(y - 32);
+			manager->explodeEffect->setPosX(x + width / 2);
+			manager->explodeEffect->setPosY(y + height / 2);
 		}
 		this->isDeath = true;
 		GameObject* object = static_cast<GameObject*>(this);

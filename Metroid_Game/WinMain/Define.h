@@ -88,6 +88,8 @@ enum SAMUS_STATE {
 	TRANSFORM_BALL_RIGHT,
 	JUMP_SHOOT_UP_LEFT,
 	JUMP_SHOOT_UP_RIGHT,
+	FADE_LEFT,
+	FADE_RIGHT
 };
 
 //================END SAMUS ====================
@@ -111,7 +113,7 @@ enum OBJECT_TYPE
 	EXPLOSION_BOMB,
 	MARU_MARI,
 	ENERGY_ITEM,
-	MISSILE_ITEM,
+	MISSIBLE,
 	BOMB_ITEM,
 	BOMB_WEAPON,
 	RIDLEY_BULLET,
@@ -135,6 +137,12 @@ enum OBJECT_TYPE
 //================= END GAME SCENE ============
 
 //================ SPRITE SAMUS ================
+#define WIDTH_SAMUS_FADE 48
+#define HEIGHT_SAMUS_FADE 52
+#define COUNT_SAMUS_FADE 3
+#define JUMP_FADE_LEFT L"sprites\\JUMP_FADE_LEFT.txt"
+#define JUMP_FADE_RIGHT L"sprites\\JUMP_FADE_RIGHT.txt"
+
 #define WIDTH_SAMUS_STAND 42
 #define HEIGHT_SAMUS_STAND 66
 #define COUNT_SAMUS_STAND 1
@@ -453,6 +461,23 @@ enum Bullet_Skree_Direction {
 
 //================== END ENEMY =================
 
+//================== MISSIBLE =================
+#define MISSIBLE_PATH L"sprites\\item\\Missible.png"
+#define X_VELOCITY_MISSIBLE 400.0f
+#define Y_VELOCITY_MISSIBLE 400.0f
+#define MISSIBLE_COUNT 1
+#define WIDTH_MISSIBLE 24
+#define HEIGHT_MISSIBLE 16
+#define MISSIBLE_UP_PATH L"sprites\\item\\MISSILE_UP.txt"
+#define MISSIBLE_LEFT_PATH L"sprites\\item\\MISSILE_LEFT.txt"
+#define MISSIBLE_RIGHT_PATH L"sprites\\item\\MISSILE_RIGHT.txt"
+#define RANGE_MISSIBLE 192.0f
+enum MISSIBLE_STATE {
+	MISSIBLE_SHOT_UP,
+	MISSIBLE_SHOT_LEFT,
+	MISSIBLE_SHOT_RIGHT
+};
+//================== END MISSIBLE =================
 
 //================== Bullet ====================
 #define SAMUS_BULLET_PATH L"sprites\\item\\bullet.png"
@@ -504,6 +529,18 @@ enum COLLISION_DIRECTION {
 #define HEIGHT_RIDLEY_BULLET 24
 #define RIDLEY_BULLET_COUNT 4
 #define RIDLEY_BULLET_PATH L"enemy\\RIDLEY_BULLET.txt"
+
+enum BULLET_RIDLEY_STATE {
+	BULLET_RIDLEY_LEFT,
+	BULLET_RIDLEY_RIGHT
+};
+
+#define BULLET_RIDLEY_SPEED_1 60.0f
+#define BULLET_RIDLEY_SPEED_2 80.0f
+#define BULLET_RIDLEY_SPEED_3 100.0f
+#define BULLET_RIDLEY_RANGE_1 100.0f
+#define BULLET_RIDLEY_RANGE_2 200.0f
+#define BULLET_RIDLEY_RANGE_3 210.0f
 
 enum RIDLEY_STATE {
 	SIT_LEFT,

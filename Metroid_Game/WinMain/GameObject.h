@@ -26,7 +26,6 @@ public:
 	float vy_last;
 
 	float gravity;
-	float health; //máu của object
 
 	LPD3DXSPRITE spriteHandler;
 
@@ -83,9 +82,6 @@ public:
 
 	float getgravity();
 	void setgravity(float value);
-	
-	float getHealth();
-	void setHealth(float value);
 
 	void SetBound(int objWidth, int objHeight);
 	RECT GetBound();

@@ -303,9 +303,8 @@ void Camera::SetMapBoundary(RECT rect)
 {
 	m_map_bound = rect;
 	m_map_bound.right = WIDTH_ROOM1;
-	//m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 + WIDTH_ROOM_BOSS;
-	//m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2;
-	m_map_bound.left = 0;
+	/*m_map_bound.right = WIDTH_ROOM1 + WIDTH_ROOM2 +  WIDTH_ROOM_BOSS;
+	m_map_bound.left = WIDTH_ROOM1 + WIDTH_ROOM2;*/
 }
 
 

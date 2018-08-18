@@ -13,7 +13,7 @@ ExplodeEffect::ExplodeEffect(LPD3DXSPRITE spriteHandler, World *manager, Grid * 
 	isActive = false;
 	this->width = EFFECT_EXPLOSION_WIDTH;
 	this->height = EFFECT_EXPLOSION_HEIGHT;
-	this->type = EXPLOSION_BOMB;
+	
 }
 
 
@@ -48,6 +48,14 @@ void ExplodeEffect::Update(float t)
 						object->setActive(false);
 						this->grid->updateGrid(object, this->getPosX(), this->getPosY());
 					}
+					else if (enemy[i]->getType() == SKREE) {
+						Skree* skree = dynamic_cast<Skree*>(enemy[i]);
+						skree->isDeath = true;
+						skree->reset();
+						GameObject* object = static_cast<GameObject*>(skree);
+						object->setActive(false);
+						this->grid->updateGrid(object, this->getPosX(), this->getPosY());
+					}
 
 				}
 			}
@@ -61,9 +69,8 @@ void ExplodeEffect::Update(float t)
 				&& (kraid->pos_y >= this->pos_y && kraid->pos_y <= this->pos_y + this->getHeight() ||
 					this->pos_y >= kraid->pos_y && this->pos_y <= kraid->pos_y + kraid->getHeight()
 					)) {
-				kraid->setHealth(kraid->getHealth() - 5);
+				kraid->setHealth(kraid->getHealth() - 2);
 				if (kraid->getHealth() <= 0) {
-					//kraid->Destroy(kraid->pos_x, kraid->pos_y);
 					kraid->setIsDeath(true);
 					kraid->setActive(false);
 					GameObject * object = static_cast<Kraid*>(kraid);
@@ -79,7 +86,7 @@ void ExplodeEffect::Update(float t)
 				&& (ridley->pos_y >= this->pos_y && ridley->pos_y <= this->pos_y + this->getHeight() ||
 					this->pos_y >= ridley->pos_y && this->pos_y <= ridley->pos_y + ridley->getHeight()
 					)) {
-				ridley->setHealth(ridley->getHealth() - 5);
+				ridley->setHealth(ridley->getHealth() - 2);
 				if (ridley->getHealth() <= 0) {
 					//kraid->Destroy(kraid->pos_x, kraid->pos_y);
 					ridley->setIsDeath(true);
@@ -89,7 +96,6 @@ void ExplodeEffect::Update(float t)
 				}
 			}
 		}
-		//time_
 
 		//time_survive = EFFECT_TIME_SURVIVE;
 		DWORD now = GetTickCount();

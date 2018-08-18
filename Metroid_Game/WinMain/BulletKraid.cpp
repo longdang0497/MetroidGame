@@ -7,7 +7,7 @@ BulletKraid::BulletKraid()
 
 BulletKraid::BulletKraid(LPD3DXSPRITE spriteHandler, World * manager)
 {
-	this->spriteHandler = spriteHandler;
+	this->spriteHandler = spriteHandler; 
 	this->manager = manager;
 
 	this->isActive = false;

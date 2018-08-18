@@ -383,8 +383,8 @@ void Zoomer::Destroy(float x, float y)
 		if (manager->explodeEffect->getTimeSurvive() > 0)
 		{
 			manager->explodeEffect->setActive(true);
-			manager->explodeEffect->setPosX(x - 32);
-			manager->explodeEffect->setPosY(y - 32);
+			manager->explodeEffect->setPosX(x - this->width/2);
+			manager->explodeEffect->setPosY(y - this->height/2);
 		}
 		this->isDeath = true;
 		this->isEnemyFreezed = false;
